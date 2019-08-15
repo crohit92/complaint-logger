@@ -13,11 +13,11 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$complaint-logger-primary: mat-palette($mat-indigo);
-$complaint-logger-accent: mat-palette($mat-pink, A200, A100, A400);
+$complaint-logger-primary: mat-palette($mat-light-green);
+$complaint-logger-accent: mat-palette($mat-light-blue);
 
 // The warn palette is optional (defaults to red).
-$complaint-logger-warn: mat-palette($mat-red);
+$complaint-logger-warn: mat-palette($mat-deep-orange);
 
 // Create the theme object (a Sass map containing all of the palettes).
 $complaint-logger-theme: mat-light-theme(

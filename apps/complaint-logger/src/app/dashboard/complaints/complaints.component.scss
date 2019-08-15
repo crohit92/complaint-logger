@@ -1,0 +1,4 @@
+@import './raise-complaint/raise-complaint.component.scss';
+@mixin app-complaints($theme) {
+  @include app-raise-complaint($theme);
+}

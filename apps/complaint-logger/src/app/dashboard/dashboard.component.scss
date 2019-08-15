@@ -1,4 +1,6 @@
+@import './complaints/complaints.component.scss';
 @mixin app-dashboard($theme) {
+  @include app-complaints($theme);
   $foreground: map-get(
     $map: $theme,
     $key: foreground
