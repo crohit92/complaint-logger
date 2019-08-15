@@ -1,15 +1,21 @@
 import { Injectable } from "@angular/core";
 import { ApiService } from '../../../core/services/http/api.service';
-import { Complaint } from '../../../shared/models/complaint';
+import { Complaint, Department } from '@complaint-logger/models';
 import { of, Observable } from 'rxjs';
-import { Department } from '../../../shared/models/department';
 
 @Injectable()
 export class RaiseComplaintService {
     constructor(private readonly api: ApiService) { }
 
     raiseComplaint(complaint: Complaint) {
-
+        complaint.createAt = Date.now();
+        complaint.createdBy = 'rohit';
+        complaint.mobile = '9646073913';
+        return this.api.sendRequest({
+            method: 'post',
+            body: complaint,
+            endpoint: 'complaints'
+        });
     }
 
     get departments(): Observable<Department[]> {

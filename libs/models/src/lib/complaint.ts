@@ -1,16 +1,15 @@
 import { Department } from './department';
 
-export class Complaint {
-    constructor() {
-        this.createAt = Date.now();
-    }
+export interface Complaint {
+
     createdBy: string;
     createAt: number;
     mobile: string;
-    departmentId: Department;
+    departmentId: string;
     department?: Department;
     description: string;
-    buildingName: string; //dd
+    buildingId: string;
+    buildingName?: string; //dd
     room?: string;
     resolution?: {
         description: string;

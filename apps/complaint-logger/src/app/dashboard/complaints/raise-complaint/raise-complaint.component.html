@@ -1,5 +1,5 @@
 <div class="app-raise-complaint">
-    <form class="complaint-form">
+    <form class="complaint-form" [formGroup]="complaintForm">
         <div class="mat-title">Raise a complaint</div>
         <mat-accordion>
             <mat-expansion-panel [expanded]="complaintFormStep===0" [disabled]="complaintFormStep!==0">
@@ -7,10 +7,12 @@
                     What issue are you facing ?
                 </mat-expansion-panel-header>
                 <mat-form-field>
-                    <textarea matInput rows="5" placeholder="Description of the issue being faced"></textarea>
+                    <textarea formControlName="description" matInput rows="5"
+                        placeholder="Description of the issue being faced"></textarea>
                 </mat-form-field>
                 <div class="actions">
-                    <button mat-button (click)="complaintFormStep = 1">Next</button>
+                    <button [disabled]="complaintForm.get('description').invalid" mat-button
+                        (click)="complaintFormStep = 1">Next</button>
                 </div>
             </mat-expansion-panel>
             <mat-expansion-panel [expanded]="complaintFormStep===1" [disabled]="complaintFormStep!==1">
@@ -20,7 +22,7 @@
 
                 <mat-form-field>
                     <mat-label>Select Department</mat-label>
-                    <mat-select>
+                    <mat-select formControlName="departmentId">
                         <mat-option *ngFor="let department of (departments | async)" [value]="department._id">
                             {{department.name}}
                         </mat-option>
@@ -28,7 +30,8 @@
                 </mat-form-field>
                 <div class="actions">
                     <button mat-button (click)="complaintFormStep = 0">Back</button>
-                    <button mat-button (click)="complaintFormStep = 2">Next</button>
+                    <button mat-button [disabled]="complaintForm.get('departmentId').invalid"
+                        (click)="complaintFormStep = 2">Next</button>
                 </div>
             </mat-expansion-panel>
             <mat-expansion-panel [expanded]="complaintFormStep===2" [disabled]="complaintFormStep!==2">
@@ -38,7 +41,7 @@
 
                 <mat-form-field>
                     <mat-label>Select Building</mat-label>
-                    <mat-select>
+                    <mat-select formControlName="buildingId">
                         <mat-option *ngFor="let building of (buildings | async)" [value]="building._id">
                             {{building.name}}
                         </mat-option>
@@ -49,7 +52,8 @@
                 </mat-form-field>
                 <div class="actions">
                     <button mat-button (click)="complaintFormStep = 1">Back</button>
-                    <button color="primary" mat-raised-button>Submit</button>
+                    <button [disabled]="complaintForm.get('buildingId').invalid" color="primary"
+                        mat-raised-button>Submit</button>
                 </div>
             </mat-expansion-panel>
         </mat-accordion>
