@@ -4,7 +4,7 @@ import { ComplaintsListComponent } from './complaints-list/complaints-list.compo
 import { RaiseComplaintComponent } from './raise-complaint/raise-complaint.component';
 import { SharedModule } from '../../shared/shared.module';
 import { RouterModule, Routes } from '@angular/router';
-import { MatFormFieldModule, MatInputModule, MatButtonModule } from '@angular/material';
+import { MatInputModule, MatButtonModule, MatSelectModule, MatExpansionModule } from '@angular/material';
 
 const routes: Routes = [
   {
@@ -35,7 +35,9 @@ const routes: Routes = [
     SharedModule,
     RouterModule.forChild(routes),
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSelectModule,
+    MatExpansionModule
   ]
 })
 export class ComplaintsModule { }
