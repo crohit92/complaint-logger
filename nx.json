@@ -1,0 +1,24 @@
+{
+  "npmScope": "complaint-logger",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": "*",
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "complaint-logger-e2e": {
+      "tags": []
+    },
+    "complaint-logger": {
+      "tags": []
+    },
+    "api": {
+      "tags": []
+    },
+    "api-interfaces": {
+      "tags": []
+    }
+  }
+}

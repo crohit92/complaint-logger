@@ -1,0 +1,4 @@
+@import '../app/dashboard/dashboard.component.scss';
+@mixin apply($theme) {
+  @include app-dashboard($theme);
+}

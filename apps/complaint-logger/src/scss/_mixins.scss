@@ -1,0 +1,31 @@
+$breakpoints: (
+  phone: 'min-width: 320px',
+  large-phone: 'min-width: 400px',
+  tab-port: 'min-width: 600px',
+  tab-land: 'min-width: 960px',
+  desktop: 'min-width: 1440px'
+);
+
+:root {
+  --breakpoints: $breakpoints;
+}
+
+@mixin respond($breakpoint) {
+  @if $breakpoint==large-phone {
+    @media screen and (map-get($map: $breakpoints, $key: large-phone)) {
+      @content;
+    }
+  } @else if $breakpoint==tab-port {
+    @media screen and (map-get($map: $breakpoints, $key: tab-port)) {
+      @content;
+    }
+  } @else if $breakpoint==tab-land {
+    @media screen and (map-get($map: $breakpoints, $key: tab-land)) {
+      @content;
+    }
+  } @else if $breakpoint==desktop {
+    @media screen and (map-get($map: $breakpoints, $key: desktop)) {
+      @content;
+    }
+  }
+}
