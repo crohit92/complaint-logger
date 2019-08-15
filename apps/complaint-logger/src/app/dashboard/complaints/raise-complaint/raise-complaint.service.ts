@@ -8,8 +8,7 @@ export class RaiseComplaintService {
     constructor(private readonly api: ApiService) { }
 
     raiseComplaint(complaint: Complaint) {
-        complaint.createAt = Date.now();
-        complaint.createdBy = 'rohit';
+        complaint.createdBy = '4cdfb11e1f3c000000007822';
         complaint.mobile = '9646073913';
         return this.api.sendRequest({
             method: 'post',
@@ -21,15 +20,15 @@ export class RaiseComplaintService {
     get departments(): Observable<Department[]> {
         return of([
             {
-                _id: '1',
+                _id: '4cdfb11e1f3c000000007822',
                 name: 'Electricity'
             },
             {
-                _id: '2',
+                _id: '4cdfb11e1f3c000000007822',
                 name: 'Sewage'
             },
             {
-                _id: '3',
+                _id: '4cdfb11e1f3c000000007822',
                 name: 'Library'
             }
         ])
@@ -37,15 +36,15 @@ export class RaiseComplaintService {
     get buildings(): Observable<Department[]> {
         return of([
             {
-                _id: '1',
+                _id: '4cdfb11e1f3c000000007822',
                 name: 'Admin Block'
             },
             {
-                _id: '2',
+                _id: '4cdfb11e1f3c000000007822',
                 name: 'Hostel 1'
             },
             {
-                _id: '3',
+                _id: '4cdfb11e1f3c000000007822',
                 name: 'Hostel 2'
             }
         ])

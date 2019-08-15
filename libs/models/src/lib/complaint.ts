@@ -3,7 +3,7 @@ import { Department } from './department';
 export interface Complaint {
 
     createdBy: string;
-    createAt: number;
+    createdAt: number;
     mobile: string;
     departmentId: string;
     department?: Department;

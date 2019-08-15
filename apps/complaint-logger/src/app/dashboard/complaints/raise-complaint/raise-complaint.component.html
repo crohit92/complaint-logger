@@ -52,8 +52,8 @@
                 </mat-form-field>
                 <div class="actions">
                     <button mat-button (click)="complaintFormStep = 1">Back</button>
-                    <button [disabled]="complaintForm.get('buildingId').invalid" color="primary"
-                        mat-raised-button>Submit</button>
+                    <button [disabled]="complaintForm.get('buildingId').invalid" color="primary" mat-raised-button
+                        (click)="raiseComplaint()">Submit</button>
                 </div>
             </mat-expansion-panel>
         </mat-accordion>
