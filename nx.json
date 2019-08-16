@@ -17,9 +17,6 @@
     "api": {
       "tags": []
     },
-    "api-interfaces": {
-      "tags": []
-    },
     "models": {
       "tags": []
     }

@@ -1,21 +1,17 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import { Complaint } from '@complaint-logger/models'
 import { Complaints } from "./complaints.model";
 @Controller('complaints')
 export class ComplaintsController {
     @Get()
-    getAllComplaints() {
-
+    async getAllComplaints(@Query('pageNumber') pageNumber: string, @Query('pageSize') pageSize: string) {
+        return await Complaints.find().sort({ createdAt: -1 }).skip(((+pageNumber) - 1) * (+pageSize)).limit(+pageSize);
     }
 
     @Post()
     async createComplaint(@Body() complaint: Complaint) {
-        try {
-            const result = await Complaints.create(complaint);
-            return result;
+        const result = await Complaints.create(complaint);
+        return result;
 
-        } catch (error) {
-            return error;
-        }
     }
 }

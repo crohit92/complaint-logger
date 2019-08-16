@@ -16,7 +16,6 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@complaint-logger/api-interfaces": ["libs/api-interfaces/src/index.ts"],
       "@complaint-logger/models": ["libs/models/src/index.ts"]
     }
   },

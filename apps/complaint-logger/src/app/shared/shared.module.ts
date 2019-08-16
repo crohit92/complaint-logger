@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 
 @NgModule({
     imports: [CommonModule, FormsModule, ReactiveFormsModule],
-    exports: [CommonModule, FormsModule, ReactiveFormsModule]
+    exports: [CommonModule, FormsModule, ReactiveFormsModule],
 })
 export class SharedModule {
 

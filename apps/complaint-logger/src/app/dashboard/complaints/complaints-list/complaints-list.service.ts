@@ -7,7 +7,18 @@ import { Complaint } from '@complaint-logger/models';
 export class ComplaintsListService {
     constructor(private readonly api: ApiService) { }
 
-    pastComplaints(): Observable<Complaint[]> {
-        return of([]);
+    pastComplaints({ pageSize,
+        pageNumber }: {
+            pageSize: number;
+            pageNumber: number
+        }): Observable<Complaint[]> {
+        return this.api.sendRequest({
+            method: 'get',
+            endpoint: 'complaints',
+            queryParams: {
+                pageSize,
+                pageNumber
+            }
+        })
     }
 }

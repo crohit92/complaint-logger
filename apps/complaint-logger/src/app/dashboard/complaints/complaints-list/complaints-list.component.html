@@ -1,1 +1,21 @@
-<p>complaints-list works!</p>
+<div class="app-complaints-list">
+    <div class="mat-title">Your Complaints</div>
+    <mat-tab-group>
+        <mat-tab label="Pending">
+            <div class="complaint"
+                *ngFor="let complaint of (complaints$ | async | complaintsListFilter:'===':'Pending')">
+                {{complaint.description}}
+            </div>
+            <mat-paginator *ngIf="(pagination$ | async) as paginationInfo" [length]="100" [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+
+        </mat-tab>
+        <mat-tab label="Resolved">
+            <div class="complaint"
+                *ngFor="let complaint of (complaints$ | async | complaintsListFilter:'!==':'Pending')">
+                {{complaint.description}}
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>
