@@ -12,7 +12,7 @@ const APP_ROUTES: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: '/login'
+        redirectTo: '/dashboard'
     }
 ]
 @NgModule({

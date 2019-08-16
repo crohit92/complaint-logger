@@ -10,7 +10,12 @@ export class ComplaintsController {
 
     @Post()
     async createComplaint(@Body() complaint: Complaint) {
-        const result = await Complaints.create(complaint);
-        return result;
+        try {
+            const result = await Complaints.create(complaint);
+            return result;
+
+        } catch (error) {
+            return error;
+        }
     }
 }

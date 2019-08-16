@@ -12,6 +12,10 @@ const routes: Routes = [
       {
         path: 'complaints',
         loadChildren: async () => (await import('./complaints/complaints.module')).ComplaintsModule
+      },
+      {
+        path: '',
+        redirectTo: 'complaints'
       }
     ]
   }
