@@ -1,0 +1,56 @@
+@mixin app-dashboard($theme) {
+  $foreground: map-get($map: $theme,
+      $key: foreground);
+  $background: map-get($map: $theme,
+      $key: background);
+  $primary: map-get($map: $theme,
+      $key: primary);
+
+  .sidenav {
+    width: calc(60% + 1rem);
+
+    @include respond(tab-port) {
+      width: calc(30% + 1rem);
+    }
+
+    .logo {
+      padding: 0.5rem;
+      width: 180px;
+      margin: 0 auto;
+
+      caption {
+        display: block;
+      }
+    }
+
+    ul {
+      margin-top: 1.5rem;
+      list-style: none;
+
+      li {
+        outline: none;
+        padding: 0.5rem;
+        cursor: pointer;
+        border-top: 1px solid transparent;
+        border-bottom: 1px solid transparent;
+
+        &:hover {
+          background: mat-color($background, hover);
+        }
+
+        &.active {
+          border-color: mat-color($primary);
+          color: mat-color($primary);
+        }
+      }
+    }
+  }
+
+  .content {
+    min-height: 100vh;
+
+    &__outlet {
+      padding: 1rem;
+    }
+  }
+}
