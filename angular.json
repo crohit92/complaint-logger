@@ -198,6 +198,124 @@
           }
         }
       }
+    },
+    "complaint-handler": {
+      "projectType": "application",
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "apps/complaint-handler",
+      "sourceRoot": "apps/complaint-handler/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/complaint-handler",
+            "index": "apps/complaint-handler/src/index.html",
+            "main": "apps/complaint-handler/src/main.ts",
+            "polyfills": "apps/complaint-handler/src/polyfills.ts",
+            "tsConfig": "apps/complaint-handler/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/complaint-handler/src/favicon.ico",
+              "apps/complaint-handler/src/assets"
+            ],
+            "styles": ["apps/complaint-handler/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/complaint-handler/src/environments/environment.ts",
+                  "with": "apps/complaint-handler/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "complaint-handler:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "complaint-handler:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "complaint-handler:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/complaint-handler/tsconfig.app.json",
+              "apps/complaint-handler/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/complaint-handler/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/complaint-handler/jest.config.js",
+            "tsConfig": "apps/complaint-handler/tsconfig.spec.json",
+            "setupFile": "apps/complaint-handler/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "complaint-handler-e2e": {
+      "root": "apps/complaint-handler-e2e",
+      "sourceRoot": "apps/complaint-handler-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/complaint-handler-e2e/cypress.json",
+            "tsConfig": "apps/complaint-handler-e2e/tsconfig.e2e.json",
+            "devServerTarget": "complaint-handler:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "complaint-handler:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/complaint-handler-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/complaint-handler-e2e/**"]
+          }
+        }
+      }
     }
   },
   "cli": {
