@@ -1,5 +1,4 @@
 import { Schema, model } from 'mongoose';
-type ObjectId = Schema.Types.ObjectId;
 const ComplaintSchema = new Schema({
     createdBy: {
         type: Schema.Types.ObjectId,
@@ -32,6 +31,10 @@ const ComplaintSchema = new Schema({
             enum: ['Pending', 'Issue Resolved', 'No Issue found'],
             default: 'Pending'
         }
+    },
+    assignedTo: {
+        type: Schema.Types.ObjectId,
+        required: false
     }
 }, {
         timestamps: true

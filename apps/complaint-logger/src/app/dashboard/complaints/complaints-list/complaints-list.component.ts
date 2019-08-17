@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ComplaintsListService } from './complaints-list.service';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Complaint } from '@complaint-logger/models';
-import { switchMap, combineLatest, map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, combineLatest, Subject } from 'rxjs';
+import { Complaint, ComplaintStatus } from '@complaint-logger/models';
+import { switchMap, map, shareReplay, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'complaint-logger-complaints-list',
@@ -11,25 +11,37 @@ import { switchMap, combineLatest, map } from 'rxjs/operators';
   providers: [ComplaintsListService]
 })
 export class ComplaintsListComponent implements OnInit {
-  paginationSubject = new BehaviorSubject({
+  ComplaintStatus = ComplaintStatus;
+  tabChangeEvent = new BehaviorSubject<number>(1);
+  private _pendingPagination = {
     pageSize: 10,
     pageNumber: 1
-  });
-  pagination$ = this.paginationSubject.asObservable();
+  };
+  private _resolvedPagination = {
+    pageSize: 10,
+    pageNumber: 1
+  };
+  pendingPagination = new BehaviorSubject(this._pendingPagination);
+  resolvedPagination = new BehaviorSubject(this._resolvedPagination);
+  pending$ = combineLatest(this.tabChangeEvent, this.pendingPagination).pipe(
+    filter(([selectedTabIndex, _]) => selectedTabIndex === 1),
+    switchMap(([_, { pageSize, pageNumber }]) => this.dataService.complaints({ pageSize, pageNumber, status: ComplaintStatus.Pending })),
+    shareReplay()
+  );
+  resolved$ = combineLatest(this.tabChangeEvent, this.resolvedPagination).pipe(
+    filter(([selectedTabIndex, _]) => selectedTabIndex === 2),
+    switchMap(([_, { pageSize, pageNumber }]) => this.dataService.complaints({ pageSize, pageNumber, status: ComplaintStatus.Resolved })),
+    shareReplay()
+  );
 
-  complaintsSubject: BehaviorSubject<Complaint[]> = new BehaviorSubject<Complaint[]>([]);
-  complaints$: Observable<Complaint[]> = this.complaintsSubject.asObservable();
   constructor(private readonly dataService: ComplaintsListService) {
-    this.paginationSubject.pipe(
-      switchMap(pagination => {
-        return this.dataService.pastComplaints(pagination);
-      }),
-      map(complaints => {
-        this.complaintsSubject.next(complaints);
-      }));
+
+    this.tabChangeEvent.next(1);
   }
 
   ngOnInit() {
-  }
 
+  }
 }
+
+

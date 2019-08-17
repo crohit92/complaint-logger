@@ -4,7 +4,7 @@ import { ComplaintsListComponent } from './complaints-list/complaints-list.compo
 import { RaiseComplaintComponent } from './raise-complaint/raise-complaint.component';
 import { SharedModule } from '../../shared/shared.module';
 import { RouterModule, Routes } from '@angular/router';
-import { MatInputModule, MatButtonModule, MatSelectModule, MatExpansionModule, MatTabsModule, MatPaginatorModule } from '@angular/material';
+import { MatInputModule, MatButtonModule, MatSelectModule, MatExpansionModule, MatTabsModule, MatPaginatorModule, MatDividerModule } from '@angular/material';
 import { ComplaintsListFilter } from './complaints-list/complaints-list-filter.pipe';
 
 const routes: Routes = [
@@ -44,7 +44,8 @@ const routes: Routes = [
     MatSelectModule,
     MatExpansionModule,
     MatTabsModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDividerModule
   ]
 })
 export class ComplaintsModule { }

@@ -1,20 +1,47 @@
-<div class="app-complaints-list">
+<div class="app-complaints-list" *ngIf="(tabChangeEvent | async) as selectedTabIndex">
     <div class="mat-title">Your Complaints</div>
-    <mat-tab-group>
+    <mat-tab-group (selectedIndexChange)="tabChangeEvent.next($event + 1)">
         <mat-tab label="Pending">
-            <div class="complaint"
-                *ngFor="let complaint of (complaints$ | async | complaintsListFilter:'===':'Pending')">
-                {{complaint.description}}
+            <div class="pending-complaints" *ngIf="(pending$ | async) as pendingComplaints">
+                <div class="complaint" *ngFor="let complaint of pendingComplaints.complaints">
+                    <div class="complaint__header">
+                        <div class="complaint__header-department">
+                            <!-- {{complaint.department?.name}} -->
+                            Electricity
+                        </div>
+                        <div class="complaint__header-location">
+                            <!-- {{complaint.building?.name}} -->
+                            Hostel 1, 325
+                        </div>
+                    </div>
+                    <div class="complaint__body">
+                        {{complaint.description}}
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="complaint__status">
+                        <div class="complaint__status-assigned-to">
+                            Assigned to: <span>Not assigned yet</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <mat-paginator *ngIf="(pagination$ | async) as paginationInfo" [length]="100" [pageSize]="10"
-                [pageSizeOptions]="[5, 10, 25, 100]">
-            </mat-paginator>
+            <div class="pending-pagination" *ngIf="(pendingPagination | async) as paginationInfo">
+                <mat-paginator *ngIf="(pending$ | async) as pendingComplaints" [length]="pendingComplaints.count"
+                    [pageSize]="paginationInfo.pageSize" [pageSizeOptions]="[5, 10, 25, 100]">
+                </mat-paginator>
+            </div>
 
         </mat-tab>
         <mat-tab label="Resolved">
-            <div class="complaint"
-                *ngFor="let complaint of (complaints$ | async | complaintsListFilter:'!==':'Pending')">
-                {{complaint.description}}
+            <div class="pending-complaints" *ngIf="(resolved$ | async) as resolvedComplaints">
+                <div class="complaint" *ngFor="let complaint of resolvedComplaints.complaints">
+                    {{complaint.description}}
+                </div>
+            </div>
+            <div class="pending-pagination" *ngIf="(resolvedPagination | async) as paginationInfo">
+                <mat-paginator *ngIf="(resolved$ | async) as resolvedComplaints" [length]="resolvedComplaints.count"
+                    [pageSize]="paginationInfo.pageSize" [pageSizeOptions]="[5, 10, 25, 100]">
+                </mat-paginator>
             </div>
         </mat-tab>
     </mat-tab-group>

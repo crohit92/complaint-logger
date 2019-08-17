@@ -1,24 +1,37 @@
 import { Injectable } from "@angular/core";
 import { ApiService } from '../../../core/services/http/api.service';
-import { Observable, of } from 'rxjs';
-import { Complaint } from '@complaint-logger/models';
+import { Observable, of, combineLatest } from 'rxjs';
+import { Complaint, ComplaintStatus } from '@complaint-logger/models';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ComplaintsListService {
     constructor(private readonly api: ApiService) { }
 
-    pastComplaints({ pageSize,
-        pageNumber }: {
-            pageSize: number;
-            pageNumber: number
-        }): Observable<Complaint[]> {
+    private complaintsCount(status: ComplaintStatus): Observable<number> {
         return this.api.sendRequest({
             method: 'get',
-            endpoint: 'complaints',
+            endpoint: `complaints/count/${status === ComplaintStatus.Pending ? 'pending' : 'resolved'}`
+        })
+    }
+    complaints({ pageSize,
+        pageNumber, status }: {
+            pageSize: number;
+            pageNumber: number;
+            status: ComplaintStatus
+        }): Observable<{ count: number; complaints: Complaint[] }> {
+        return combineLatest(this.api.sendRequest({
+            method: 'get',
+            endpoint: `complaints/${status === ComplaintStatus.Pending ? 'pending' : 'resolved'}`,
             queryParams: {
                 pageSize,
                 pageNumber
             }
-        })
+        }), this.complaintsCount(status)).pipe(
+            map(([complaints, count]) => ({
+                count,
+                complaints
+            }))
+        )
     }
 }

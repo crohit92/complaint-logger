@@ -1,0 +1,31 @@
+@mixin app-complaints-list($theme) {
+    $accent: map-get($map: $theme, $key: accent);
+    $foreground: map-get($map: $theme, $key: foreground);
+
+    .app-complaints-list {
+        .complaint {
+            margin: 0.5rem 0;
+            border: 1px solid mat-color($foreground, divider);
+            border-radius: 4px;
+
+            &>*:not(mat-divider) {
+                padding: 1rem;
+            }
+
+            &__header {
+                display: flex;
+                justify-content: space-between;
+                height: 2rem;
+                align-items: center;
+                background: mat-color($accent);
+                color: mat-color($accent, default-contrast);
+            }
+
+            &__status {
+                &-assigned-to {
+                    display: inline-block;
+                }
+            }
+        }
+    }
+}

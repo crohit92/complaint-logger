@@ -1,4 +1,5 @@
 import { Department } from './department';
+import { Employee } from './employee';
 
 export interface Complaint {
 
@@ -14,5 +15,7 @@ export interface Complaint {
     resolution?: {
         description: string;
         status: string;
-    }
+    },
+    assignedToId?: string;
+    assignedTo?: Employee;
 }
