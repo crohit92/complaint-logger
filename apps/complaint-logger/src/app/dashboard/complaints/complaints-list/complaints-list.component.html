@@ -13,6 +13,10 @@
                             <!-- {{complaint.building?.name}} -->
                             Hostel 1, 325
                         </div>
+                        <div class="complaint__header-created-at">
+                            <!-- {{complaint.building?.name}} -->
+                            {{complaint.createdAt}}
+                        </div>
                     </div>
                     <div class="complaint__body">
                         {{complaint.description}}
@@ -20,27 +24,51 @@
                     <mat-divider></mat-divider>
                     <div class="complaint__status">
                         <div class="complaint__status-assigned-to">
-                            Assigned to: <span>Not assigned yet</span>
+                            Assigned to: <span>Not assigned</span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="pending-pagination" *ngIf="(pendingPagination | async) as paginationInfo">
-                <mat-paginator *ngIf="(pending$ | async) as pendingComplaints" [length]="pendingComplaints.count"
-                    [pageSize]="paginationInfo.pageSize" [pageSizeOptions]="[5, 10, 25, 100]">
+                <mat-paginator (page)="pendingPageChanged($event)" *ngIf="(pending$ | async) as pendingComplaints"
+                    [length]="pendingComplaints.count" [pageSize]="paginationInfo.pageSize"
+                    [pageSizeOptions]="[5, 10, 25, 100]">
                 </mat-paginator>
             </div>
 
         </mat-tab>
         <mat-tab label="Resolved">
-            <div class="pending-complaints" *ngIf="(resolved$ | async) as resolvedComplaints">
+            <div class="resolved-complaints" *ngIf="(resolved$ | async) as resolvedComplaints">
                 <div class="complaint" *ngFor="let complaint of resolvedComplaints.complaints">
-                    {{complaint.description}}
+                    <div class="complaint__header">
+                        <div class="complaint__header-department">
+                            <!-- {{complaint.department?.name}} -->
+                            Electricity
+                        </div>
+                        <div class="complaint__header-location">
+                            <!-- {{complaint.building?.name}} -->
+                            Hostel 1, 325
+                        </div>
+                        <div class="complaint__header-created-at">
+                            <!-- {{complaint.building?.name}} -->
+                            {{complaint.createdAt}}
+                        </div>
+                    </div>
+                    <div class="complaint__body">
+                        {{complaint.description}}
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="complaint__status">
+                        <div class="complaint__status-assigned-to">
+                            Assigned to: <span>Not assigned</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="pending-pagination" *ngIf="(resolvedPagination | async) as paginationInfo">
-                <mat-paginator *ngIf="(resolved$ | async) as resolvedComplaints" [length]="resolvedComplaints.count"
-                    [pageSize]="paginationInfo.pageSize" [pageSizeOptions]="[5, 10, 25, 100]">
+            <div class="resolved-pagination" *ngIf="(resolvedPagination | async) as paginationInfo">
+                <mat-paginator (page)="resolvedPageChanged($event)" *ngIf="(resolved$ | async) as resolvedComplaints"
+                    [length]="resolvedComplaints.count" [pageSize]="paginationInfo.pageSize"
+                    [pageSizeOptions]="[5, 10, 25, 100]">
                 </mat-paginator>
             </div>
         </mat-tab>

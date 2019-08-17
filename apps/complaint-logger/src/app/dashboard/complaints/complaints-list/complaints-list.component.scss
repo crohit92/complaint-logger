@@ -1,5 +1,6 @@
 @mixin app-complaints-list($theme) {
     $accent: map-get($map: $theme, $key: accent);
+    $primary: map-get($map: $theme, $key: primary);
     $foreground: map-get($map: $theme, $key: foreground);
 
     .app-complaints-list {
@@ -8,7 +9,7 @@
             border: 1px solid mat-color($foreground, divider);
             border-radius: 4px;
 
-            &>*:not(mat-divider) {
+            &>*:not(mat-divider):not(.complaint__status) {
                 padding: 1rem;
             }
 
@@ -22,8 +23,21 @@
             }
 
             &__status {
+                padding: 0.5rem 1rem;
+                font-size: 0.75rem;
+                color: mat-color($foreground, disabled-text);
+
                 &-assigned-to {
                     display: inline-block;
+                }
+            }
+        }
+
+        .resolved-complaints {
+            .complaint {
+                &__header {
+                    background: mat-color($primary);
+                    color: mat-color($primary, default-contrast);
                 }
             }
         }
