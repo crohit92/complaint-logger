@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { ComplaintsComponent } from './complaints.component';
 import { ComplaintsListComponent } from './complaints-list/complaints-list.component';
-import { RaiseComplaintComponent } from './raise-complaint/raise-complaint.component';
 import { SharedModule } from '../../shared/shared.module';
 import { RouterModule, Routes } from '@angular/router';
 import { MatInputModule, MatButtonModule, MatSelectModule, MatExpansionModule, MatTabsModule, MatPaginatorModule, MatDividerModule, MatAutocompleteModule, MatIconModule } from '@angular/material';
@@ -33,7 +32,6 @@ const routes: Routes = [
 @NgModule({
   declarations: [ComplaintsComponent,
     ComplaintsListComponent,
-    RaiseComplaintComponent,
     ComplaintsListFilter
   ],
   imports: [
