@@ -5,7 +5,8 @@
             <div class="pending-complaints" *ngIf="(pending$ | async) as pendingComplaints">
                 <div class="complaint" *ngFor="let complaint of pendingComplaints.complaints">
                     <ng-container [ngTemplateOutlet]="complaintTemplate"
-                        [ngTemplateOutletContext]="{$implicit:complaint}"></ng-container>
+                        [ngTemplateOutletContext]="{$implicit:complaint}">
+                    </ng-container>
                 </div>
             </div>
             <div class="pending-pagination" *ngIf="(pendingPagination | async) as paginationInfo">
@@ -19,9 +20,9 @@
         <mat-tab label="Resolved">
             <div class="resolved-complaints" *ngIf="(resolved$ | async) as resolvedComplaints">
                 <div class="complaint" *ngFor="let complaint of resolvedComplaints.complaints">
-                    hello
                     <ng-container [ngTemplateOutlet]="complaintTemplate"
-                        [ngTemplateOutletContext]="{$implicit:complaint}"></ng-container>
+                        [ngTemplateOutletContext]="{$implicit:complaint}">
+                    </ng-container>
                 </div>
             </div>
             <div class="resolved-pagination" *ngIf="(resolvedPagination | async) as paginationInfo">
@@ -41,11 +42,9 @@
         </div>
         <div class="complaint__header-location">
             {{complaint.building?.name}} - {{complaint.room}}
-
         </div>
         <div class="complaint__header-created-at">
-            <!-- {{complaint.building?.name}} -->
-            {{complaint.createdAt}}
+            {{complaint.createdOffset}}
         </div>
     </div>
     <div class="complaint__body">
@@ -54,8 +53,25 @@
     <mat-divider></mat-divider>
     <div class="complaint__status">
         <div class="complaint__status-assigned-to">
-            Assigned to: <span>{{complaint.assignedTo?complaint.assignedTo?.name:'Not assigned'}}</span>
-            <a *ngIf="complaint.assignedTo?.mobile" href=tel:{{complaint.assignedTo?.mobile}}>
+            <a *ngIf="!complaint.selectAssignee" (click)="complaint.selectAssignee = true">Assigned to:
+                <span>{{complaint.assignedTo?complaint.assignedTo?.name:'Not assigned'}}</span>
+            </a>
+            <div class="employee-search" *ngIf="complaint.selectAssignee">
+                <mat-form-field>
+                    <input type="text" matInput placeholder="Search employee"
+                        [formControl]="complaint.employeeSearchControl" [matAutocomplete]="auto">
+                    <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                        (click)="complaint.selectAssignee = false">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="complaint.employeeSelected">
+                    <mat-option *ngFor="let employee of complaint.employees | async" [value]="employee">
+                        {{employee.name}} {{employee.mobile}}
+                    </mat-option>
+                </mat-autocomplete>
+            </div>
+            <a class="call-employee" *ngIf="complaint.assignedTo?.mobile" href=tel:{{complaint.assignedTo?.mobile}}>
                 <mat-icon>call</mat-icon>
             </a>
         </div>

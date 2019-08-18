@@ -7,11 +7,11 @@
         <mat-divider></mat-divider>
         <ul>
             <li (click)="sidenav.close()" [routerLink]="['./complaints/list']" routerLinkActive="active">
-                <span>Show complaint status</span>
+                <span>Complaints</span>
             </li>
-            <li (click)="sidenav.close()" [routerLink]="['./complaints/raise']" routerLinkActive="active">
+            <!-- <li (click)="sidenav.close()" [routerLink]="['./complaints/raise']" routerLinkActive="active">
                 <span>Raise a complaint</span>
-            </li>
+            </li> -->
         </ul>
     </mat-sidenav>
     <mat-sidenav-content class="content">
@@ -19,7 +19,7 @@
             <button mat-button (click)="sidenav.toggle()">
                 <mat-icon>menu</mat-icon>
             </button>
-            <span>Complaint Logger</span>
+            <span>Complaint Handler</span>
         </mat-toolbar>
         <div class="content__outlet">
             <router-outlet></router-outlet>

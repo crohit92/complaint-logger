@@ -28,9 +28,9 @@ export class RaiseComplaintComponent implements OnInit {
 
   initComplaintForm() {
     this.complaintForm = this.fb.group({
-      department: [undefined, [Validators.required]],
+      departmentId: ['', [Validators.required]],
       description: ['', [Validators.required, Validators.minLength(10)]],
-      building: [undefined, [Validators.required]],
+      buildingId: ['', [Validators.required]],
       room: ['']
     });
   }

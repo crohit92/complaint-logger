@@ -1,0 +1,21 @@
+@mixin app-raise-complaint($theme) {
+  .app-raise-complaint {
+    width: 100%;
+    padding: 0.5rem;
+
+    @include respond(tab-port) {
+      max-width: 37.5rem;
+      margin: auto;
+      @include mat-elevation(2);
+    }
+    .complaint-form {
+      mat-form-field {
+        width: 100%;
+      }
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
+  }
+}

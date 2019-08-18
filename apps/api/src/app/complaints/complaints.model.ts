@@ -12,6 +12,9 @@ const ComplaintSchema = new Schema({
         type: Schema.Types.ObjectId,
         required: true
     },
+    department: {
+        name: String
+    },
     description: {
         type: String,
         required: true,
@@ -20,6 +23,9 @@ const ComplaintSchema = new Schema({
     buildingId: {
         type: Schema.Types.ObjectId,
         required: true
+    },
+    building: {
+        name: String
     },
     room: String,
     resolution: {
@@ -33,6 +39,10 @@ const ComplaintSchema = new Schema({
         }
     },
     assignedTo: {
+        name: String,
+        mobile: String
+    },
+    assignedToId: {
         type: Schema.Types.ObjectId,
         required: false
     }

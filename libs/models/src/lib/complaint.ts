@@ -1,8 +1,9 @@
 import { Department } from './department';
 import { Employee } from './employee';
+import { Building } from './building';
 
 export interface Complaint {
-
+    _id: string;
     createdBy: string;
     createdAt: number;
     mobile: string;
@@ -10,7 +11,7 @@ export interface Complaint {
     department?: Department;
     description: string;
     buildingId: string;
-    buildingName?: string; //dd
+    building?: Building; //dd
     room?: string;
     resolution?: {
         description: string;
@@ -18,4 +19,5 @@ export interface Complaint {
     },
     assignedToId?: string;
     assignedTo?: Employee;
+    [key: string]: any;
 }

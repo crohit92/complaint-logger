@@ -30,16 +30,24 @@
                 &-assigned-to {
                     display: flex;
                     align-items: center;
+                    text-decoration: underline;
+                    color: mat-color($primary);
+                    cursor: pointer;
 
-                    mat-icon {
-                        font-size: 1rem;
-                        margin: 0 0.5rem;
-                        display: flex;
+                    .call-employee {
+                        display: inline-flex;
                         align-items: center;
-                        color: mat-color($primary);
-                        cursor: pointer;
+
+                        mat-icon {
+                            font-size: 1rem;
+                            margin: 0 0.5rem;
+                            color: mat-color($primary);
+                            cursor: pointer;
+                        }
+
                     }
                 }
+
             }
         }
 

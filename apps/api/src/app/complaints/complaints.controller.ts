@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, Put, Param } from '@nestjs/common';
 import { Complaint, ComplaintStatus } from '@complaint-logger/models'
 import { Complaints } from "./complaints.model";
 @Controller('complaints')
@@ -35,6 +35,13 @@ export class ComplaintsController {
     async createComplaint(@Body() complaint: Complaint) {
         const result = await Complaints.create(complaint);
         return result;
+
+    }
+    @Put(':id')
+    async updateComplaint(@Param('id') id: string, @Body() complaint: Complaint) {
+        const existingComplaint = await Complaints.findById(id);
+        Object.assign(existingComplaint, complaint);
+        return await existingComplaint.save();
 
     }
 }

@@ -22,15 +22,15 @@
 
                 <mat-form-field>
                     <mat-label>Select Department</mat-label>
-                    <mat-select formControlName="department">
-                        <mat-option *ngFor="let department of (departments | async)" [value]="department">
+                    <mat-select formControlName="departmentId">
+                        <mat-option *ngFor="let department of (departments | async)" [value]="department._id">
                             {{department.name}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
                 <div class="actions">
                     <button mat-button (click)="complaintFormStep = 0">Back</button>
-                    <button mat-button [disabled]="complaintForm.get('department').invalid"
+                    <button mat-button [disabled]="complaintForm.get('departmentId').invalid"
                         (click)="complaintFormStep = 2">Next</button>
                 </div>
             </mat-expansion-panel>
@@ -41,18 +41,18 @@
 
                 <mat-form-field>
                     <mat-label>Select Building</mat-label>
-                    <mat-select formControlName="building">
-                        <mat-option *ngFor="let building of (buildings | async)" [value]="building">
+                    <mat-select formControlName="buildingId">
+                        <mat-option *ngFor="let building of (buildings | async)" [value]="building._id">
                             {{building.name}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput type="text" formControlName="room" placeholder="Room number">
+                    <input matInput type="text" placeholder="Room number">
                 </mat-form-field>
                 <div class="actions">
                     <button mat-button (click)="complaintFormStep = 1">Back</button>
-                    <button [disabled]="complaintForm.get('building').invalid" color="primary" mat-raised-button
+                    <button [disabled]="complaintForm.get('buildingId').invalid" color="primary" mat-raised-button
                         (click)="raiseComplaint()">Submit</button>
                 </div>
             </mat-expansion-panel>

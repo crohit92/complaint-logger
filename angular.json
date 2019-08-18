@@ -20,7 +20,7 @@
             "main": "apps/complaint-logger/src/main.ts",
             "polyfills": "apps/complaint-logger/src/polyfills.ts",
             "tsConfig": "apps/complaint-logger/tsconfig.app.json",
-            "aot": true,
+            "aot": false,
             "assets": [
               "apps/complaint-logger/src/favicon.ico",
               "apps/complaint-logger/src/assets"
@@ -218,7 +218,7 @@
             "main": "apps/complaint-handler/src/main.ts",
             "polyfills": "apps/complaint-handler/src/polyfills.ts",
             "tsConfig": "apps/complaint-handler/tsconfig.app.json",
-            "aot": true,
+            "aot": false,
             "assets": [
               "apps/complaint-handler/src/favicon.ico",
               "apps/complaint-handler/src/assets"

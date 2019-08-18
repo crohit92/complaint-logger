@@ -10,8 +10,6 @@ export class RaiseComplaintService {
     raiseComplaint(complaint: Complaint) {
         complaint.createdBy = '4cdfb11e1f3c000000007822';
         complaint.mobile = '9646073913';
-        complaint.departmentId = complaint.department._id;
-        complaint.buildingId = complaint.building._id;
         return this.api.sendRequest({
             method: 'post',
             body: complaint,
