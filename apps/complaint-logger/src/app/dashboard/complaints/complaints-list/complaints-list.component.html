@@ -19,7 +19,6 @@
         <mat-tab label="Resolved">
             <div class="resolved-complaints" *ngIf="(resolved$ | async) as resolvedComplaints">
                 <div class="complaint" *ngFor="let complaint of resolvedComplaints.complaints">
-                    hello
                     <ng-container [ngTemplateOutlet]="complaintTemplate"
                         [ngTemplateOutletContext]="{$implicit:complaint}"></ng-container>
                 </div>
