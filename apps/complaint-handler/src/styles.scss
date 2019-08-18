@@ -25,6 +25,7 @@ $complaint-handler-theme: mat-light-theme($complaint-handler-primary, $complaint
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
+@include apply($complaint-handler-theme);
 @include angular-material-theme($complaint-handler-theme);
 
 /* You can add global styles to this file, and also import other style files */
@@ -32,11 +33,12 @@ $complaint-handler-theme: mat-light-theme($complaint-handler-primary, $complaint
 html,
 body {
   height: 100%;
+  font-size: 16px;
 }
 
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 * {

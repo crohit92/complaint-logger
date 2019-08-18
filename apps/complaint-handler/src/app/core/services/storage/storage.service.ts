@@ -9,7 +9,7 @@ export class StorageService {
       channel: ReplaySubject<any>;
     }
   } = {};
-  storageFactory = localStorage;
+  private readonly storageFactory = localStorage;
   constructor() { }
 
   public deepCopy(obj: any) {

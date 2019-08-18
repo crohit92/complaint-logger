@@ -1,10 +1,18 @@
+@import './complaints/complaints.component.scss';
 @mixin app-dashboard($theme) {
-  $foreground: map-get($map: $theme,
-      $key: foreground);
-  $background: map-get($map: $theme,
-      $key: background);
-  $primary: map-get($map: $theme,
-      $key: primary);
+  @include app-complaints($theme);
+  $foreground: map-get(
+    $map: $theme,
+    $key: foreground
+  );
+  $background: map-get(
+    $map: $theme,
+    $key: background
+  );
+  $primary: map-get(
+    $map: $theme,
+    $key: primary
+  );
 
   .sidenav {
     width: calc(60% + 1rem);
