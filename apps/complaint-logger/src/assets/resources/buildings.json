@@ -1,0 +1,67 @@
+[
+  {
+    "userType": 0,
+    "userTypeName": "Student",
+    "label": "Department 1"
+  },
+  {
+    "userType": 0,
+    "userTypeName": "Student",
+    "label": "Department 2"
+  },
+  {
+    "userType": 0,
+    "userTypeName": "Student",
+    "label": "Department 3"
+  },
+  {
+    "userType": 1,
+    "userTypeName": "Staff",
+    "label": "Department 1"
+  },
+  {
+    "userType": 1,
+    "userTypeName": "Staff",
+    "label": "Department 2"
+  },
+  {
+    "userType": 1,
+    "userTypeName": "Staff",
+    "label": "Department 3"
+  },
+  {
+    "userType": 2,
+    "userTypeName": "Hostler",
+    "label": "Hostel 4"
+  },
+  {
+    "userType": 2,
+    "userTypeName": "Hostler",
+    "label": "Hostel 1"
+  },
+  {
+    "userType": 2,
+    "userTypeName": "Hostler",
+    "label": "Hostel 2"
+  },
+  {
+    "userType": 2,
+    "userTypeName": "Hostler",
+    "label": "Hostel 3"
+  },
+  {
+    "userType": 3,
+    "userTypeName": "Resident",
+    "label": "TF1"
+  },
+  {
+    "userType": 3,
+    "userTypeName": "Resident",
+    "label": "TF2"
+  },
+  {
+    "userType": 3,
+    "userTypeName": "Resident",
+    "label": "Faculty House"
+  }
+]

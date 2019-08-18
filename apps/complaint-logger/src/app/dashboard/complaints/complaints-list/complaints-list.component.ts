@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ComplaintsListService } from './complaints-list.service';
-import { BehaviorSubject, Observable, combineLatest, Subject } from 'rxjs';
-import { Complaint, ComplaintStatus } from '@complaint-logger/models';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { ComplaintStatus } from '@complaint-logger/models';
 import { switchMap, map, shareReplay, filter } from 'rxjs/operators';
 import { PageEvent } from '@angular/material';
 
@@ -61,6 +61,7 @@ export class ComplaintsListComponent implements OnInit {
       pageSize: ev.pageSize
     });
   }
+
 }
 
 

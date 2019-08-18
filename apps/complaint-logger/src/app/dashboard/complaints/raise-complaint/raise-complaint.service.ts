@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
 import { ApiService } from '../../../core/services/http/api.service';
-import { Complaint, Department } from '@complaint-logger/models';
+import { Complaint, Department, UserTypes } from '@complaint-logger/models';
 import { of, Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 @Injectable()
 export class RaiseComplaintService {
@@ -38,20 +39,14 @@ export class RaiseComplaintService {
             }
         ])
     }
-    get buildings(): Observable<Department[]> {
-        return of([
-            {
-                _id: '4cdfb11e1f3c000000007822',
-                name: 'Admin Block'
-            },
-            {
-                _id: '4cdfb11e1f3c000000007822',
-                name: 'Hostel 1'
-            },
-            {
-                _id: '4cdfb11e1f3c000000007822',
-                name: 'Hostel 2'
-            }
-        ])
+    buildings(userType: UserTypes): Observable<any> {
+        return this.api.sendRequest({
+            method: 'get',
+            apiBase: 'assets/resources',
+            endpoint: 'buildings.json'
+        }).pipe(
+            map(buildings => {
+                return buildings.filter(building => building.userType === userType);
+            }));
     }
 }

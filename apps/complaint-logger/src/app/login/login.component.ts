@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { UserType, User } from '@complaint-logger/models';
+import { User } from '@complaint-logger/models';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { StorageService } from '../core/services/storage/storage.service';
 import { StorageKeys } from '../shared/constants/storage-keys';
 import { Router } from '@angular/router';
+import { UserTypes } from '@complaint-logger/models';
 
 @Component({
   selector: 'complaint-logger-login',
@@ -13,18 +14,22 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
-  userTypes: UserType[] = [
+  userTypes: { label: string; code: UserTypes }[] = [
     {
       label: 'Hostler',
-      code: 'host'
+      code: UserTypes.Hostler
     },
     {
       label: 'Staff',
-      code: 'staff'
+      code: UserTypes.Staff
     },
     {
       label: 'Resident',
-      code: 'resi'
+      code: UserTypes.Resident
+    },
+    {
+      label: 'Student',
+      code: UserTypes.Student
     }
   ]
   constructor(private readonly fb: FormBuilder,
@@ -37,7 +42,7 @@ export class LoginComponent implements OnInit {
 
   initLoginForm() {
     this.loginForm = this.fb.group({
-      userType: [undefined, [Validators.required]],
+      type: [undefined, [Validators.required]],
       loginId: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });

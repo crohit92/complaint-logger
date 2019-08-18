@@ -1,5 +1,8 @@
 <div class="app-complaints-list" *ngIf="(tabChangeEvent | async) as selectedTabIndex">
-    <div class="mat-title">Your Complaints</div>
+    <div class="mat-title flex flex-align-items-center">Your Complaints <button [routerLink]="['../raise']"
+            routerLinkActive="router-link-active" color="warn" mat-button>
+            <mat-icon>add</mat-icon> Add new
+        </button></div>
     <mat-tab-group (selectedIndexChange)="tabChangeEvent.next($event + 1)">
         <mat-tab label="Pending">
             <div class="pending-complaints" *ngIf="(pending$ | async) as pendingComplaints">

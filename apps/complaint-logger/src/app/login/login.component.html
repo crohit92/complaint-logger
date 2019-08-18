@@ -9,8 +9,8 @@
         <div class="user-type">
             <mat-form-field>
                 <mat-label>User type</mat-label>
-                <mat-select formControlName="userType">
-                    <mat-option *ngFor="let userType of userTypes" [value]="userType">
+                <mat-select formControlName="type">
+                    <mat-option *ngFor="let userType of userTypes" [value]="userType.code">
                         {{userType.label}}
                     </mat-option>
                 </mat-select>
