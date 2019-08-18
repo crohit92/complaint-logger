@@ -20,6 +20,10 @@ export class RaiseComplaintComponent implements OnInit {
   currentUser = this.storage.get(StorageKeys.user) as User;
   buildings: Observable<Building[]> = this.dataService.buildings(this.currentUser.type);
   complaintFormStep = 0;
+  labels: {
+    buildingName: string;
+    roomName: string;
+  }
   constructor(private readonly fb: FormBuilder,
     private readonly dataService: RaiseComplaintService,
     private readonly router: Router,
@@ -28,6 +32,7 @@ export class RaiseComplaintComponent implements OnInit {
 
   ngOnInit() {
     this.initComplaintForm();
+    this.mapLabelsToUserType();
   }
 
   initComplaintForm() {
@@ -51,9 +56,18 @@ export class RaiseComplaintComponent implements OnInit {
 
 
   mapLabelsToUserType() {
-    const user: User = this.storage.get(StorageKeys.user) as User;
-    switch (user.type) {
+    switch (this.currentUser.type) {
       case UserTypes.Hostler:
+        this.labels = { buildingName: 'Hostel Name', roomName: 'Room No.' };
+        break;
+      case UserTypes.Student:
+        this.labels = { buildingName: 'Department Name', roomName: 'Room No.' };
+        break;
+      case UserTypes.Staff:
+        this.labels = { buildingName: 'Department Name', roomName: 'Room No.' };
+        break;
+      case UserTypes.Resident:
+        this.labels = { buildingName: 'House Type', roomName: 'Room/Flat No.' };
         break;
     }
   }

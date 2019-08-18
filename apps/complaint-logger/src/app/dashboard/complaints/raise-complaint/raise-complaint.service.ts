@@ -24,20 +24,11 @@ export class RaiseComplaintService {
     }
 
     get departments(): Observable<Department[]> {
-        return of([
-            {
-                _id: '4cdfb11e1f3c000000007822',
-                name: 'Electricity'
-            },
-            {
-                _id: '4cdfb11e1f3c000000007822',
-                name: 'Sewage'
-            },
-            {
-                _id: '4cdfb11e1f3c000000007822',
-                name: 'Library'
-            }
-        ])
+        return this.api.sendRequest({
+            method: 'get',
+            apiBase: 'assets/resources',
+            endpoint: 'departments.json'
+        })
     }
     buildings(userType: UserTypes): Observable<any> {
         return this.api.sendRequest({
