@@ -71,7 +71,16 @@
                     </mat-option>
                 </mat-autocomplete>
             </div>
-            <a class="call-employee" *ngIf="complaint.assignedTo?.mobile" href=tel:{{complaint.assignedTo?.mobile}}>
+            <a class="call" *ngIf="complaint.assignedTo?.mobile" href=tel:{{complaint.assignedTo?.mobile}}>
+                <mat-icon>call</mat-icon>
+            </a>
+        </div>
+        <div class="complaint__status-raised-by">
+            <a (click)="complaint.selectAssignee = true">Raised by:
+                <span>{{complaint.createdBy?complaint.createdBy?.name:'N.A.'}}</span>
+            </a>
+
+            <a class="call" *ngIf="complaint.createdBy?.mobile" href=tel:{{complaint.createdBy?.mobile}}>
                 <mat-icon>call</mat-icon>
             </a>
         </div>

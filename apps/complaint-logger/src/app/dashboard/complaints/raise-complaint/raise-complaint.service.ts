@@ -8,7 +8,10 @@ export class RaiseComplaintService {
     constructor(private readonly api: ApiService) { }
 
     raiseComplaint(complaint: Complaint) {
-        complaint.createdBy = '4cdfb11e1f3c000000007822';
+        complaint.createdBy = {
+            name: 'Rohit Chopra',
+            mobile: '9646073913'
+        };
         complaint.mobile = '9646073913';
         complaint.departmentId = complaint.department._id;
         complaint.buildingId = complaint.building._id;

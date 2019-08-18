@@ -26,15 +26,18 @@
                 padding: 0.5rem 1rem;
                 font-size: 0.75rem;
                 color: mat-color($foreground, disabled-text);
+                display: flex;
+                justify-content: space-between;
 
-                &-assigned-to {
+                &-assigned-to,
+                .complaint__status-raised-by {
                     display: flex;
                     align-items: center;
                     text-decoration: underline;
                     color: mat-color($primary);
                     cursor: pointer;
 
-                    .call-employee {
+                    .call {
                         display: inline-flex;
                         align-items: center;
 

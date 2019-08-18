@@ -1,8 +1,16 @@
 import { Schema, model } from 'mongoose';
 const ComplaintSchema = new Schema({
+    createdById: {
+        type: Schema.Types.ObjectId
+    },
     createdBy: {
-        type: Schema.Types.ObjectId,
-        required: true
+        name: {
+            type: String,
+            required: true
+        },
+        mobile: {
+            type: String
+        }
     },
     mobile: {
         type: String,

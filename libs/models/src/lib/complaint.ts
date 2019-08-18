@@ -1,10 +1,11 @@
 import { Department } from './department';
 import { Employee } from './employee';
 import { Building } from './building';
+import { Student } from './student';
 
 export interface Complaint {
     _id: string;
-    createdBy: string;
+    createdBy: Student;
     createdAt: number;
     mobile: string;
     departmentId: string;
