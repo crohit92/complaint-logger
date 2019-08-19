@@ -4,7 +4,14 @@ import { ComplaintsListComponent } from './complaints-list/complaints-list.compo
 import { RaiseComplaintComponent } from './raise-complaint/raise-complaint.component';
 import { SharedModule } from '../../shared/shared.module';
 import { RouterModule, Routes } from '@angular/router';
-import { MatInputModule, MatButtonModule, MatSelectModule, MatExpansionModule, MatTabsModule, MatPaginatorModule, MatDividerModule, MatIconModule } from '@angular/material';
+import { MatInputModule, } from '@angular/material/input'
+import { MatButtonModule } from '@angular/material/button'
+import { MatSelectModule } from '@angular/material/select'
+import { MatExpansionModule } from '@angular/material/expansion'
+import { MatTabsModule } from '@angular/material/tabs'
+import { MatPaginatorModule } from '@angular/material/paginator'
+import { MatDividerModule } from '@angular/material/divider'
+import { MatIconModule } from '@angular/material/icon'
 import { ComplaintsListFilter } from './complaints-list/complaints-list-filter.pipe';
 
 const routes: Routes = [

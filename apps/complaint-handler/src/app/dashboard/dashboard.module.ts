@@ -2,9 +2,11 @@ import { NgModule } from '@angular/core';
 import { DashboardComponent } from './dashboard.component';
 import { SharedModule } from '../shared/shared.module';
 import { Routes, RouterModule } from '@angular/router';
-import { MatSidenavModule, MatIconModule, MatToolbarModule, MatButtonModule, MatDividerModule, MatInputModule, MatAutocompleteModule } from "@angular/material";
-import { async } from '@angular/core/testing';
-
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
 const routes: Routes = [
   {
     path: '',

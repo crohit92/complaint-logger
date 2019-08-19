@@ -3,7 +3,7 @@ import { ComplaintsListService } from './complaints-list.service';
 import { BehaviorSubject, Observable, combineLatest, Subject } from 'rxjs';
 import { Complaint, ComplaintStatus, Employee } from '@complaint-logger/models';
 import { switchMap, map, shareReplay, filter } from 'rxjs/operators';
-import { PageEvent } from '@angular/material';
+import { PageEvent } from '@angular/material/paginator';
 
 import * as moment from 'moment';
 import { FormControl } from '@angular/forms';
