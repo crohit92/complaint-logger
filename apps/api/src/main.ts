@@ -29,7 +29,7 @@ async function bootstrap() {
   await connect('mongodb+srv://gndu:iamhere_123@cluster0-m1vd2.mongodb.net/complaint-logger?retryWrites=true&w=majority', {
     useNewUrlParser: true
   });
-  await app.listen(port, () => {
+  await app.listen(port, '0.0.0.0', () => {
     console.log('Listening at http://localhost:' + port + '/' + globalPrefix);
   });
 
