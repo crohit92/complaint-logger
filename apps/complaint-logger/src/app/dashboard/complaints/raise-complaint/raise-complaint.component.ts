@@ -64,7 +64,7 @@ export class RaiseComplaintComponent implements OnInit {
         this.labels = { buildingName: 'Department Name', roomName: 'Room No.' };
         break;
       case UserTypes.Staff:
-        this.labels = { buildingName: 'Department Name', roomName: 'Room No.' };
+        this.labels = { buildingName: 'Department Name', roomName: 'Location' };
         break;
       case UserTypes.Resident:
         this.labels = { buildingName: 'House Type', roomName: 'Room/Flat No.' };

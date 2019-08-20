@@ -12,6 +12,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ComplaintsListFilter } from './complaints-list/complaints-list-filter.pipe';
 
 const routes: Routes = [
@@ -53,7 +54,8 @@ const routes: Routes = [
     MatPaginatorModule,
     MatDividerModule,
     MatAutocompleteModule,
-    MatIconModule
+    MatIconModule,
+    MatSlideToggleModule
   ]
 })
 export class ComplaintsModule { }

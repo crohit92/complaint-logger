@@ -5,4 +5,5 @@ export class Employee {
     department: Department;
     name: string;
     mobile: string;
+    loginId: string;
 }

@@ -1,9 +1,11 @@
 import { Schema, model } from 'mongoose';
+import { ComplaintStatus } from '@complaint-logger/models'
 const ComplaintSchema = new Schema({
-    createdById: {
-        type: Schema.Types.ObjectId
-    },
     createdBy: {
+        loginId: {
+            type: String,
+            required: true
+        },
         name: {
             type: String,
             required: true
@@ -12,16 +14,9 @@ const ComplaintSchema = new Schema({
             type: String
         }
     },
-    mobile: {
-        type: String,
-        required: true
-    },
-    // departmentId: {
-    //     type: Schema.Types.ObjectId,
-    //     required: true
-    // },
     department: {
-        name: String
+        name: String,
+        code: String
     },
     description: {
         type: String,
@@ -38,17 +33,14 @@ const ComplaintSchema = new Schema({
         },
         status: {
             type: String,
-            enum: ['Pending', 'Issue Resolved', 'No Issue found'],
-            default: 'Pending'
+            enum: [ComplaintStatus.Pending, ComplaintStatus.Resolved],
+            default: ComplaintStatus.Pending
         }
     },
     assignedTo: {
+        loginId: String,
         name: String,
         mobile: String
-    },
-    assignedToId: {
-        type: Schema.Types.ObjectId,
-        required: false
     }
 }, {
         timestamps: true

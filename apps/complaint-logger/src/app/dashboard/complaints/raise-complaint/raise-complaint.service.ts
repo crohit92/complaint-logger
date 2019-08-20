@@ -1,21 +1,18 @@
 import { Injectable } from "@angular/core";
 import { ApiService } from '../../../core/services/http/api.service';
-import { Complaint, Department, UserTypes } from '@complaint-logger/models';
+import { Complaint, Department, UserTypes, User } from '@complaint-logger/models';
 import { of, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+import { StorageService } from '../../../core/services/storage/storage.service';
+import { StorageKeys } from '../../../shared/constants/storage-keys';
 
 @Injectable()
 export class RaiseComplaintService {
-    constructor(private readonly api: ApiService) { }
+    constructor(private readonly api: ApiService,
+        private readonly storage: StorageService) { }
 
     raiseComplaint(complaint: Complaint) {
-        complaint.createdBy = {
-            name: 'Rohit Chopra',
-            mobile: '9646073913'
-        };
-        complaint.mobile = '9646073913';
-        complaint.departmentId = complaint.department._id;
-        complaint.buildingId = complaint.building._id;
+        complaint.createdBy = this.storage.get(StorageKeys.user) as User;
         return this.api.sendRequest({
             method: 'post',
             body: complaint,

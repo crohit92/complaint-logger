@@ -1,1 +1,43 @@
-<p>login works!</p>
+<div class="app-login">
+    <form class="login-form" *ngIf="loginForm" [formGroup]="loginForm">
+        <div class="mat-title">
+            <figure>
+                <img src="assets/images/logo.jpg" alt="">
+                <caption>Login</caption>
+            </figure>
+        </div>
+        <div class="user-type">
+            <mat-form-field>
+                <mat-label>User type</mat-label>
+                <mat-select formControlName="admin">
+                    <mat-option *ngFor="let userType of userTypes" [value]="userType.admin">
+                        {{userType.label}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="user-type">
+            <mat-form-field>
+                <mat-label>Department</mat-label>
+                <mat-select formControlName="department">
+                    <mat-option *ngFor="let department of departments | async" [value]="department">
+                        {{department.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="username">
+            <mat-form-field>
+                <input formControlName="loginId" matInput placeholder="Login Id">
+            </mat-form-field>
+        </div>
+        <div class="password">
+            <mat-form-field>
+                <input formControlName="password" type="password" matInput placeholder="Password">
+            </mat-form-field>
+        </div>
+        <div class="actions">
+            <button [disabled]="loginForm.invalid" (click)="login()" mat-raised-button color="primary">Login</button>
+        </div>
+    </form>
+</div>

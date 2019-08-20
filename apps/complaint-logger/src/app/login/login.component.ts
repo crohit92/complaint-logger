@@ -49,8 +49,8 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    const userForm = this.loginForm.value as User;
-    this.storage.set(StorageKeys.user, userForm);
+    const user: User = { name: this.loginForm.value.loginId, mobile: '9646073913', ...this.loginForm.value };
+    this.storage.set(StorageKeys.user, user);
     this.router.navigate(['/dashboard'])
   }
 }

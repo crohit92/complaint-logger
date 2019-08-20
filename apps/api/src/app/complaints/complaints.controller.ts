@@ -1,33 +1,51 @@
-import { Controller, Get, Post, Body, Query, Put, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, Put, Param, Delete } from '@nestjs/common';
 import { Complaint, ComplaintStatus } from '@complaint-logger/models'
 import { Complaints } from "./complaints.model";
 @Controller('complaints')
 export class ComplaintsController {
     @Get('pending')
-    async pendingComplaints(@Query('pageNumber') pageNumber: string, @Query('pageSize') pageSize: string) {
+    async pendingComplaints(@Query('pageNumber') pageNumber: string, @Query('pageSize') pageSize: string, @Query('raisedById') raisedById: string, @Query('departmentCode') departmentCode: string, @Query('assignedTo') assignedTo: string) {
         return await Complaints.find({
-            'resolution.status': ComplaintStatus.Pending
+            'resolution.status': ComplaintStatus.Pending,
+            ...(raisedById ? { 'createdBy.loginId': raisedById } : {}),
+            ...(departmentCode ? { 'department.code': departmentCode } : {}),
+            ...(assignedTo ? { 'assignedTo.loginId': assignedTo } : {})
         }).sort({ createdAt: -1 }).skip(((+pageNumber) - 1) * (+pageSize)).limit(+pageSize);
     }
 
     @Get('count/pending')
-    async pendingComplaintCount() {
+    async pendingComplaintCount(@Query('raisedById') raisedById: string, @Query('departmentCode') departmentCode: string, @Query('assignedTo') assignedTo: string, ) {
         return await Complaints.count({
-            'resolution.status': ComplaintStatus.Pending
+            'resolution.status': ComplaintStatus.Pending,
+            ...(raisedById ? { 'createdBy.loginId': raisedById } : {}),
+            ...(departmentCode ? { 'department.code': departmentCode } : {}),
+            ...(assignedTo ? { 'assignedTo.loginId': assignedTo } : {})
         })
     }
+
     @Get('resolved')
-    async resolvedComplaints(@Query('pageNumber') pageNumber: string, @Query('pageSize') pageSize: string) {
+    async resolvedComplaints(@Query('pageNumber') pageNumber: string, @Query('pageSize') pageSize: string, @Query('raisedById') raisedById: string, @Query('departmentCode') departmentCode: string, @Query('assignedTo') assignedTo: string) {
         return await Complaints.find({
-            'resolution.status': ComplaintStatus.Resolved
+            'resolution.status': ComplaintStatus.Resolved,
+            ...(raisedById ? { 'createdBy.loginId': raisedById } : {}),
+            ...(departmentCode ? { 'department.code': departmentCode } : {}),
+            ...(assignedTo ? { 'assignedTo.loginId': assignedTo } : {})
         }).sort({ createdAt: -1 }).skip(((+pageNumber) - 1) * (+pageSize)).limit(+pageSize);
     }
 
     @Get('count/resolved')
-    async resolvedComplaintCount() {
+    async resolvedComplaintCount(@Query('raisedById') raisedById: string, @Query('departmentCode') departmentCode: string, @Query('assignedTo') assignedTo: string) {
         return await Complaints.count({
-            'resolution.status': ComplaintStatus.Resolved
+            'resolution.status': ComplaintStatus.Resolved,
+            ...(raisedById ? { 'createdBy.loginId': raisedById } : {}),
+            ...(departmentCode ? { 'department.code': departmentCode } : {}),
+            ...(assignedTo ? { 'assignedTo.loginId': assignedTo } : {})
         })
+    }
+
+    @Get('delete')
+    async deleteAllComplaints() {
+        return await Complaints.remove({});
     }
 
 

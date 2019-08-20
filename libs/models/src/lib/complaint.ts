@@ -8,7 +8,6 @@ export interface Complaint {
     createdBy: Student;
     createdAt: number;
     mobile: string;
-    departmentId: string;
     department?: Department;
     description: string;
     buildingId: string;
@@ -16,6 +15,7 @@ export interface Complaint {
     room?: string;
     resolution?: {
         description: string;
+        statusByTechnician: string;
         status: string;
     },
     assignedToId?: string;

@@ -1,47 +1,45 @@
-<div class="app-complaints-list" *ngIf="(tabChangeEvent | async) as selectedTabIndex">
+<div class="app-complaints-list">
     <div class="mat-title">Your Complaints</div>
-    <mat-tab-group (selectedIndexChange)="tabChangeEvent.next($event + 1)">
-        <mat-tab label="Pending">
-            <div class="pending-complaints" *ngIf="(pending$ | async) as pendingComplaints">
-                <div class="complaint" *ngFor="let complaint of pendingComplaints.complaints">
+    <mat-tab-group (selectedIndexChange)="tabChanged($event)">
+        <mat-tab label="Pending ({{pendingComplaintsCount}})">
+            <div class="pending-complaints">
+                <div class="complaint" *ngFor="let complaint of pendingComplaints;let complaintIndex = index;">
                     <ng-container [ngTemplateOutlet]="complaintTemplate"
-                        [ngTemplateOutletContext]="{$implicit:complaint}">
+                        [ngTemplateOutletContext]="{$implicit:complaint,complaintIndex:complaintIndex}">
                     </ng-container>
                 </div>
             </div>
-            <div class="pending-pagination" *ngIf="(pendingPagination | async) as paginationInfo">
-                <mat-paginator (page)="pendingPageChanged($event)" *ngIf="(pending$ | async) as pendingComplaints"
-                    [length]="pendingComplaints.count" [pageSize]="paginationInfo.pageSize"
-                    [pageSizeOptions]="[5, 10, 25, 100]">
+            <div class="pending-pagination">
+                <mat-paginator (page)="pendingPageChanged($event)" [length]="pendingComplaintsCount"
+                    [pageSize]="paginationOptions.pageSize" [pageSizeOptions]="[5, 10, 25, 100]">
                 </mat-paginator>
             </div>
 
         </mat-tab>
-        <mat-tab label="Resolved">
-            <div class="resolved-complaints" *ngIf="(resolved$ | async) as resolvedComplaints">
-                <div class="complaint" *ngFor="let complaint of resolvedComplaints.complaints">
+        <mat-tab label="Resolved ({{resolvedComplaintsCount}})">
+            <div class="resolved-complaints">
+                <div class="complaint" *ngFor="let complaint of resolvedComplaints;let complaintIndex=index;">
                     <ng-container [ngTemplateOutlet]="complaintTemplate"
-                        [ngTemplateOutletContext]="{$implicit:complaint}">
+                        [ngTemplateOutletContext]="{$implicit:complaint,complaintIndex:complaintIndex,resolved:true}">
                     </ng-container>
                 </div>
             </div>
-            <div class="resolved-pagination" *ngIf="(resolvedPagination | async) as paginationInfo">
-                <mat-paginator (page)="resolvedPageChanged($event)" *ngIf="(resolved$ | async) as resolvedComplaints"
-                    [length]="resolvedComplaints.count" [pageSize]="paginationInfo.pageSize"
-                    [pageSizeOptions]="[5, 10, 25, 100]">
+            <div class="resolved-pagination">
+                <mat-paginator (page)="resolvedPageChanged($event)" [length]="resolvedComplaintsCount"
+                    [pageSize]="paginationOptions.pageSize" [pageSizeOptions]="[5, 10, 25, 100]">
                 </mat-paginator>
             </div>
         </mat-tab>
     </mat-tab-group>
 </div>
 
-<ng-template #complaintTemplate let-complaint>
+<ng-template #complaintTemplate let-complaint let-complaintIndex="complaintIndex" let-resolved="resolved">
     <div class="complaint__header">
         <div class="complaint__header-department">
-            {{complaint.department?.name}}
+            {{complaint.building?.label}}
         </div>
         <div class="complaint__header-location">
-            {{complaint.building?.label}} - {{complaint.room}}
+            {{complaint.room}}
         </div>
         <div class="complaint__header-created-at">
             {{complaint.createdOffset}}
@@ -53,7 +51,8 @@
     <mat-divider></mat-divider>
     <div class="complaint__status">
         <div class="complaint__status-assigned-to">
-            <a *ngIf="!complaint.selectAssignee" (click)="complaint.selectAssignee = true">Assigned to:
+            <a *ngIf="!complaint.selectAssignee"
+                (click)="complaint.selectAssignee = (!user.admin || resolved)?false:true">Assigned to:
                 <span>{{complaint.assignedTo?complaint.assignedTo?.name:'Not assigned'}}</span>
             </a>
             <div class="employee-search" *ngIf="complaint.selectAssignee">
@@ -76,13 +75,38 @@
             </a>
         </div>
         <div class="complaint__status-raised-by">
-            <a (click)="complaint.selectAssignee = true">Raised by:
+            <a>Raised by:
                 <span>{{complaint.createdBy?complaint.createdBy?.name:'N.A.'}}</span>
             </a>
 
             <a class="call" *ngIf="complaint.createdBy?.mobile" href=tel:{{complaint.createdBy?.mobile}}>
                 <mat-icon>call</mat-icon>
             </a>
+        </div>
+    </div>
+    <div class="technician-remarks">
+        <div class="status" *ngIf="!resolved">
+            <mat-slide-toggle #toggle (change)="complaint.addRemarks = true"
+                [disabled]="complaint.resolution.status === ComplaintStatus.Resolved"
+                [checked]="complaint.resolution.status === ComplaintStatus.Resolved">Mark as done
+            </mat-slide-toggle>
+            <div class="remarks flex" *ngIf="complaint.addRemarks">
+                <mat-form-field>
+                    <textarea matInput [(ngModel)]="complaint.resolution.description" placeholder="Comments"
+                        required></textarea>
+                </mat-form-field>
+                <button mat-button color="primary" [disabled]="!complaint.resolution?.description?.length"
+                    (click)="markComplaintAsResolved(complaint, complaintIndex, toggle)">
+                    <mat-icon>check</mat-icon>
+                </button>
+                <button mat-button color="warn" (click)="complaint.addRemarks = false; toggle.checked = false;">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div class="resolution-comments" *ngIf="resolved">
+            Comments by {{complaint.assignedTo?complaint.assignedTo.name:'Technician'}}:
+            <span>{{complaint.resolution.description}}</span>
         </div>
     </div>
 </ng-template>

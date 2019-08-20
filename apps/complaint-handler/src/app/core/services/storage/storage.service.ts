@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject, BehaviorSubject, ReplaySubject, of } from 'rxjs';
+import { CoreModule } from '../../core.module';
 
-@Injectable()
+@Injectable({
+  providedIn: CoreModule
+})
 export class StorageService {
 
   private data: {

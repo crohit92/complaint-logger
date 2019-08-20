@@ -7,6 +7,9 @@ import { PageEvent } from '@angular/material/paginator';
 
 import * as moment from 'moment';
 import { FormControl } from '@angular/forms';
+import { StorageService } from '../../../core/services/storage/storage.service';
+import { StorageKeys } from '../../../shared/constants/storage-keys';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 @Component({
   selector: 'app-complaints-list',
   templateUrl: './complaints-list.component.html',
@@ -15,54 +18,72 @@ import { FormControl } from '@angular/forms';
 })
 export class ComplaintsListComponent implements OnInit {
   ComplaintStatus = ComplaintStatus;
-  tabChangeEvent = new BehaviorSubject<number>(1);
-  pendingPagination = new BehaviorSubject({
+  user: Employee = this.storage.get(StorageKeys.user) as Employee;
+  paginationOptions = {
     pageSize: 5,
     pageNumber: 1
-  });
-  resolvedPagination = new BehaviorSubject({
-    pageSize: 5,
-    pageNumber: 1
-  });
-  pending$ = this.generateComplaintsStream(this.pendingPagination, ComplaintStatus.Pending);
-  resolved$ = this.generateComplaintsStream(this.pendingPagination, ComplaintStatus.Resolved);
-
-  constructor(private readonly dataService: ComplaintsListService) {
-    this.tabChangeEvent.next(1);
+  };
+  pendingComplaints: Complaint[] = [];
+  resolvedComplaints: Complaint[] = [];
+  pendingComplaintsCount: number
+  resolvedComplaintsCount: number
+  constructor(private readonly dataService: ComplaintsListService,
+    private readonly storage: StorageService) {
+    this.loadComplaints(this.paginationOptions, ComplaintStatus.Pending, this.pendingComplaints);
+    this.loadComplaintsCount();
   }
 
-  private generateComplaintsStream(pagination: Subject<{ pageSize: number; pageNumber: number; }>, status: ComplaintStatus) {
-    return combineLatest(this.tabChangeEvent, pagination).pipe(
-      filter(([selectedTabIndex, _]) => selectedTabIndex === (status === ComplaintStatus.Pending ? 1 : 2)),
-      switchMap(([_, { pageSize, pageNumber }]) => this.dataService.complaints({ pageSize, pageNumber, status })), map(c => {
-        c.complaints.forEach(complaint => {
-          Object.assign(complaint, {
-            createdOffset: moment(complaint.createdAt).fromNow()
-          });
+  loadComplaintsCount() {
+    this.dataService.complaintsCount(ComplaintStatus.Pending).subscribe((count) => {
+      this.pendingComplaintsCount = count;
+    })
+    this.dataService.complaintsCount(ComplaintStatus.Resolved).subscribe((count) => {
+      this.resolvedComplaintsCount = count;
+    })
+  }
+  loadComplaints(pageOptions: { pageSize: number; pageNumber: number }, status: ComplaintStatus, target: Complaint[]) {
+    this.dataService.complaints({ ...pageOptions, status }).subscribe((complaints => {
+      complaints.forEach(complaint => {
+        Object.assign(complaint, {
+          createdOffset: moment(complaint.createdAt).fromNow()
+        });
+        if (status === ComplaintStatus.Pending) {
           complaint.employeeSearchControl = new FormControl();
           complaint.employees = (complaint.employeeSearchControl as FormControl).valueChanges.pipe(
             switchMap((value) => this.dataService.employees(value))
           );
           complaint.employeeSelected = this.employeeSelected.bind(this, complaint);
-        });
-        return c;
-      }), shareReplay());
+        }
+      });
+      target.splice(0);
+      Object.assign(target, complaints);
+    }));
+    this.loadComplaintsCount();
   }
 
+  tabChanged(tabIndex: number) {
+    if (tabIndex === 0) {
+      this.loadComplaints(this.paginationOptions, ComplaintStatus.Pending, this.pendingComplaints);
+    } else {
+      this.loadComplaints(this.paginationOptions, ComplaintStatus.Resolved, this.resolvedComplaints);
+    }
+  }
   ngOnInit() {
   }
 
   pendingPageChanged(ev: PageEvent) {
-    this.pendingPagination.next({
+    this.paginationOptions = {
       pageNumber: ev.pageIndex + 1,
       pageSize: ev.pageSize
-    });
+    };
+    this.loadComplaints(this.paginationOptions, ComplaintStatus.Pending, this.pendingComplaints);
   }
   resolvedPageChanged(ev: PageEvent) {
-    this.resolvedPagination.next({
+    this.paginationOptions = {
       pageNumber: ev.pageIndex + 1,
       pageSize: ev.pageSize
-    });
+    };
+    this.loadComplaints(this.paginationOptions, ComplaintStatus.Resolved, this.resolvedComplaints);
   }
 
   employeeSelected(complaint: Complaint, employee?: Employee): string | undefined {
@@ -79,6 +100,18 @@ export class ComplaintsListComponent implements OnInit {
       return employee.name;
     }
     return undefined;
+  }
+
+  markComplaintAsResolved(complaint: Complaint, complaintIndex: number, matToggle: MatSlideToggle) {
+    complaint.resolution.status = ComplaintStatus.Resolved;
+    this.dataService.updateComplaint(complaint).subscribe(() => {
+      this.pendingComplaints.splice(complaintIndex, 1);
+      this.pendingComplaintsCount--;
+      this.resolvedComplaintsCount++;
+    }, () => {
+      matToggle.checked = false;
+      complaint.addRemarks = false;
+    })
   }
 }
 

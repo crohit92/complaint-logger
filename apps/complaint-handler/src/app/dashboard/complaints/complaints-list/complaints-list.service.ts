@@ -1,17 +1,28 @@
 import { Injectable } from "@angular/core";
 import { ApiService } from '../../../core/services/http/api.service';
 import { Observable, of, combineLatest } from 'rxjs';
-import { Complaint, ComplaintStatus } from '@complaint-logger/models';
+import { Complaint, ComplaintStatus, Employee } from '@complaint-logger/models';
 import { map } from 'rxjs/operators';
+import { StorageService } from '../../../core/services/storage/storage.service';
+import { StorageKeys } from '../../../shared/constants/storage-keys';
 
 @Injectable()
 export class ComplaintsListService {
-    constructor(private readonly api: ApiService) { }
+    user = this.storage.get(StorageKeys.user) as Employee;
+    constructor(private readonly api: ApiService,
+        private readonly storage: StorageService) { }
 
-    private complaintsCount(status: ComplaintStatus): Observable<number> {
+    complaintsCount(status: ComplaintStatus): Observable<number> {
         return this.api.sendRequest({
             method: 'get',
-            endpoint: `complaints/count/${status === ComplaintStatus.Pending ? 'pending' : 'resolved'}`
+            endpoint: `complaints/count/${status === ComplaintStatus.Pending ? 'pending' : 'resolved'}`,
+            queryParams: {
+                ...(this.user.admin ? {
+                    departmentCode: this.user.department.code
+                } : {
+                        assignedTo: this.user.loginId
+                    })
+            }
         })
     }
     complaints({ pageSize,
@@ -19,20 +30,20 @@ export class ComplaintsListService {
             pageSize: number;
             pageNumber: number;
             status: ComplaintStatus
-        }): Observable<{ count: number; complaints: Complaint[] }> {
-        return combineLatest(this.api.sendRequest({
+        }): Observable<Complaint[]> {
+        return this.api.sendRequest({
             method: 'get',
             endpoint: `complaints/${status === ComplaintStatus.Pending ? 'pending' : 'resolved'}`,
             queryParams: {
                 pageSize,
-                pageNumber
+                pageNumber,
+                ...(this.user.admin ? {
+                    departmentCode: this.user.department.code
+                } : {
+                        assignedTo: this.user.loginId
+                    })
             }
-        }), this.complaintsCount(status)).pipe(
-            map(([complaints, count]) => ({
-                count,
-                complaints
-            }))
-        )
+        });
     }
 
     updateComplaint(complaint: Complaint) {
@@ -43,28 +54,37 @@ export class ComplaintsListService {
         })
     }
 
-    employees(searchString: string) {
-        return of([
+    employees(searchString: string): Observable<Employee[]> {
+        const employees: Employee[] = [
             {
+                admin: true,
+                loginId: 'rohit.chopra',
+                mobile: '9646073913',
                 name: 'Rohit Chopra',
-                mobile: '9646073913'
+                department: {} as any
             },
             {
-                name: 'Mohit Arora',
-                mobile: '9646073913'
+                admin: true,
+                loginId: 'sandeep.sood',
+                mobile: '9646073913',
+                name: 'Sandeep sood',
+                department: {} as any
             },
             {
-                name: 'Danish Aggarwal',
-                mobile: '9646073913'
+                admin: true,
+                loginId: 'rajnish.gupta',
+                mobile: '9646073913',
+                name: 'Rajnish Gupta',
+                department: {} as any
             },
             {
-                name: 'Sweety Gupta',
-                mobile: '9646073913'
-            },
-            {
-                name: 'Munish Joshi',
-                mobile: '9646073913'
+                admin: true,
+                loginId: 'sandeep.sharma',
+                mobile: '9646073913',
+                name: 'Sandeep Sharma',
+                department: {} as any
             }
-        ].filter(e => e.name.match(new RegExp(searchString, 'ig'))))
+        ]
+        return of(employees.filter(e => e.name.match(new RegExp(searchString, 'ig'))))
     }
 }
