@@ -11,10 +11,14 @@ export class ComplaintsListService {
     constructor(private readonly api: ApiService,
         private readonly storage: StorageService) { }
 
-    private complaintsCount(status: ComplaintStatus): Observable<number> {
+    complaintsCount(status: ComplaintStatus): Observable<number> {
+        const user = this.storage.get(StorageKeys.user) as User;
         return this.api.sendRequest({
             method: 'get',
-            endpoint: `complaints/count/${status === ComplaintStatus.Pending ? 'pending' : 'resolved'}`
+            endpoint: `complaints/count/${status === ComplaintStatus.Pending ? 'pending' : 'resolved'}`,
+            queryParams: {
+                raisedById: user.loginId
+            }
         })
     }
     complaints({ pageSize,
@@ -22,9 +26,9 @@ export class ComplaintsListService {
             pageSize: number;
             pageNumber: number;
             status: ComplaintStatus
-        }): Observable<{ count: number; complaints: Complaint[] }> {
+        }): Observable<Complaint[]> {
         const user = this.storage.get(StorageKeys.user) as User;
-        return combineLatest(this.api.sendRequest({
+        return this.api.sendRequest({
             method: 'get',
             endpoint: `complaints/${status === ComplaintStatus.Pending ? 'pending' : 'resolved'}`,
             queryParams: {
@@ -32,11 +36,6 @@ export class ComplaintsListService {
                 pageNumber,
                 raisedById: user.loginId
             }
-        }), this.complaintsCount(status)).pipe(
-            map(([complaints, count]) => ({
-                count,
-                complaints
-            }))
-        )
+        })
     }
 }

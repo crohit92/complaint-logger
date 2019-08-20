@@ -1,42 +1,40 @@
-<div class="app-complaints-list" *ngIf="(tabChangeEvent | async) as selectedTabIndex">
+<div class="app-complaints-list">
     <div class="mat-title flex flex-align-items-center">Your Complaints <button [routerLink]="['../raise']"
             routerLinkActive="router-link-active" color="warn" mat-button>
             <mat-icon>add</mat-icon> Add new
         </button></div>
-    <mat-tab-group (selectedIndexChange)="tabChangeEvent.next($event + 1)">
-        <mat-tab label="Pending">
-            <div class="pending-complaints" *ngIf="(pending$ | async) as pendingComplaints">
-                <div class="complaint" *ngFor="let complaint of pendingComplaints.complaints">
+    <mat-tab-group (selectedIndexChange)="tabChanged($event)">
+        <mat-tab label="Pending ({{pendingComplaintsCount}})">
+            <div class="pending-complaints">
+                <div class="complaint" *ngFor="let complaint of pendingComplaints">
                     <ng-container [ngTemplateOutlet]="complaintTemplate"
                         [ngTemplateOutletContext]="{$implicit:complaint}"></ng-container>
                 </div>
             </div>
-            <div class="pending-pagination" *ngIf="(pendingPagination | async) as paginationInfo">
-                <mat-paginator (page)="pendingPageChanged($event)" *ngIf="(pending$ | async) as pendingComplaints"
-                    [length]="pendingComplaints.count" [pageSize]="paginationInfo.pageSize"
-                    [pageSizeOptions]="[5, 10, 25, 100]">
+            <div class="pending-pagination">
+                <mat-paginator (page)="pendingPageChanged($event)" [length]="pendingComplaintsCount"
+                    [pageSize]="pageOptions.pageSize" [pageSizeOptions]="[5, 10, 25, 100]">
                 </mat-paginator>
             </div>
 
         </mat-tab>
-        <mat-tab label="Resolved">
-            <div class="resolved-complaints" *ngIf="(resolved$ | async) as resolvedComplaints">
-                <div class="complaint" *ngFor="let complaint of resolvedComplaints.complaints">
+        <mat-tab label="Resolved ({{resolvedComplaintsCount}})">
+            <div class="resolved-complaints">
+                <div class="complaint" *ngFor="let complaint of resolvedComplaints">
                     <ng-container [ngTemplateOutlet]="complaintTemplate"
-                        [ngTemplateOutletContext]="{$implicit:complaint}"></ng-container>
+                        [ngTemplateOutletContext]="{$implicit:complaint,resolved:true}"></ng-container>
                 </div>
             </div>
-            <div class="resolved-pagination" *ngIf="(resolvedPagination | async) as paginationInfo">
-                <mat-paginator (page)="resolvedPageChanged($event)" *ngIf="(resolved$ | async) as resolvedComplaints"
-                    [length]="resolvedComplaints.count" [pageSize]="paginationInfo.pageSize"
-                    [pageSizeOptions]="[5, 10, 25, 100]">
+            <div class="resolved-pagination">
+                <mat-paginator (page)="resolvedPageChanged($event)" [length]="resolvedComplaintsCount"
+                    [pageSize]="pageOptions.pageSize" [pageSizeOptions]="[5, 10, 25, 100]">
                 </mat-paginator>
             </div>
         </mat-tab>
     </mat-tab-group>
 </div>
 
-<ng-template #complaintTemplate let-complaint>
+<ng-template #complaintTemplate let-complaint let-resolved="resolved">
     <div class="complaint__header">
         <div class="complaint__header-department">
             {{complaint.department?.name}}
@@ -60,6 +58,12 @@
             <a *ngIf="complaint.assignedTo?.mobile" href=tel:{{complaint.assignedTo?.mobile}}>
                 <mat-icon>call</mat-icon>
             </a>
+        </div>
+    </div>
+    <div class="technician-remarks">
+        <div class="resolution-comments" *ngIf="resolved">
+            Comments by {{complaint.assignedTo?complaint.assignedTo.name:'Technician'}}:
+            <span>{{complaint.resolution.description}}</span>
         </div>
     </div>
 </ng-template>

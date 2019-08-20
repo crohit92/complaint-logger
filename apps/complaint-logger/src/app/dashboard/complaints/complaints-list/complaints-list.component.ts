@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ComplaintsListService } from './complaints-list.service';
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { ComplaintStatus } from '@complaint-logger/models';
+import { ComplaintStatus, Complaint } from '@complaint-logger/models';
 import { switchMap, map, shareReplay, filter } from 'rxjs/operators';
 import { PageEvent } from '@angular/material/paginator';
 
@@ -14,54 +14,57 @@ import * as moment from 'moment';
 })
 export class ComplaintsListComponent implements OnInit {
   ComplaintStatus = ComplaintStatus;
-  tabChangeEvent = new BehaviorSubject<number>(1);
-  pendingPagination = new BehaviorSubject({
+  pageOptions = {
     pageSize: 5,
     pageNumber: 1
-  });
-  resolvedPagination = new BehaviorSubject({
-    pageSize: 5,
-    pageNumber: 1
-  });
-  pending$ = combineLatest(this.tabChangeEvent, this.pendingPagination).pipe(
-    filter(([selectedTabIndex, _]) => selectedTabIndex === 1),
-    switchMap(([_, { pageSize, pageNumber }]) => this.dataService.complaints({ pageSize, pageNumber, status: ComplaintStatus.Pending })),
-    map(c => {
-      c.complaints.forEach(complaint => Object.assign(complaint, { createdAt: moment(complaint.createdAt).fromNow() }))
-      return c;
-    }),
-    shareReplay()
-  );
-  resolved$ = combineLatest(this.tabChangeEvent, this.resolvedPagination).pipe(
-    filter(([selectedTabIndex, _]) => selectedTabIndex === 2),
-    switchMap(([_, { pageSize, pageNumber }]) => this.dataService.complaints({ pageSize, pageNumber, status: ComplaintStatus.Resolved })),
-    map(c => {
-      c.complaints.forEach(complaint => Object.assign(complaint, { createdAt: moment(complaint.createdAt).fromNow() }))
-      return c;
-    }),
-    shareReplay()
-  );
+  };
 
+  pendingComplaints: Complaint[] = [];
+  resolvedComplaints: Complaint[] = [];
+  pendingComplaintsCount = 0;
+  resolvedComplaintsCount = 0;
+  loadComplaints(status: ComplaintStatus, target: Complaint[]) {
+    this.dataService.complaints({ ...this.pageOptions, status }).subscribe(complaints => {
+      complaints.forEach(complaint => Object.assign(complaint, { createdAt: moment(complaint.createdAt).fromNow() }))
+      target.splice(0);
+      Object.assign(target, complaints);
+    });
+    this.loadcomplaintCount();
+  }
+
+  loadcomplaintCount() {
+    this.dataService.complaintsCount(ComplaintStatus.Pending).subscribe(count => this.pendingComplaintsCount = count);
+    this.dataService.complaintsCount(ComplaintStatus.Resolved).subscribe(count => this.resolvedComplaintsCount = count);
+  }
   constructor(private readonly dataService: ComplaintsListService) {
-    this.tabChangeEvent.next(1);
+    this.loadComplaints(ComplaintStatus.Pending, this.pendingComplaints);
   }
 
   ngOnInit() {
   }
 
   pendingPageChanged(ev: PageEvent) {
-    this.pendingPagination.next({
+    this.pageOptions = {
       pageNumber: ev.pageIndex + 1,
       pageSize: ev.pageSize
-    });
+    };
+    this.loadComplaints(ComplaintStatus.Pending, this.pendingComplaints);
   }
   resolvedPageChanged(ev: PageEvent) {
-    this.resolvedPagination.next({
+    this.pageOptions = {
       pageNumber: ev.pageIndex + 1,
       pageSize: ev.pageSize
-    });
+    };
+    this.loadComplaints(ComplaintStatus.Resolved, this.resolvedComplaints);
   }
 
+  tabChanged(tabIndex: number) {
+    if (tabIndex === 0) {
+      this.loadComplaints(ComplaintStatus.Pending, this.pendingComplaints);
+    } else {
+      this.loadComplaints(ComplaintStatus.Resolved, this.resolvedComplaints);
+    }
+  }
 }
 
 

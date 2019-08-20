@@ -20,6 +20,7 @@ export class ComplaintsListService {
                 ...(this.user.admin ? {
                     departmentCode: this.user.department.code
                 } : {
+                        departmentCode: this.user.department.code,
                         assignedTo: this.user.loginId
                     })
             }

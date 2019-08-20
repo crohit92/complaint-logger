@@ -46,6 +46,17 @@
                     }
                 }
             }
+
+            .technician-remarks {
+                padding: 0 0.5rem 0.5rem;
+
+
+                .resolution-comments {
+                    padding: 0 0.5rem;
+                    font-size: 0.75rem;
+                    color: mat-color($foreground, disabled-text);
+                }
+            }
         }
 
         .resolved-complaints {
