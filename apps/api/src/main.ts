@@ -25,7 +25,7 @@ async function bootstrap() {
   });
   const globalPrefix = 'api/v1';
   app.setGlobalPrefix(globalPrefix);
-  const port = process.env.port || 3333;
+  const port = process.env.PORT || 3333;
   await connect('mongodb+srv://gndu:iamhere_123@cluster0-m1vd2.mongodb.net/complaint-logger?retryWrites=true&w=majority', {
     useNewUrlParser: true
   });
