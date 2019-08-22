@@ -38,4 +38,12 @@ export class ComplaintsListService {
             }
         })
     }
+
+    addComment(complaint: Complaint, comment) {
+        return this.api.sendRequest({
+            method: 'post',
+            endpoint: `complaints/${complaint._id}/comments`,
+            body: comment
+        })
+    }
 }

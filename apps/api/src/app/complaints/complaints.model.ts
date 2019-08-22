@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
-import { ComplaintStatus } from '@complaint-logger/models'
+import { ComplaintStatus, UserTypes } from '@complaint-logger/models'
+import { EmployeeTypes } from '@complaint-logger/models';
 const ComplaintSchema = new Schema({
     createdBy: {
         loginId: {
@@ -31,11 +32,24 @@ const ComplaintSchema = new Schema({
         description: {
             type: String,
         },
-        status: {
-            type: String,
-            enum: [ComplaintStatus.Pending, ComplaintStatus.Resolved],
-            default: ComplaintStatus.Pending
-        }
+    },
+    comments: [{
+        by: String,
+        userType: {
+            type: Number,
+            enum: [UserTypes.Hostler, UserTypes.Resident, UserTypes.Staff, UserTypes.Student, EmployeeTypes.Admin, EmployeeTypes.Technician],
+            required: true
+        },
+        timestamp: {
+            type: Date,
+            default: Date.now
+        },
+        description: String
+    }],
+    status: {
+        type: Number,
+        enum: [ComplaintStatus.Pending, ComplaintStatus.Resolved, ComplaintStatus.Done],
+        default: ComplaintStatus.Pending
     },
     assignedTo: {
         loginId: String,

@@ -86,27 +86,27 @@
     </div>
     <div class="technician-remarks">
         <div class="status" *ngIf="!resolved">
+            <div class="resolution-comments">
+                <div class="comment" *ngFor="let comment of complaint.comments">
+                    {{comment.by}}: {{comment.description}}
+                </div>
+            </div>
             <mat-slide-toggle #toggle (change)="complaint.addRemarks = true"
-                [disabled]="complaint.resolution.status === ComplaintStatus.Resolved"
-                [checked]="complaint.resolution.status === ComplaintStatus.Resolved">Mark as done
+                [disabled]="complaint.status === ComplaintStatus.Resolved"
+                [checked]="complaint.status === ComplaintStatus.Resolved">Mark as done
             </mat-slide-toggle>
             <div class="remarks flex" *ngIf="complaint.addRemarks">
                 <mat-form-field>
-                    <textarea matInput [(ngModel)]="complaint.resolution.description" placeholder="Comments"
-                        required></textarea>
+                    <textarea matInput #commentEl placeholder="Comments" required></textarea>
                 </mat-form-field>
-                <button mat-button color="primary" [disabled]="!complaint.resolution?.description?.length"
-                    (click)="markComplaintAsResolved(complaint, complaintIndex, toggle)">
+                <button mat-button color="primary" [disabled]="!commentEl.value.length"
+                    (click)="markComplaintAsResolved(complaint, commentEl, complaintIndex, toggle)">
                     <mat-icon>check</mat-icon>
                 </button>
                 <button mat-button color="warn" (click)="complaint.addRemarks = false; toggle.checked = false;">
                     <mat-icon>close</mat-icon>
                 </button>
             </div>
-        </div>
-        <div class="resolution-comments" *ngIf="resolved">
-            Comments by {{complaint.assignedTo?complaint.assignedTo.name:'Technician'}}:
-            <span>{{complaint.resolution.description}}</span>
         </div>
     </div>
 </ng-template>

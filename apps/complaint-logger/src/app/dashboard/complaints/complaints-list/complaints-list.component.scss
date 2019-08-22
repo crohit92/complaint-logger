@@ -54,7 +54,27 @@
                 .resolution-comments {
                     padding: 0 0.5rem;
                     font-size: 0.75rem;
-                    color: mat-color($foreground, disabled-text);
+
+                    // color: mat-color($foreground, disabled-text);
+                    .comment {
+                        padding: 0.25rem 0;
+
+                    }
+
+                    .new-comment {
+                        margin-top: 0.5rem;
+
+                        textarea {
+                            border: none;
+                            border-bottom: 2px solid mat-color($foreground, divider);
+                            min-width: 30%;
+                            background: transparent;
+                        }
+
+                        mat-icon {
+                            cursor: pointer;
+                        }
+                    }
                 }
             }
         }

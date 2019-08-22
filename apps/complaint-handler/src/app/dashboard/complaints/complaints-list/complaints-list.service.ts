@@ -1,8 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ApiService } from '../../../core/services/http/api.service';
 import { Observable, of, combineLatest } from 'rxjs';
-import { Complaint, ComplaintStatus, Employee } from '@complaint-logger/models';
-import { map } from 'rxjs/operators';
+import { Complaint, ComplaintStatus, Employee, Comment } from '@complaint-logger/models';
 import { StorageService } from '../../../core/services/storage/storage.service';
 import { StorageKeys } from '../../../shared/constants/storage-keys';
 
@@ -52,6 +51,13 @@ export class ComplaintsListService {
             method: 'put',
             endpoint: `complaints/${complaint._id}`,
             body: complaint
+        })
+    }
+    addComment(complaint: Complaint, comment: Comment) {
+        return this.api.sendRequest({
+            method: 'post',
+            endpoint: `complaints/${complaint._id}/comments`,
+            body: comment
         })
     }
 

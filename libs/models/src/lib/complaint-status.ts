@@ -1,5 +1,6 @@
 export enum ComplaintStatus {
-    Pending = 'Pending',
-    Resolved = 'Issue Resolved',
+    Pending,
+    Resolved,
+    Done
     // NoIssueFound = 'No Issue found'
 }

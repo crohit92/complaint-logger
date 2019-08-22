@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ComplaintsListService } from './complaints-list.service';
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { ComplaintStatus, Complaint } from '@complaint-logger/models';
+import { ComplaintStatus, Complaint, User } from '@complaint-logger/models';
 import { switchMap, map, shareReplay, filter } from 'rxjs/operators';
 import { PageEvent } from '@angular/material/paginator';
 
 import * as moment from 'moment';
+import { StorageService } from '../../../core/services/storage/storage.service';
+import { StorageKeys } from '../../../shared/constants/storage-keys';
 @Component({
   selector: 'complaint-logger-complaints-list',
   templateUrl: './complaints-list.component.html',
@@ -14,6 +16,7 @@ import * as moment from 'moment';
 })
 export class ComplaintsListComponent implements OnInit {
   ComplaintStatus = ComplaintStatus;
+  user = this.storage.get(StorageKeys.user) as User;
   pageOptions = {
     pageSize: 5,
     pageNumber: 1
@@ -36,7 +39,8 @@ export class ComplaintsListComponent implements OnInit {
     this.dataService.complaintsCount(ComplaintStatus.Pending).subscribe(count => this.pendingComplaintsCount = count);
     this.dataService.complaintsCount(ComplaintStatus.Resolved).subscribe(count => this.resolvedComplaintsCount = count);
   }
-  constructor(private readonly dataService: ComplaintsListService) {
+  constructor(private readonly dataService: ComplaintsListService,
+    private readonly storage: StorageService) {
     this.loadComplaints(ComplaintStatus.Pending, this.pendingComplaints);
   }
 
@@ -64,6 +68,20 @@ export class ComplaintsListComponent implements OnInit {
     } else {
       this.loadComplaints(ComplaintStatus.Resolved, this.resolvedComplaints);
     }
+  }
+
+  addComment(complaint: Complaint, commentDescription: HTMLInputElement) {
+    complaint.comments = complaint.comments || [];
+    const comment = {
+      by: this.user.name,
+      description: commentDescription.value,
+      userType: this.user.type,
+      timestamp: new Date()
+    };
+    this.dataService.addComment(complaint, comment).subscribe(() => {
+      commentDescription.value = '';
+      complaint.comments.push(comment);
+    })
   }
 }
 

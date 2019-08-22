@@ -61,9 +61,17 @@
         </div>
     </div>
     <div class="technician-remarks">
-        <div class="resolution-comments" *ngIf="resolved">
-            Comments by {{complaint.assignedTo?complaint.assignedTo.name:'Technician'}}:
-            <span>{{complaint.resolution.description}}</span>
+        <div class="resolution-comments">
+            <div class="mat-subtitle">Comment History</div>
+            <mat-divider></mat-divider>
+            <div class="comment" *ngFor="let comment of complaint.comments">
+                {{comment.by}}: {{comment.description}}
+            </div>
+            <div class="new-comment">
+                <textarea #commentDescription placeholder="Add new comment"></textarea>
+                <mat-icon (click)="addComment(complaint,commentDescription)">add</mat-icon>
+            </div>
+            <mat-divider></mat-divider>
         </div>
     </div>
 </ng-template>

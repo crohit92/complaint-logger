@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ComplaintsListService } from './complaints-list.service';
 import { BehaviorSubject, Observable, combineLatest, Subject } from 'rxjs';
-import { Complaint, ComplaintStatus, Employee } from '@complaint-logger/models';
+import { Complaint, ComplaintStatus, Employee, Comment, EmployeeTypes } from '@complaint-logger/models';
 import { switchMap, map, shareReplay, filter } from 'rxjs/operators';
 import { PageEvent } from '@angular/material/paginator';
 
@@ -102,15 +102,26 @@ export class ComplaintsListComponent implements OnInit {
     return undefined;
   }
 
-  markComplaintAsResolved(complaint: Complaint, complaintIndex: number, matToggle: MatSlideToggle) {
-    complaint.resolution.status = ComplaintStatus.Resolved;
-    this.dataService.updateComplaint(complaint).subscribe(() => {
-      this.pendingComplaints.splice(complaintIndex, 1);
-      this.pendingComplaintsCount--;
-      this.resolvedComplaintsCount++;
-    }, () => {
-      matToggle.checked = false;
-      complaint.addRemarks = false;
+  markComplaintAsResolved(complaint: Complaint, commentEl: HTMLInputElement, complaintIndex: number, matToggle: MatSlideToggle) {
+    const comment: Comment = {
+      by: this.user.name,
+      description: commentEl.value,
+      userType: this.user.admin ? EmployeeTypes.Admin : EmployeeTypes.Technician,
+      timestamp: new Date()
+    }
+    this.dataService.addComment(complaint, comment).subscribe(() => {
+      commentEl.value = '';
+      complaint.comments = complaint.comments || [];
+      complaint.comments.push(comment);
+      complaint.status = ComplaintStatus.Resolved;
+      this.dataService.updateComplaint(complaint).subscribe(() => {
+        this.pendingComplaints.splice(complaintIndex, 1);
+        this.pendingComplaintsCount--;
+        this.resolvedComplaintsCount++;
+      }, () => {
+        matToggle.checked = false;
+        complaint.addRemarks = false;
+      })
     })
   }
 }
