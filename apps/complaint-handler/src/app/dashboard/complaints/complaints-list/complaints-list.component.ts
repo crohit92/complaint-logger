@@ -109,18 +109,17 @@ export class ComplaintsListComponent implements OnInit {
       userType: this.user.admin ? EmployeeTypes.Admin : EmployeeTypes.Technician,
       timestamp: new Date()
     }
-    this.dataService.addComment(complaint, comment).subscribe(() => {
+    this.dataService.addComment(complaint, comment).subscribe((_complaint: Complaint) => {
+
       commentEl.value = '';
-      complaint.comments = complaint.comments || [];
-      complaint.comments.push(comment);
-      complaint.status = ComplaintStatus.Resolved;
-      this.dataService.updateComplaint(complaint).subscribe(() => {
+
+      this.dataService.updateComplaintStatus(_complaint, ComplaintStatus.Resolved).subscribe(() => {
         this.pendingComplaints.splice(complaintIndex, 1);
         this.pendingComplaintsCount--;
         this.resolvedComplaintsCount++;
       }, () => {
         matToggle.checked = false;
-        complaint.addRemarks = false;
+        _complaint.addRemarks = false;
       })
     })
   }

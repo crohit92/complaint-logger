@@ -46,4 +46,14 @@ export class ComplaintsListService {
             body: comment
         })
     }
+
+    updateStatus(complaint: Complaint, status: ComplaintStatus) {
+        return this.api.sendRequest({
+            method: 'put',
+            endpoint: `complaints/${complaint._id}/status`,
+            queryParams: {
+                status
+            }
+        })
+    }
 }

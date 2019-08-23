@@ -20,9 +20,10 @@
         </mat-tab>
         <mat-tab label="Resolved ({{resolvedComplaintsCount}})">
             <div class="resolved-complaints">
-                <div class="complaint" *ngFor="let complaint of resolvedComplaints">
+                <div class="complaint" *ngFor="let complaint of resolvedComplaints;let complaintInded=index;">
                     <ng-container [ngTemplateOutlet]="complaintTemplate"
-                        [ngTemplateOutletContext]="{$implicit:complaint,resolved:true}"></ng-container>
+                        [ngTemplateOutletContext]="{$implicit:complaint,resolved:true,complaintInded:complaintInded}">
+                    </ng-container>
                 </div>
             </div>
             <div class="resolved-pagination">
@@ -34,7 +35,7 @@
     </mat-tab-group>
 </div>
 
-<ng-template #complaintTemplate let-complaint let-resolved="resolved">
+<ng-template #complaintTemplate let-complaint let-resolved="resolved" let-complaintInded="complaintInded">
     <div class="complaint__header">
         <div class="complaint__header-department">
             {{complaint.department?.name}}
@@ -68,8 +69,11 @@
                 {{comment.by}}: {{comment.description}}
             </div>
             <div class="new-comment">
-                <textarea #commentDescription placeholder="Add new comment"></textarea>
-                <mat-icon (click)="addComment(complaint,commentDescription)">add</mat-icon>
+                <textarea #commentDescription
+                    [placeholder]="!resolved?'Add new comment':'Not fixed yet ? Add comment to reopen'"></textarea>
+                <mat-icon
+                    (click)="addComment(complaint,commentDescription, resolved?ComplaintStatus.Pending:undefined, complaintInded)">
+                    add</mat-icon>
             </div>
             <mat-divider></mat-divider>
         </div>

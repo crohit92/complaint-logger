@@ -85,13 +85,13 @@
         </div>
     </div>
     <div class="technician-remarks">
-        <div class="status" *ngIf="!resolved">
+        <div class="status">
             <div class="resolution-comments">
                 <div class="comment" *ngFor="let comment of complaint.comments">
                     {{comment.by}}: {{comment.description}}
                 </div>
             </div>
-            <mat-slide-toggle #toggle (change)="complaint.addRemarks = true"
+            <mat-slide-toggle *ngIf="!resolved" #toggle (change)="complaint.addRemarks = true"
                 [disabled]="complaint.status === ComplaintStatus.Resolved"
                 [checked]="complaint.status === ComplaintStatus.Resolved">Mark as done
             </mat-slide-toggle>

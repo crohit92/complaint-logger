@@ -70,18 +70,29 @@ export class ComplaintsListComponent implements OnInit {
     }
   }
 
-  addComment(complaint: Complaint, commentDescription: HTMLInputElement) {
-    complaint.comments = complaint.comments || [];
-    const comment = {
-      by: this.user.name,
-      description: commentDescription.value,
-      userType: this.user.type,
-      timestamp: new Date()
-    };
-    this.dataService.addComment(complaint, comment).subscribe(() => {
-      commentDescription.value = '';
-      complaint.comments.push(comment);
-    })
+  addComment(complaint: Complaint, commentDescription: HTMLInputElement, updateComplaintStatus?: ComplaintStatus, complaintIndex?: number) {
+    if (commentDescription.value.length) {
+      complaint.comments = complaint.comments || [];
+      const comment = {
+        by: this.user.name,
+        description: commentDescription.value,
+        userType: this.user.type,
+        timestamp: new Date()
+      };
+      this.dataService.addComment(complaint, comment).subscribe(() => {
+        commentDescription.value = '';
+        complaint.comments.push(comment);
+        if (updateComplaintStatus !== undefined) {
+          this.dataService.updateStatus(complaint, updateComplaintStatus).subscribe(() => {
+            if (updateComplaintStatus === ComplaintStatus.Pending) {
+              this.pendingComplaintsCount++;
+              this.resolvedComplaintsCount--;
+              this.resolvedComplaints.splice(complaintIndex, 1);
+            }
+          })
+        }
+      })
+    }
   }
 }
 

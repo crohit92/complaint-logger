@@ -61,8 +61,15 @@ export class ComplaintsController {
         const existingComplaint = await Complaints.findById(id);
         Object.assign(existingComplaint, complaint);
         return await existingComplaint.save();
-
     }
+    @Put(':id/status')
+    async updateComplaintStatus(@Param('id') id: string, @Query('status') status: ComplaintStatus) {
+        const existingComplaint = await Complaints.findById(id);
+        (existingComplaint as any).status = +status;
+        return await existingComplaint.save();
+    }
+
+
     @Post(':id/comments')
     async addComment(@Param('id') id: string, @Body() comment: Comment) {
         const existingComplaint = await Complaints.findById(id) as any;
