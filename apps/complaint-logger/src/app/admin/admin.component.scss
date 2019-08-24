@@ -1,0 +1,7 @@
+@import './complaints/complaints.component.scss';
+
+@mixin complaint-logger-admin($theme) {
+
+    @include app-complaints($theme);
+
+}

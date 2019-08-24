@@ -16,6 +16,17 @@
                 </mat-select>
             </mat-form-field>
         </div>
+        <div class="user-department" *ngIf="loginForm.get('type').value === UserTypes.Admin || 
+        loginForm.get('type').value === UserTypes.Technician">
+            <mat-form-field>
+                <mat-label>Department</mat-label>
+                <mat-select formControlName="department">
+                    <mat-option *ngFor="let department of departments | async" [value]="department">
+                        {{department.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
         <div class="username">
             <mat-form-field>
                 <input formControlName="loginId" matInput placeholder="Login Id">

@@ -10,6 +10,10 @@ const APP_ROUTES: Routes = [
         loadChildren: async () => (await import('./dashboard/dashboard.module')).DashboardModule
     },
     {
+        path: 'admin',
+        loadChildren: async () => (await import('./admin/admin.module')).AdminModule
+    },
+    {
         path: '',
         pathMatch: 'full',
         redirectTo: 'login'

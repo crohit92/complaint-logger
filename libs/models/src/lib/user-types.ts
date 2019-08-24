@@ -2,5 +2,7 @@ export enum UserTypes {
     Student,
     Staff,
     Hostler,
-    Resident
+    Resident,
+    Admin,
+    Technician
 }

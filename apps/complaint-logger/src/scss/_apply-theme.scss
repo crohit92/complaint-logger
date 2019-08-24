@@ -1,7 +1,9 @@
 @import '../app/dashboard/dashboard.component.scss';
 @import '../app/login/login.component.scss';
+@import '../app/admin/admin.component.scss';
 
 @mixin apply($theme) {
+  @include complaint-logger-admin($theme);
   @include app-dashboard($theme);
   @include app-login($theme);
 }
