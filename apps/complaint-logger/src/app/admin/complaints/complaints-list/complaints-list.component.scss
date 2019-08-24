@@ -1,4 +1,4 @@
-@mixin app-complaints-list($theme) {
+@mixin complaint-logger-admin-complaints-list($theme) {
     $accent: map-get($map: $theme, $key: accent);
     $primary: map-get($map: $theme, $key: primary);
     $foreground: map-get($map: $theme, $key: foreground);

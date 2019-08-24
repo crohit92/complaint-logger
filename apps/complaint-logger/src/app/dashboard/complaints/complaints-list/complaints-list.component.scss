@@ -1,9 +1,9 @@
-@mixin app-complaints-list($theme) {
+@mixin complaint-logger-dashboard-complaints-list($theme) {
     $accent: map-get($map: $theme, $key: accent);
     $primary: map-get($map: $theme, $key: primary);
     $foreground: map-get($map: $theme, $key: foreground);
 
-    .app-complaints-list {
+    .complaint-logger-complaints-list {
         .complaint {
             margin: 0.5rem 0;
             border: 1px solid mat-color($foreground, divider);

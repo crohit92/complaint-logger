@@ -1,7 +1,7 @@
 @import './complaints/complaints.component.scss';
 
-@mixin app-dashboard($theme) {
-  @include app-complaints($theme);
+@mixin complaint-logger-dashboard($theme) {
+  @include complaint-logger-dashboard-complaints($theme);
   $foreground: map-get($map: $theme,
       $key: foreground);
   $background: map-get($map: $theme,
@@ -54,6 +54,13 @@
 
     &__outlet {
       padding: 1rem;
+    }
+
+    .mat-toolbar {
+      img {
+        height: 3.5rem;
+        margin: 0 1rem;
+      }
     }
   }
 }

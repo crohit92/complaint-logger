@@ -6,42 +6,31 @@ import { Comment } from "@complaint-logger/models";
 export class ComplaintsController {
     @Get('pending')
     async pendingComplaints(@Query('pageNumber') pageNumber: string, @Query('pageSize') pageSize: string, @Query('raisedById') raisedById: string, @Query('departmentCode') departmentCode: string, @Query('assignedTo') assignedTo: string) {
-        return await Complaints.find({
-            'status': ComplaintStatus.Pending,
-            ...(raisedById ? { 'createdBy.loginId': raisedById } : {}),
-            ...(departmentCode ? { 'department.code': departmentCode } : {}),
-            ...(assignedTo ? { 'assignedTo.loginId': assignedTo } : {})
-        }).sort({ createdAt: -1 }).skip(((+pageNumber) - 1) * (+pageSize)).limit(+pageSize);
+        return await this.getComplaints(ComplaintStatus.Pending, raisedById, departmentCode, assignedTo, pageNumber, pageSize);
     }
 
     @Get('count/pending')
     async pendingComplaintCount(@Query('raisedById') raisedById: string, @Query('departmentCode') departmentCode: string, @Query('assignedTo') assignedTo: string, ) {
-        return await Complaints.count({
-            'status': ComplaintStatus.Pending,
-            ...(raisedById ? { 'createdBy.loginId': raisedById } : {}),
-            ...(departmentCode ? { 'department.code': departmentCode } : {}),
-            ...(assignedTo ? { 'assignedTo.loginId': assignedTo } : {})
-        })
+        return await this.getComplaintsCount(ComplaintStatus.Pending, raisedById, departmentCode, assignedTo);
     }
 
     @Get('resolved')
     async resolvedComplaints(@Query('pageNumber') pageNumber: string, @Query('pageSize') pageSize: string, @Query('raisedById') raisedById: string, @Query('departmentCode') departmentCode: string, @Query('assignedTo') assignedTo: string) {
-        return await Complaints.find({
-            'status': ComplaintStatus.Resolved,
-            ...(raisedById ? { 'createdBy.loginId': raisedById } : {}),
-            ...(departmentCode ? { 'department.code': departmentCode } : {}),
-            ...(assignedTo ? { 'assignedTo.loginId': assignedTo } : {})
-        }).sort({ createdAt: -1 }).skip(((+pageNumber) - 1) * (+pageSize)).limit(+pageSize);
+        return await this.getComplaints(ComplaintStatus.Resolved, raisedById, departmentCode, assignedTo, pageNumber, pageSize);
     }
 
     @Get('count/resolved')
     async resolvedComplaintCount(@Query('raisedById') raisedById: string, @Query('departmentCode') departmentCode: string, @Query('assignedTo') assignedTo: string) {
-        return await Complaints.count({
-            'status': ComplaintStatus.Resolved,
-            ...(raisedById ? { 'createdBy.loginId': raisedById } : {}),
-            ...(departmentCode ? { 'department.code': departmentCode } : {}),
-            ...(assignedTo ? { 'assignedTo.loginId': assignedTo } : {})
-        })
+        return await this.getComplaintsCount(ComplaintStatus.Resolved, raisedById, departmentCode, assignedTo);
+    }
+    @Get('done')
+    async doneComplaints(@Query('pageNumber') pageNumber: string, @Query('pageSize') pageSize: string, @Query('raisedById') raisedById: string, @Query('departmentCode') departmentCode: string, @Query('assignedTo') assignedTo: string) {
+        return await this.getComplaints(ComplaintStatus.Done, raisedById, departmentCode, assignedTo, pageNumber, pageSize);
+    }
+
+    @Get('count/done')
+    async doneComplaintCount(@Query('raisedById') raisedById: string, @Query('departmentCode') departmentCode: string, @Query('assignedTo') assignedTo: string) {
+        return await this.getComplaintsCount(ComplaintStatus.Done, raisedById, departmentCode, assignedTo);
     }
 
     @Get('delete')
@@ -77,5 +66,34 @@ export class ComplaintsController {
         existingComplaint.comments.push(comment)
         return await existingComplaint.save();
 
+    }
+
+    private async getComplaints(
+        status: ComplaintStatus,
+        raisedById: string,
+        departmentCode: string,
+        assignedTo: string,
+        pageNumber: string,
+        pageSize: string
+    ) {
+        return await Complaints.find({
+            'status': status,
+            ...(raisedById ? { 'createdBy.loginId': raisedById } : {}),
+            ...(departmentCode ? { 'department.code': departmentCode } : {}),
+            ...(assignedTo ? { 'assignedTo.loginId': assignedTo } : {})
+        }).sort({ createdAt: -1 }).skip(((+pageNumber) - 1) * (+pageSize)).limit(+pageSize);
+    }
+    private async getComplaintsCount(
+        status: ComplaintStatus,
+        raisedById: string,
+        departmentCode: string,
+        assignedTo: string
+    ) {
+        return await Complaints.count({
+            'status': status,
+            ...(raisedById ? { 'createdBy.loginId': raisedById } : {}),
+            ...(departmentCode ? { 'department.code': departmentCode } : {}),
+            ...(assignedTo ? { 'assignedTo.loginId': assignedTo } : {})
+        })
     }
 }

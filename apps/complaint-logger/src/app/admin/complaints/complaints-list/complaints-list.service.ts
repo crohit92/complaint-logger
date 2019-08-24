@@ -14,7 +14,7 @@ export class ComplaintsListService {
     complaintsCount(status: ComplaintStatus): Observable<number> {
         return this.api.sendRequest({
             method: 'get',
-            endpoint: `complaints/count/${status === ComplaintStatus.Pending ? 'pending' : 'resolved'}`,
+            endpoint: `complaints/count/${status === ComplaintStatus.Pending ? 'pending' : (status === ComplaintStatus.Resolved ? 'resolved' : 'done')}`,
             queryParams: {
                 ...(this.user.admin ? {
                     departmentCode: this.user.department.code
@@ -33,7 +33,7 @@ export class ComplaintsListService {
         }): Observable<Complaint[]> {
         return this.api.sendRequest({
             method: 'get',
-            endpoint: `complaints/${status === ComplaintStatus.Pending ? 'pending' : 'resolved'}`,
+            endpoint: `complaints/${status === ComplaintStatus.Pending ? 'pending' : (status === ComplaintStatus.Resolved ? 'resolved' : 'done')}`,
             queryParams: {
                 pageSize,
                 pageNumber,

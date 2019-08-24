@@ -1,7 +1,7 @@
-@mixin app-login($theme) {
+@mixin complaint-logger-login($theme) {
     $foreground: map-get($theme, foreground);
 
-    .app-login {
+    .complaint-logger-login {
         position: relative;
         height: 100vh;
 

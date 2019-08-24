@@ -1,5 +1,5 @@
 @import './complaints-list/complaints-list.component.scss';
 
-@mixin app-complaints($theme) {
-  @include app-complaints-list($theme);
+@mixin complaint-logger-admin-complaints($theme) {
+  @include complaint-logger-admin-complaints-list($theme);
 }

@@ -2,6 +2,11 @@ import { NgModule } from "@angular/core";
 import { SharedModule } from '../shared/shared.module';
 import { AdminComponent } from './admin.component';
 import { Routes, RouterModule } from '@angular/router';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
 
 const ROUTES: Routes = [
     {
@@ -22,7 +27,12 @@ const ROUTES: Routes = [
 @NgModule({
     imports: [
         SharedModule,
-        RouterModule.forChild(ROUTES)
+        RouterModule.forChild(ROUTES),
+        MatSidenavModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatDividerModule
     ],
     declarations: [AdminComponent]
 })

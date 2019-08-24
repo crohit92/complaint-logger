@@ -1,4 +1,4 @@
-<div class="app-complaints-list">
+<div class="complaint-logger-complaints-list">
     <div class="mat-title flex flex-align-items-center">Your Complaints <button [routerLink]="['../raise']"
             routerLinkActive="router-link-active" color="warn" mat-button>
             <mat-icon>add</mat-icon> Add new
@@ -71,7 +71,8 @@
             <div class="comment" *ngFor="let comment of complaint.comments">
                 {{comment.by}}: {{comment.description}}
             </div>
-            <div class="new-comment" *ngIf="complaint.canReopen">
+            <div class="new-comment"
+                *ngIf="(complaint.status === ComplaintStatus.Resolved && complaint.canReopen) || complaint.status === ComplaintStatus.Pending">
                 <textarea #commentDescription
                     [placeholder]="!resolved?'Add new comment':'Not fixed yet ? Add comment to reopen'"></textarea>
                 <mat-icon

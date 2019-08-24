@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { StorageService } from '../core/services/storage/storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'complaint-logger-dashboard',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private readonly storage: StorageService,
+    private readonly router: Router
+  ) { }
 
   ngOnInit() {
   }
-
+  logout() {
+    this.storage.clearAll();
+    this.router.navigate(['/login']);
+  }
 }

@@ -1,5 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Route, Routes } from "@angular/router";
+import { UserGuard } from './core/guards/user-guard';
+import { AdminGuard } from './core/guards/admin-guard';
 const APP_ROUTES: Routes = [
     {
         path: 'login',
@@ -7,11 +9,13 @@ const APP_ROUTES: Routes = [
     },
     {
         path: 'dashboard',
-        loadChildren: async () => (await import('./dashboard/dashboard.module')).DashboardModule
+        loadChildren: async () => (await import('./dashboard/dashboard.module')).DashboardModule,
+        canActivate: [UserGuard]
     },
     {
         path: 'admin',
-        loadChildren: async () => (await import('./admin/admin.module')).AdminModule
+        loadChildren: async () => (await import('./admin/admin.module')).AdminModule,
+        canActivate: [AdminGuard]
     },
     {
         path: '',

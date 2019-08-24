@@ -12,6 +12,9 @@
             <li (click)="sidenav.close()" [routerLink]="['./complaints/raise']" routerLinkActive="active">
                 <span>Raise a complaint</span>
             </li>
+            <li (click)="logout()">
+                <span>Logout</span>
+            </li>
         </ul>
     </mat-sidenav>
     <mat-sidenav-content class="content">
@@ -19,6 +22,7 @@
             <button mat-button (click)="sidenav.toggle()">
                 <mat-icon>menu</mat-icon>
             </button>
+            <img src="assets/images/logo.jpg" alt="" srcset="">
             <span>Complaint Logger</span>
         </mat-toolbar>
         <div class="content__outlet">
