@@ -8,6 +8,7 @@ import { PageEvent } from '@angular/material/paginator';
 import * as moment from 'moment';
 import { StorageService } from '../../../core/services/storage/storage.service';
 import { StorageKeys } from '../../../shared/constants/storage-keys';
+import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'complaint-logger-complaints-list',
   templateUrl: './complaints-list.component.html',
@@ -28,7 +29,12 @@ export class ComplaintsListComponent implements OnInit {
   resolvedComplaintsCount = 0;
   loadComplaints(status: ComplaintStatus, target: Complaint[]) {
     this.dataService.complaints({ ...this.pageOptions, status }).subscribe(complaints => {
-      complaints.forEach(complaint => Object.assign(complaint, { createdAt: moment(complaint.createdAt).fromNow() }))
+      complaints.forEach(complaint => {
+        if (complaint.status === ComplaintStatus.Resolved) {
+          complaint.canReopen = moment().diff(moment(complaint.createdAt)) < environment.reopenWindow;
+        }
+        Object.assign(complaint, { createdAtFromNow: moment(complaint.createdAt).fromNow() });
+      })
       target.splice(0);
       Object.assign(target, complaints);
     });
@@ -93,6 +99,12 @@ export class ComplaintsListComponent implements OnInit {
         }
       })
     }
+  }
+  closeComplaint(complaint: Complaint, complaintIndex: number) {
+    this.dataService.updateStatus(complaint, ComplaintStatus.Done).subscribe(() => {
+      this.resolvedComplaints.splice(complaintIndex, 1);
+      this.resolvedComplaintsCount--;
+    })
   }
 }
 

@@ -20,9 +20,9 @@
         </mat-tab>
         <mat-tab label="Resolved ({{resolvedComplaintsCount}})">
             <div class="resolved-complaints">
-                <div class="complaint" *ngFor="let complaint of resolvedComplaints;let complaintInded=index;">
+                <div class="complaint" *ngFor="let complaint of resolvedComplaints;let complaintIndex=index;">
                     <ng-container [ngTemplateOutlet]="complaintTemplate"
-                        [ngTemplateOutletContext]="{$implicit:complaint,resolved:true,complaintInded:complaintInded}">
+                        [ngTemplateOutletContext]="{$implicit:complaint,resolved:true,complaintIndex:complaintIndex}">
                     </ng-container>
                 </div>
             </div>
@@ -35,7 +35,7 @@
     </mat-tab-group>
 </div>
 
-<ng-template #complaintTemplate let-complaint let-resolved="resolved" let-complaintInded="complaintInded">
+<ng-template #complaintTemplate let-complaint let-resolved="resolved" let-complaintIndex="complaintIndex">
     <div class="complaint__header">
         <div class="complaint__header-department">
             {{complaint.department?.name}}
@@ -46,19 +46,22 @@
         </div>
         <div class="complaint__header-created-at">
             <!-- {{complaint.building?.name}} -->
-            {{complaint.createdAt}}
+            {{complaint.createdAtFromNow}}
         </div>
     </div>
     <div class="complaint__body">
         {{complaint.description}}
     </div>
     <mat-divider></mat-divider>
-    <div class="complaint__status">
+    <div class="complaint__status flex flex-justify-content-space-between">
         <div class="complaint__status-assigned-to">
             Assigned to: <span>{{complaint.assignedTo?complaint.assignedTo?.name:'Not assigned'}}</span>
             <a *ngIf="complaint.assignedTo?.mobile" href=tel:{{complaint.assignedTo?.mobile}}>
                 <mat-icon>call</mat-icon>
             </a>
+        </div>
+        <div class="complaint__close" *ngIf="resolved">
+            <button color="warn" mat-button (click)="closeComplaint(complaint,complaintIndex)">Close</button>
         </div>
     </div>
     <div class="technician-remarks">
@@ -68,11 +71,11 @@
             <div class="comment" *ngFor="let comment of complaint.comments">
                 {{comment.by}}: {{comment.description}}
             </div>
-            <div class="new-comment">
+            <div class="new-comment" *ngIf="complaint.canReopen">
                 <textarea #commentDescription
                     [placeholder]="!resolved?'Add new comment':'Not fixed yet ? Add comment to reopen'"></textarea>
                 <mat-icon
-                    (click)="addComment(complaint,commentDescription, resolved?ComplaintStatus.Pending:undefined, complaintInded)">
+                    (click)="addComment(complaint,commentDescription, resolved?ComplaintStatus.Pending:undefined, complaintIndex)">
                     add</mat-icon>
             </div>
             <mat-divider></mat-divider>
