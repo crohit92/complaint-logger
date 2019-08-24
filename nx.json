@@ -19,12 +19,6 @@
     },
     "models": {
       "tags": []
-    },
-    "complaint-handler-e2e": {
-      "tags": []
-    },
-    "complaint-handler": {
-      "tags": []
     }
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { Department, User, UserTypes, Building, Employee } from '@complaint-logger/models';
+import { Department, User, UserTypes, Building } from '@complaint-logger/models';
 import { RaiseComplaintService } from './raise-complaint.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { StorageKeys } from '../../../shared/constants/storage-keys';

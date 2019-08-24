@@ -49,21 +49,6 @@ export class LoginComponent implements OnInit {
       admin: false
     }
   ]
-  requireDepartmentIfEmployee(control: AbstractControl): ValidationErrors {
-    if (!this.loginForm) {
-      return null;
-    }
-    if ((this.loginForm.get('type').value === UserTypes.Admin ||
-      this.loginForm.get('type').value === UserTypes.Technician) &&
-      control.value === undefined) {
-      return {
-        department: {
-          required: true
-        }
-      };
-    }
-    return null;
-  };
   constructor(private readonly fb: FormBuilder,
     private readonly storage: StorageService,
     private readonly router: Router,
@@ -76,11 +61,16 @@ export class LoginComponent implements OnInit {
   initLoginForm() {
     this.loginForm = this.fb.group({
       admin: [false, [Validators.required]],
-      department: [undefined, [this.requireDepartmentIfEmployee.bind(this)]],
+      department: [undefined],
       type: [undefined, [Validators.required]],
       loginId: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
+    this.loginForm.get('type').valueChanges.subscribe((type: UserTypes) => {
+      if (type === UserTypes.Admin) {
+        this.loginForm.get('admin').setValue(true);
+      }
+    })
   }
 
   login() {

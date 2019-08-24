@@ -20,7 +20,7 @@
         loginForm.get('type').value === UserTypes.Technician">
             <mat-form-field>
                 <mat-label>Department</mat-label>
-                <mat-select formControlName="department">
+                <mat-select formControlName="department" required>
                     <mat-option *ngFor="let department of departments | async" [value]="department">
                         {{department.name}}
                     </mat-option>

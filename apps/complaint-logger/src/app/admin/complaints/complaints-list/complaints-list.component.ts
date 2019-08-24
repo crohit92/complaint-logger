@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ComplaintsListService } from './complaints-list.service';
-import { Complaint, ComplaintStatus, Employee, Comment, EmployeeTypes } from '@complaint-logger/models';
+import { Complaint, ComplaintStatus, Comment, User } from '@complaint-logger/models';
 import { switchMap } from 'rxjs/operators';
 import { PageEvent } from '@angular/material/paginator';
 
@@ -17,7 +17,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 })
 export class ComplaintsListComponent implements OnInit {
   ComplaintStatus = ComplaintStatus;
-  user: Employee = this.storage.get(StorageKeys.user) as Employee;
+  user: User = this.storage.get(StorageKeys.user) as User;
   paginationOptions = {
     pageSize: 5,
     pageNumber: 1
@@ -85,7 +85,7 @@ export class ComplaintsListComponent implements OnInit {
     this.loadComplaints(this.paginationOptions, ComplaintStatus.Resolved, this.resolvedComplaints);
   }
 
-  employeeSelected(complaint: Complaint, employee?: Employee): string | undefined {
+  employeeSelected(complaint: Complaint, employee?: User): string | undefined {
     if (employee) {
       const _complaint = { ...complaint };
       delete _complaint['employeeSelected'];
@@ -105,7 +105,7 @@ export class ComplaintsListComponent implements OnInit {
     const comment: Comment = {
       by: this.user.name,
       description: commentEl.value,
-      userType: this.user.admin ? EmployeeTypes.Admin : EmployeeTypes.Technician,
+      userType: this.user.type,
       timestamp: new Date()
     }
     this.dataService.addComment(complaint, comment).subscribe((_complaint: Complaint) => {

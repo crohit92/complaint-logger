@@ -1,7 +1,0 @@
-@import '../app/dashboard/dashboard.component.scss';
-@import '../app/login/login.component.scss';
-
-@mixin apply($theme) {
-  @include app-dashboard($theme);
-  @include app-login($theme);
-}

@@ -1,13 +1,13 @@
 import { Injectable } from "@angular/core";
 import { ApiService } from '../../../core/services/http/api.service';
 import { Observable, of } from 'rxjs';
-import { Complaint, ComplaintStatus, Employee, Comment } from '@complaint-logger/models';
+import { Complaint, ComplaintStatus, Comment, User, UserTypes } from '@complaint-logger/models';
 import { StorageService } from '../../../core/services/storage/storage.service';
 import { StorageKeys } from '../../../shared/constants/storage-keys';
 
 @Injectable()
 export class ComplaintsListService {
-    user = this.storage.get(StorageKeys.user) as Employee;
+    user = this.storage.get(StorageKeys.user) as User;
     constructor(private readonly api: ApiService,
         private readonly storage: StorageService) { }
 
@@ -70,35 +70,39 @@ export class ComplaintsListService {
         })
     }
 
-    employees(searchString: string): Observable<Employee[]> {
-        const employees: Employee[] = [
+    employees(searchString: string): Observable<User[]> {
+        const employees: User[] = [
             {
                 admin: true,
                 loginId: 'rohit.chopra',
                 mobile: '9646073913',
                 name: 'Rohit Chopra',
-                department: {} as any
+                department: {} as any,
+                type: UserTypes.Admin
             },
             {
-                admin: true,
+                admin: false,
                 loginId: 'sandeep.sood',
                 mobile: '9646073913',
                 name: 'Sandeep sood',
-                department: {} as any
+                department: {} as any,
+                type: UserTypes.Technician
             },
             {
-                admin: true,
+                admin: false,
                 loginId: 'rajnish.gupta',
                 mobile: '9646073913',
                 name: 'Rajnish Gupta',
-                department: {} as any
+                department: {} as any,
+                type: UserTypes.Technician
             },
             {
-                admin: true,
+                admin: false,
                 loginId: 'sandeep.sharma',
                 mobile: '9646073913',
                 name: 'Sandeep Sharma',
-                department: {} as any
+                department: {} as any,
+                type: UserTypes.Technician
             }
         ]
         return of(employees.filter(e => e.name.match(new RegExp(searchString, 'ig'))))
