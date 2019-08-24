@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { Complaint, ComplaintStatus, Comment, User, UserTypes } from '@complaint-logger/models';
 import { StorageService } from '../../../core/services/storage/storage.service';
 import { StorageKeys } from '../../../shared/constants/storage-keys';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ComplaintsListService {
@@ -71,40 +72,13 @@ export class ComplaintsListService {
     }
 
     employees(searchString: string): Observable<User[]> {
-        const employees: User[] = [
-            {
-                admin: true,
-                loginId: 'rohit.chopra',
-                mobile: '9646073913',
-                name: 'Rohit Chopra',
-                department: {} as any,
-                type: UserTypes.Admin
-            },
-            {
-                admin: false,
-                loginId: 'sandeep.sood',
-                mobile: '9646073913',
-                name: 'Sandeep sood',
-                department: {} as any,
-                type: UserTypes.Technician
-            },
-            {
-                admin: false,
-                loginId: 'rajnish.gupta',
-                mobile: '9646073913',
-                name: 'Rajnish Gupta',
-                department: {} as any,
-                type: UserTypes.Technician
-            },
-            {
-                admin: false,
-                loginId: 'sandeep.sharma',
-                mobile: '9646073913',
-                name: 'Sandeep Sharma',
-                department: {} as any,
-                type: UserTypes.Technician
-            }
-        ]
-        return of(employees.filter(e => e.name.match(new RegExp(searchString, 'ig'))))
+        return this.api.sendRequest({
+            method: 'get',
+            apiBase: './assets/resources/users.json',
+            endpoint: ''
+        }).pipe(
+            map((users: User[]) => {
+                return users.filter(u => u.type === UserTypes.Technician && u.name.match(new RegExp(searchString, 'ig')));
+            }));
     }
 }

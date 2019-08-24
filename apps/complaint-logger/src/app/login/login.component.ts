@@ -6,6 +6,7 @@ import { StorageKeys } from '../shared/constants/storage-keys';
 import { Router } from '@angular/router';
 import { UserTypes } from '@complaint-logger/models';
 import { LoginService } from './login.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'complaint-logger-login',
@@ -52,7 +53,10 @@ export class LoginComponent implements OnInit {
   constructor(private readonly fb: FormBuilder,
     private readonly storage: StorageService,
     private readonly router: Router,
-    private readonly dataService: LoginService) { }
+    private readonly dataService: LoginService,
+    private readonly snackBar: MatSnackBar) {
+    this.storage.clearAll();
+  }
 
   ngOnInit() {
     this.initLoginForm();
@@ -74,15 +78,19 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    this.dataService.login(this.loginForm.value).subscribe(user => {
+      this.storage.set(StorageKeys.user, user);
+      if (user.type === UserTypes.Admin || user.type === UserTypes.Technician) {
+        this.router.navigate(['/admin'])
+      } else {
+        this.router.navigate(['/dashboard'])
 
+      }
 
-    const user: User = { name: this.loginForm.value.loginId, mobile: '9646073913', ...this.loginForm.value };
-    this.storage.set(StorageKeys.user, user);
-    if (user.type === UserTypes.Admin || user.type === UserTypes.Technician) {
-      this.router.navigate(['/admin'])
-    } else {
-      this.router.navigate(['/dashboard'])
-
-    }
+    }, () => {
+      this.snackBar.open('Invalid credentials', 'OK', {
+        duration: 2000,
+      });
+    })
   }
 }

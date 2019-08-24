@@ -60,6 +60,11 @@ export class StorageService {
     return this.encode(JSON.stringify(value));
   }
   private decodeValue(value: string): object | string | number | Date | Array<any> {
-    return JSON.parse(this.decode(value));
+    try {
+      return JSON.parse(this.decode(value));
+
+    } catch (error) {
+      return this.decode(value);
+    }
   }
 }
