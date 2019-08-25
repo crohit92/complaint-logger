@@ -83,7 +83,7 @@ export class ComplaintsController {
             /**
              * SMS to all the admins of the department that complaint has been resolved
              */
-            users.filter((u) => u.type === UserTypes.Admin && u.department.code === u.department.code).forEach(u => {
+            users.filter((u) => u.type === UserTypes.Admin && u.department.code === existingComplaint.department.code).forEach(u => {
                 sms(u.mobile,
                     `Complaint ID: ${existingComplaint._id} Rasised By:${existingComplaint.createdBy.name}, Resolved By: ${existingComplaint.assignedTo.name}`);
             })
@@ -93,13 +93,13 @@ export class ComplaintsController {
              * SMS to the Technician about complaint reopend
              */
             sms(existingComplaint.assignedTo.mobile,
-                `Complaint ID: ${existingComplaint._id} ReOpened by ${existingComplaint.createdBy.name}(${existingComplaint.createdBy.mobile})\n\nDescription:${existingComplaint.description}`);
+                `Complaint ID: ${existingComplaint._id} ReOpened by ${existingComplaint.createdBy.name}(${existingComplaint.createdBy.mobile})\nDescription:${existingComplaint.description}`);
             /**
              * SMS to all the admins of the department that complaint has been resolved
              */
-            users.filter((u) => u.type === UserTypes.Admin && u.department.code === u.department.code).forEach(u => {
+            users.filter((u) => u.type === UserTypes.Admin && existingComplaint.department.code === u.department.code).forEach(u => {
                 sms(u.mobile,
-                    `Complaint ID: ${existingComplaint._id} ReOpened by ${existingComplaint.createdBy.name}(${existingComplaint.createdBy.mobile})\n\nDescription:${existingComplaint.description}`);
+                    `Complaint ID: ${existingComplaint._id} ReOpened by ${existingComplaint.createdBy.name}(${existingComplaint.createdBy.mobile})\nDescription:${existingComplaint.description}`);
             })
         }
         (existingComplaint as any).status = +status;
