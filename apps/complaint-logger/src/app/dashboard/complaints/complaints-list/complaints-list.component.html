@@ -59,6 +59,8 @@
             <a *ngIf="complaint.assignedTo?.mobile" href=tel:{{complaint.assignedTo?.mobile}}>
                 <mat-icon>call</mat-icon>
             </a>
+            <img #img *ngIf="complaint.assignedTo" (click)="openImage(img,complaint.assignedTo.image)"
+                [src]="complaint.assignedTo.image.src">
         </div>
         <div class="complaint__close" *ngIf="resolved">
             <button color="warn" mat-button (click)="closeComplaint(complaint,complaintIndex)">Close</button>

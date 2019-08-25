@@ -110,12 +110,7 @@ export class ComplaintsListComponent implements OnInit {
 
   employeeSelected(complaint: Complaint, employee?: User): string | undefined {
     if (employee) {
-      const _complaint = { ...complaint };
-      delete _complaint['employeeSelected'];
-      delete _complaint['employees'];
-      delete _complaint['employeeSearchControl'];
-      _complaint.assignedTo = employee;
-      this.dataService.updateComplaint(_complaint).subscribe(() => {
+      this.dataService.assignComplaint(complaint._id, employee).subscribe(() => {
         complaint.assignedTo = employee;
         complaint.selectAssignee = false;
       });

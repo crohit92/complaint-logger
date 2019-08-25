@@ -1,5 +1,5 @@
-import { Schema, model } from 'mongoose';
-import { ComplaintStatus, UserTypes } from '@complaint-logger/models'
+import { Schema, model, Document } from 'mongoose';
+import { ComplaintStatus, UserTypes, Complaint } from '@complaint-logger/models'
 const ComplaintSchema = new Schema({
     createdBy: {
         loginId: {
@@ -59,4 +59,4 @@ const ComplaintSchema = new Schema({
         timestamps: true
     });
 
-export const Complaints = model('complaints', ComplaintSchema);
+export const Complaints = model<Document, Complaint>('complaints', ComplaintSchema);

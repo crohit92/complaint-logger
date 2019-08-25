@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ComplaintsListService } from './complaints-list.service';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { ComplaintStatus, Complaint, User } from '@complaint-logger/models';
-import { switchMap, map, shareReplay, filter } from 'rxjs/operators';
 import { PageEvent } from '@angular/material/paginator';
 
 import * as moment from 'moment';
 import { StorageService } from '../../../core/services/storage/storage.service';
 import { StorageKeys } from '../../../shared/constants/storage-keys';
 import { environment } from '../../../../environments/environment';
+import { FullScreenViewer } from 'iv-viewer';
 @Component({
   selector: 'complaint-logger-complaints-list',
   templateUrl: './complaints-list.component.html',
@@ -105,6 +105,12 @@ export class ComplaintsListComponent implements OnInit {
       this.resolvedComplaints.splice(complaintIndex, 1);
       this.resolvedComplaintsCount--;
     })
+  }
+  openImage(img: HTMLImageElement, image: { src: string; largeSrc: string }) {
+    const container = document.querySelector('#image-container');
+    const viewer = new FullScreenViewer(); //check options section for supported options
+
+    viewer.load(image.src, image.largeSrc);
   }
 }
 

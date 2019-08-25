@@ -47,6 +47,14 @@ export class ComplaintsListService {
         });
     }
 
+    assignComplaint(id: string, technician: User) {
+        return this.api.sendRequest({
+            method: 'put',
+            endpoint: `comaplints/${id}/assign`,
+            body: technician
+        });
+    }
+
     updateComplaint(complaint: Complaint) {
         return this.api.sendRequest({
             method: 'put',

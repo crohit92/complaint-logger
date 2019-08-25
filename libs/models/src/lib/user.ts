@@ -8,5 +8,6 @@ export interface User {
     type: UserTypes;
     loginId: string;
     name: string;
+    mobile: string;
     [key: string]: any;
 }

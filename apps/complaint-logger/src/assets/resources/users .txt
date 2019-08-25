@@ -16,8 +16,8 @@
     "admin": true,
     "loginId": "admin.electricity",
     "password": "123",
-    "mobile": "9501666933",
-    "name": "Tirat",
+    "mobile": "9646073913",
+    "name": "Rohit Chopra",
     "department": {
       "name": "Electricity",
       "code": "Electricity"
@@ -50,28 +50,20 @@
       "code": "Sewage"
     },
     "type": 5,
-    "userType": "Technician",
-    "image": {
-      "src": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=300",
-      "largeSrc": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=800"
-    }
+    "userType": "Technician"
   },
   {
     "admin": false,
-    "loginId": "rajnish.gupta",
+    "loginId": "technician-1.electricity",
     "password": "123",
-    "mobile": "9814336888",
-    "name": "Rajnish Gupta",
+    "mobile": "9646073913",
+    "name": "Technician-1 Electricity",
     "department": {
       "name": "Electricity",
       "code": "Electricity"
     },
     "type": 5,
-    "userType": "Technician",
-    "image": {
-      "src": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=300",
-      "largeSrc": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=800"
-    }
+    "userType": "Technician"
   },
   {
     "admin": false,
@@ -84,11 +76,7 @@
       "code": "Accounts"
     },
     "type": 5,
-    "userType": "Technician",
-    "image": {
-      "src": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=300",
-      "largeSrc": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=800"
-    }
+    "userType": "Technician"
   },
 
   {
@@ -102,11 +90,7 @@
       "code": "Sewage"
     },
     "type": 5,
-    "userType": "Technician",
-    "image": {
-      "src": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=300",
-      "largeSrc": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=800"
-    }
+    "userType": "Technician"
   },
   {
     "admin": false,
@@ -119,11 +103,7 @@
       "code": "Electricity"
     },
     "type": 5,
-    "userType": "Technician",
-    "image": {
-      "src": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=300",
-      "largeSrc": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=800"
-    }
+    "userType": "Technician"
   },
   {
     "admin": false,
@@ -136,19 +116,15 @@
       "code": "Accounts"
     },
     "type": 5,
-    "userType": "Technician",
-    "image": {
-      "src": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=300",
-      "largeSrc": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=800"
-    }
+    "userType": "Technician"
   },
 
   {
     "admin": false,
     "loginId": "rajnish.gupta",
     "password": "123",
-    "mobile": "9872456834",
-    "name": "Khalon Sir",
+    "mobile": "9646073913",
+    "name": "Rajnish Gupta",
     "department": {},
     "type": 3,
     "userType": "Resident"
@@ -165,10 +141,10 @@
   },
   {
     "admin": false,
-    "loginId": "chetan.marwaha",
+    "loginId": "suraj.kumar",
     "password": "123",
-    "mobile": "9501004679",
-    "name": "Chetan Marwaha",
+    "mobile": "9646073913",
+    "name": "Suraj Kumar",
     "department": {},
     "type": 1,
     "userType": "Staff"
@@ -215,10 +191,10 @@
   },
   {
     "admin": false,
-    "loginId": "sandeep.sood",
+    "loginId": "waazir.gayakvad",
     "password": "123",
-    "mobile": "9988080275",
-    "name": "Sandeep Sood",
+    "mobile": "9646073913",
+    "name": "Waazir Gayakvad",
     "department": {},
     "type": 2,
     "userType": "Hostler"

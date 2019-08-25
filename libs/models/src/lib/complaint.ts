@@ -5,10 +5,9 @@ import { ComplaintStatus } from './complaint-status';
 import { Comment } from "./comment";
 import { Model } from 'mongoose';
 import { User } from './user';
-
-export interface Complaint {
+export interface Complaint extends Model<any> {
     _id: string;
-    createdBy: Student;
+    createdBy: User;
     createdAt: number;
     mobile: string;
     department?: Department;

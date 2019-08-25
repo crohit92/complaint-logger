@@ -1,7 +1,8 @@
 import { Controller, Get, Post, Body, Query, Put, Param, Delete } from '@nestjs/common';
-import { Complaint, ComplaintStatus } from '@complaint-logger/models'
+import { Complaint, ComplaintStatus, UserTypes, User } from '@complaint-logger/models'
 import { Complaints } from "./complaints.model";
 import { Comment } from "@complaint-logger/models";
+import { users } from './users';
 @Controller('complaints')
 export class ComplaintsController {
     @Get('pending')
@@ -42,6 +43,13 @@ export class ComplaintsController {
     @Post()
     async createComplaint(@Body() complaint: Complaint) {
         const result = await Complaints.create(complaint);
+        /**
+         * SMS to admin on creation of complaint
+         */
+        users.filter(u => u.department.code === complaint.department.code && u.type === UserTypes.Admin).forEach(u => {
+            sms(u.mobile,
+                `Complaint ID: ${result._id} Raised By: ${complaint.createdBy.name}\nComplaint Details: ${complaint.description}`);
+        });
         return result;
 
     }
@@ -51,9 +59,56 @@ export class ComplaintsController {
         Object.assign(existingComplaint, complaint);
         return await existingComplaint.save();
     }
+
+    @Put(':id/assign')
+    async assignComplaint(@Param('id') id: string, @Body() technician: User) {
+        const existingComplaint = await Complaints.findById(id) as Complaint;
+        existingComplaint.assignedTo = technician;
+        await existingComplaint.save();
+        /**
+         * SMS To creator of complaint 
+         */
+        sms(existingComplaint.createdBy.mobile,
+            `Complaint ID: ${existingComplaint._id} Assigned To: ${technician.name}(${technician.mobile})`);
+        /**
+         * SMS to technician
+         */
+        sms(technician.mobile,
+            `Complaint ID: ${existingComplaint._id} Raised by: ${technician.name}(${technician.mobile})\nhas been assigned to you\n\nDescription:${existingComplaint.description}`);
+        return existingComplaint;
+    }
+
     @Put(':id/status')
     async updateComplaintStatus(@Param('id') id: string, @Query('status') status: ComplaintStatus) {
-        const existingComplaint = await Complaints.findById(id);
+        const existingComplaint = await Complaints.findById(id) as Complaint;
+        if (+status === ComplaintStatus.Resolved && (existingComplaint as any).status === ComplaintStatus.Pending) {
+            /**
+             * SMS to the Creator ofthe complaint that complaint has been resolved
+             */
+            sms(existingComplaint.createdBy.mobile,
+                `Complaint ID: ${existingComplaint._id} Resolved By: ${existingComplaint.assignedTo.name}`);
+            /**
+             * SMS to all the admins of the department that complaint has been resolved
+             */
+            users.filter((u) => u.type === UserTypes.Admin && u.department.code === u.department.code).forEach(u => {
+                sms(u.mobile,
+                    `Complaint ID: ${existingComplaint._id} Rasised By:${existingComplaint.createdBy.name}, Resolved By: ${existingComplaint.assignedTo.name}`);
+            })
+        }
+        if (+status === ComplaintStatus.Pending && (existingComplaint as any).status === ComplaintStatus.Resolved) {
+            /**
+             * SMS to the Technician about complaint reopend
+             */
+            sms(existingComplaint.assignedTo.mobile,
+                `Complaint ID: ${existingComplaint._id} ReOpened by ${existingComplaint.createdBy.name}(${existingComplaint.createdBy.mobile})\n\nDescription:${existingComplaint.description}`);
+            /**
+             * SMS to all the admins of the department that complaint has been resolved
+             */
+            users.filter((u) => u.type === UserTypes.Admin && u.department.code === u.department.code).forEach(u => {
+                sms(u.mobile,
+                    `Complaint ID: ${existingComplaint._id} ReOpened by ${existingComplaint.createdBy.name}(${existingComplaint.createdBy.mobile})\n\nDescription:${existingComplaint.description}`);
+            })
+        }
         (existingComplaint as any).status = +status;
         return await existingComplaint.save();
     }
