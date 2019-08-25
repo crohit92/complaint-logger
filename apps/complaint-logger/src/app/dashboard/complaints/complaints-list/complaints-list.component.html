@@ -52,6 +52,9 @@
     <div class="complaint__body">
         {{complaint.description}}
     </div>
+    <div class="complaint__id">
+        Complaint ID: {{complaint._id}}
+    </div>
     <mat-divider></mat-divider>
     <div class="complaint__status flex flex-justify-content-space-between">
         <div class="complaint__status-assigned-to">
@@ -59,7 +62,7 @@
             <a *ngIf="complaint.assignedTo?.mobile" href=tel:{{complaint.assignedTo?.mobile}}>
                 <mat-icon>call</mat-icon>
             </a>
-            <img #img *ngIf="complaint.assignedTo" (click)="openImage(img,complaint.assignedTo.image)"
+            <img *ngIf="complaint.assignedTo" (click)="openImage(complaint.assignedTo.image)"
                 [src]="complaint.assignedTo.image.src">
         </div>
         <div class="complaint__close" *ngIf="resolved">

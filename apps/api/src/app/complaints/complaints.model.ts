@@ -53,8 +53,19 @@ const ComplaintSchema = new Schema({
     assignedTo: {
         loginId: String,
         name: String,
-        mobile: String
-    }
+        mobile: String,
+        admin: Boolean,
+        department: {
+            _id: String,
+            code: String,
+            name: String
+        },
+        image: {
+            src: String,
+            largeSrc: String
+        }
+    },
+
 }, {
         timestamps: true
     });

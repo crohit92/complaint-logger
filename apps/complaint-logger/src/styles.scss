@@ -7,7 +7,7 @@
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
 @include mat-core();
-
+@import 'iv-viewer/dist/iv-viewer.css';
 @import './scss/mixins';
 @import './scss/apply-theme';
 @import './scss/utils';

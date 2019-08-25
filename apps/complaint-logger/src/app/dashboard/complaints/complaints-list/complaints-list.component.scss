@@ -27,6 +27,13 @@
                 padding: 1rem;
             }
 
+            &__id {
+                padding: 0.5rem 1rem;
+                font-size: 0.75rem;
+                color: mat-color($foreground, disabled-text);
+
+            }
+
             &__status {
                 padding: 0.5rem 1rem;
                 font-size: 0.75rem;
@@ -35,6 +42,10 @@
                 &-assigned-to {
                     display: flex;
                     align-items: center;
+
+                    img {
+                        width: 40px;
+                    }
 
                     mat-icon {
                         font-size: 1rem;

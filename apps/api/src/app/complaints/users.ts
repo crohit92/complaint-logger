@@ -50,7 +50,11 @@ export const users = [
             "code": "Sewage"
         },
         "type": 5,
-        "userType": "Technician"
+        "userType": "Technician",
+        "image": {
+            "src": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=300",
+            "largeSrc": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=800"
+        }
     },
     {
         "admin": false,
@@ -63,7 +67,11 @@ export const users = [
             "code": "Electricity"
         },
         "type": 5,
-        "userType": "Technician"
+        "userType": "Technician",
+        "image": {
+            "src": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=300",
+            "largeSrc": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=800"
+        }
     },
     {
         "admin": false,
@@ -76,7 +84,11 @@ export const users = [
             "code": "Accounts"
         },
         "type": 5,
-        "userType": "Technician"
+        "userType": "Technician",
+        "image": {
+            "src": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=300",
+            "largeSrc": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=800"
+        }
     },
 
     {
@@ -90,7 +102,11 @@ export const users = [
             "code": "Sewage"
         },
         "type": 5,
-        "userType": "Technician"
+        "userType": "Technician",
+        "image": {
+            "src": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=300",
+            "largeSrc": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=800"
+        }
     },
     {
         "admin": false,
@@ -103,7 +119,11 @@ export const users = [
             "code": "Electricity"
         },
         "type": 5,
-        "userType": "Technician"
+        "userType": "Technician",
+        "image": {
+            "src": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=300",
+            "largeSrc": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=800"
+        }
     },
     {
         "admin": false,
@@ -116,7 +136,11 @@ export const users = [
             "code": "Accounts"
         },
         "type": 5,
-        "userType": "Technician"
+        "userType": "Technician",
+        "image": {
+            "src": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=300",
+            "largeSrc": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=800"
+        }
     },
 
     {

@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Query, Put, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, Put, Param } from '@nestjs/common';
 import { Complaint, ComplaintStatus, UserTypes, User } from '@complaint-logger/models'
 import { Complaints } from "./complaints.model";
 import { Comment } from "@complaint-logger/models";
 import { users } from './users';
+import { sms } from '../utils/sms';
 @Controller('complaints')
 export class ComplaintsController {
     @Get('pending')
@@ -53,13 +54,6 @@ export class ComplaintsController {
         return result;
 
     }
-    @Put(':id')
-    async updateComplaint(@Param('id') id: string, @Body() complaint: Complaint) {
-        const existingComplaint = await Complaints.findById(id);
-        Object.assign(existingComplaint, complaint);
-        return await existingComplaint.save();
-    }
-
     @Put(':id/assign')
     async assignComplaint(@Param('id') id: string, @Body() technician: User) {
         const existingComplaint = await Complaints.findById(id) as Complaint;
@@ -74,10 +68,9 @@ export class ComplaintsController {
          * SMS to technician
          */
         sms(technician.mobile,
-            `Complaint ID: ${existingComplaint._id} Raised by: ${technician.name}(${technician.mobile})\nhas been assigned to you\n\nDescription:${existingComplaint.description}`);
+            `Complaint ID: ${existingComplaint._id} Raised by: ${existingComplaint.createdBy.name}(${existingComplaint.createdBy.mobile})\nhas been assigned to you\nDescription:${existingComplaint.description}`);
         return existingComplaint;
     }
-
     @Put(':id/status')
     async updateComplaintStatus(@Param('id') id: string, @Query('status') status: ComplaintStatus) {
         const existingComplaint = await Complaints.findById(id) as Complaint;
@@ -112,6 +105,14 @@ export class ComplaintsController {
         (existingComplaint as any).status = +status;
         return await existingComplaint.save();
     }
+    @Put(':id')
+    async updateComplaint(@Param('id') id: string, @Body() complaint: Complaint) {
+        const existingComplaint = await Complaints.findById(id);
+        Object.assign(existingComplaint, complaint);
+        return await existingComplaint.save();
+    }
+
+
 
 
     @Post(':id/comments')

@@ -106,11 +106,11 @@ export class ComplaintsListComponent implements OnInit {
       this.resolvedComplaintsCount--;
     })
   }
-  openImage(img: HTMLImageElement, image: { src: string; largeSrc: string }) {
-    const container = document.querySelector('#image-container');
+  openImage(image: { src: string; largeSrc: string }) {
     const viewer = new FullScreenViewer(); //check options section for supported options
 
-    viewer.load(image.src, image.largeSrc);
+    viewer.show(image.src, image.largeSrc);
+
   }
 }
 

@@ -50,7 +50,7 @@ export class ComplaintsListService {
     assignComplaint(id: string, technician: User) {
         return this.api.sendRequest({
             method: 'put',
-            endpoint: `comaplints/${id}/assign`,
+            endpoint: `complaints/${id}/assign`,
             body: technician
         });
     }
