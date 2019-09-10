@@ -6,3 +6,4 @@ export * from './lib/complaint-status';
 export * from './lib/user-types';
 export * from './lib/user';
 export * from './lib/comment';
+export * from './lib/credentials';
