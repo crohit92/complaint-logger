@@ -1,14 +1,10 @@
 [
   {
-    "name": "Sewage",
-    "code": "Sewage"
-  },
-  {
     "name": "Electricity",
-    "code": "Electricity"
+    "code": 5
   },
   {
-    "name": "Accounts",
-    "code": "Accounts"
+    "name": "Civil",
+    "code": 2
   }
 ]

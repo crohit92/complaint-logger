@@ -2092,26 +2092,26 @@
   },
   {
     "admin": true,
-    "loginId": "admin.electricity",
+    "loginId": "9501666933",
     "password": "123",
     "mobile": "9501666933",
     "name": "Tirat",
     "department": {
       "name": "Electricity",
-      "code": "Electricity"
+      "code": 5
     },
     "type": 4,
     "userType": "Admin"
   },
   {
     "admin": true,
-    "loginId": "admin.accounts",
+    "loginId": "9988080275",
     "password": "123",
-    "mobile": "9646073913",
-    "name": "Rohit Chopra",
+    "mobile": "9988080275",
+    "name": "Sandeep Sood",
     "department": {
-      "name": "Accounts",
-      "code": "Accounts"
+      "name": "Civil",
+      "code": 2
     },
     "type": 4,
     "userType": "Admin"
@@ -2142,7 +2142,7 @@
     "name": "Rajnish Gupta",
     "department": {
       "name": "Electricity",
-      "code": "Electricity"
+      "code": 5
     },
     "type": 5,
     "userType": "Technician",
@@ -2194,7 +2194,7 @@
     "name": "Technician-2 Electricity",
     "department": {
       "name": "Electricity",
-      "code": "Electricity"
+      "code": 5
     },
     "type": 5,
     "userType": "Technician",

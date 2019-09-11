@@ -20,6 +20,21 @@ export class LoginComponent implements OnInit {
   departments = this.dataService.departments;
   userTypes: { label: string; code: UserTypes; admin: boolean }[] = [
     {
+      label: 'Admin',
+      code: UserTypes.Admin,
+      admin: true
+    },
+    {
+      label: 'Technician',
+      code: UserTypes.Technician,
+      admin: false
+    },
+    {
+      label: 'Student',
+      code: UserTypes.Student,
+      admin: false
+    },
+    {
       label: 'Hostler',
       code: UserTypes.Hostler,
       admin: false
@@ -34,21 +49,6 @@ export class LoginComponent implements OnInit {
       code: UserTypes.Resident,
       admin: false
     },
-    {
-      label: 'Student',
-      code: UserTypes.Student,
-      admin: false
-    },
-    {
-      label: 'Admin',
-      code: UserTypes.Admin,
-      admin: true
-    },
-    {
-      label: 'Technician',
-      code: UserTypes.Technician,
-      admin: false
-    }
   ]
   constructor(private readonly fb: FormBuilder,
     private readonly storage: StorageService,

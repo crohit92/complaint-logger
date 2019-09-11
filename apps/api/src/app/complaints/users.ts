@@ -2098,20 +2098,20 @@ export const users = [
         "name": "Tirat",
         "department": {
             "name": "Electricity",
-            "code": "Electricity"
+            "code": 5
         },
         "type": 4,
         "userType": "Admin"
     },
     {
         "admin": true,
-        "loginId": "admin.accounts",
+        "loginId": "admin.civil",
         "password": "123",
-        "mobile": "9646073913",
-        "name": "Rohit Chopra",
+        "mobile": "9988080275",
+        "name": "Sandeep Sood",
         "department": {
-            "name": "Accounts",
-            "code": "Accounts"
+            "name": "Civil",
+            "code": 2
         },
         "type": 4,
         "userType": "Admin"
@@ -2142,7 +2142,7 @@ export const users = [
         "name": "Rajnish Gupta",
         "department": {
             "name": "Electricity",
-            "code": "Electricity"
+            "code": 5
         },
         "type": 5,
         "userType": "Technician",
@@ -2194,7 +2194,7 @@ export const users = [
         "name": "Technician-2 Electricity",
         "department": {
             "name": "Electricity",
-            "code": "Electricity"
+            "code": 5
         },
         "type": 5,
         "userType": "Technician",
