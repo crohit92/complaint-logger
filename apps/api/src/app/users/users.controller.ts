@@ -23,17 +23,23 @@ export class UsersController {
             if (err) throw new Error(err);
             try {
                 const parsedBody = JSON.parse(body);
+                parsedBody.loginId = user.loginId;
                 console.log(res);
                 switch (user.type) {
                     case UserTypes.Student:
-                        return res.json(this.getStudent(parsedBody));
+                        return res.send(this.getStudent(parsedBody));
+                    case UserTypes.Admin:
+                        return res.send(this.getAdmin(parsedBody));
                 }
             } catch (error) {
                 console.error('Error');
                 console.log(error);
-                res.status(400).json(error);
+                res.status(400).send(error);
             }
         });
+    }
+    getAdmin(user: any): User {
+        return user;
     }
 
     getStudent(user: User): User {
