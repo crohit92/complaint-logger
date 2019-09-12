@@ -2070,8 +2070,8 @@ export const users = [
         "mobile": "9815161739",
         "password": "123",
         "loginId": "9815161739",
-        "admin": false,
-        "type": 5,
+        "admin": true,
+        "type": 4,
         "image": {
             "src": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=300",
             "largeSrc": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=800"
@@ -2092,7 +2092,7 @@ export const users = [
     },
     {
         "admin": true,
-        "loginId": "admin.electricity",
+        "loginId": "9501666933",
         "password": "123",
         "mobile": "9501666933",
         "name": "Tirat",
@@ -2105,7 +2105,7 @@ export const users = [
     },
     {
         "admin": true,
-        "loginId": "admin.civil",
+        "loginId": "9988080275",
         "password": "123",
         "mobile": "9988080275",
         "name": "Sandeep Sood",
@@ -2298,8 +2298,8 @@ export const users = [
         "mobile": "9988080275",
         "name": "Sandeep Sood",
         "department": {},
-        "type": 2,
-        "userType": "Hostler"
+        "type": 1,
+        "userType": "Staff"
     },
     {
         "admin": false,
