@@ -74,6 +74,8 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.dataService.login(this.loginForm.value).subscribe(user => {
+      this.storage.set(StorageKeys.token, user.token);
+      delete user.token;
       this.storage.set(StorageKeys.user, user);
       if (user.type === UserTypes.Admin || user.type === UserTypes.Technician) {
         this.router.navigate(['/admin'])

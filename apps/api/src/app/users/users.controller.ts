@@ -2,6 +2,8 @@ import { Controller, Post, Body, Res, Response } from "@nestjs/common";
 import { Credentials, User, UserTypes } from '@complaint-logger/models';
 import * as request from 'request';
 import { environment } from '../../environments/environment';
+import * as jwt from 'jsonwebtoken';
+import { readFileSync } from 'fs';
 @Controller('users')
 export class UsersController {
     @Post('login')
@@ -26,19 +28,34 @@ export class UsersController {
                 const parsedBody = JSON.parse(body);
                 if (parsedBody.RespValue === "True") {
                     parsedBody.loginId = user.loginId;
-                    console.log(res);
+                    const privateKey = readFileSync(__dirname + '/assets/private.pem');
+                    let response;
+
                     switch (user.type) {
                         case UserTypes.Student:
-                            return res.send(this.getStudent(parsedBody));
+                            response = (this.getStudent(parsedBody));
+                            break;
                         case UserTypes.Department:
-                            return res.send(this.getDepartment(parsedBody));
+                            response = (this.getDepartment(parsedBody));
+                            break;
                         case UserTypes.Employee:
-                            return res.send(this.getEmployee(parsedBody));
+                            response = (this.getEmployee(parsedBody));
+                            break;
                         case UserTypes.Admin:
-                            return res.send({ ...this.getEmployee(parsedBody), admin: true });
+                            response = ({ ...this.getEmployee(parsedBody), admin: true, type: UserTypes.Admin });
+                            break;
                         case UserTypes.Technician:
-                            return res.send(this.getEmployee(parsedBody));
+                            response = ({ ...this.getEmployee(parsedBody), type: UserTypes.Technician });
+                            break;
                     }
+                    const token = jwt.sign(response,
+                        privateKey,
+                        {
+                            algorithm: 'RS256',
+                            expiresIn: '1d'
+                        }
+                    )
+                    res.send({ ...response, token });
                 }
                 else {
                     res.status(401).send({ message: "Invalid Credentials" });

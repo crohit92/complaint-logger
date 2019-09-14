@@ -10,19 +10,46 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app/app.module';
+import * as jwt from 'jsonwebtoken';
+import { readFileSync } from 'fs';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestFastifyApplication>(
+  const app = await NestFactory.create(
     AppModule,
-    new FastifyAdapter({
+    {
       logger: console
-    })
+    }
   );
-
   app.enableCors({
     origin: '*',
-    methods: '*'
+    methods: '*',
+    allowedHeaders: '*'
   });
+  app.use((req, res, next) => {
+    if (req.url.indexOf('login') === -1) {
+      const headerValue = req.headers.authorization;
+      if (headerValue && headerValue.length) {
+        const token = headerValue.replace('Bearer ', '');
+        const publicKey = readFileSync(__dirname + '/assets/public.pem');
+        jwt.verify(token, publicKey, (err, decoded) => {
+          if (err) {
+            res.status(401).send({
+              message: 'UnAuthorized'
+            })
+          } else {
+            next();
+          }
+        })
+      } else {
+        res.status(401).send({
+          message: 'UnAuthorized'
+        })
+      }
+    } else {
+      next();
+    }
+  })
+
   const globalPrefix = 'api/v1';
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3333;

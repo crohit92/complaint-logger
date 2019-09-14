@@ -5,6 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { timeout } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { StorageService } from '../storage/storage.service';
+import { StorageKeys } from '../../../shared/constants/storage-keys';
 
 
 export interface Request {
@@ -24,7 +26,8 @@ export const appVersion = '1.0.1';
 })
 export class ApiService {
     private apiBase: string;
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient,
+        private readonly storage: StorageService) {
         this.apiBase = environment.apiBase;
     }
 
@@ -38,6 +41,9 @@ export class ApiService {
             finalUrl,
             {
                 body: request.body || request.formData,
+                headers: {
+                    'Authorization': `Bearer ${this.storage.get(StorageKeys.token)}`
+                }
             }).pipe(
                 timeout(10000)
             );
