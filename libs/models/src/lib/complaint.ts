@@ -7,6 +7,7 @@ import { Model } from 'mongoose';
 import { User } from './user';
 export interface Complaint extends Model<any> {
     _id: string;
+    id: string;
     createdBy: User;
     createdAt: number;
     mobile: string;

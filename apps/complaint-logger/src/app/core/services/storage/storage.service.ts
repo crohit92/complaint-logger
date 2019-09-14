@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, BehaviorSubject, ReplaySubject, of } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { CoreModule } from '../../core.module';
 
 @Injectable({

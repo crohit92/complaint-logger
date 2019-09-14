@@ -32,7 +32,6 @@ export class ComplaintsListComponent implements OnInit {
   constructor(private readonly dataService: ComplaintsListService,
     private readonly storage: StorageService) {
     this.loadComplaints(this.paginationOptions, ComplaintStatus.Pending, this.pendingComplaints);
-    this.loadComplaintsCount();
   }
 
   loadComplaintsCount() {

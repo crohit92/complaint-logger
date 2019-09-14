@@ -38,10 +38,10 @@
 <ng-template #complaintTemplate let-complaint let-resolved="resolved" let-complaintIndex="complaintIndex">
     <div class="complaint__header">
         <div class="complaint__header-department">
-            {{complaint.department?.name}}
+            {{complaint.department?.name}} - {{complaint.complaintType}}
         </div>
         <div class="complaint__header-location">
-            {{complaint.building?.label}} - {{complaint.room}}
+            {{complaint.building}} - Room: {{complaint.room}}
 
         </div>
         <div class="complaint__header-created-at">
@@ -53,7 +53,7 @@
         {{complaint.description}}
     </div>
     <div class="complaint__id">
-        Complaint ID: {{complaint._id}}
+        Complaint ID: {{complaint.id}}
     </div>
     <mat-divider></mat-divider>
     <div class="complaint__status flex flex-justify-content-space-between">

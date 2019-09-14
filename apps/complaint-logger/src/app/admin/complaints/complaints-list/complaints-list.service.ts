@@ -18,9 +18,9 @@ export class ComplaintsListService {
             endpoint: `complaints/count/${status === ComplaintStatus.Pending ? 'pending' : (status === ComplaintStatus.Resolved ? 'resolved' : 'done')}`,
             queryParams: {
                 ...(this.user.admin ? {
-                    departmentCode: this.user.department.code
+                    department: this.user.department.name
                 } : {
-                        departmentCode: this.user.department.code,
+                        department: this.user.department.name,
                         assignedTo: this.user.loginId
                     })
             }
@@ -39,7 +39,7 @@ export class ComplaintsListService {
                 pageSize,
                 pageNumber,
                 ...(this.user.admin ? {
-                    departmentCode: this.user.department.code
+                    department: this.user.department.name
                 } : {
                         assignedTo: this.user.loginId
                     })

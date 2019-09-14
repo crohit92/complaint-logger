@@ -43,6 +43,7 @@ export class ComplaintsController {
 
     @Post()
     async createComplaint(@Body() complaint: Complaint) {
+        complaint.id = complaint.department.name.substr(0, 1) + Date.now();
         const result = await Complaints.create(complaint);
         /**
          * SMS to admin on creation of complaint
@@ -127,7 +128,7 @@ export class ComplaintsController {
     private async getComplaints(
         status: ComplaintStatus,
         raisedById: string,
-        departmentCode: string,
+        department: string,
         assignedTo: string,
         pageNumber: string,
         pageSize: string
@@ -135,20 +136,20 @@ export class ComplaintsController {
         return await Complaints.find({
             'status': status,
             ...(raisedById ? { 'createdBy.loginId': raisedById } : {}),
-            ...(departmentCode ? { 'department.code': departmentCode } : {}),
+            ...(department ? { 'department.name': department } : {}),
             ...(assignedTo ? { 'assignedTo.loginId': assignedTo } : {})
         }).sort({ createdAt: -1 }).skip(((+pageNumber) - 1) * (+pageSize)).limit(+pageSize);
     }
     private async getComplaintsCount(
         status: ComplaintStatus,
         raisedById: string,
-        departmentCode: string,
+        department: string,
         assignedTo: string
     ) {
         return await Complaints.count({
             'status': status,
             ...(raisedById ? { 'createdBy.loginId': raisedById } : {}),
-            ...(departmentCode ? { 'department.code': departmentCode } : {}),
+            ...(department ? { 'department.name': department } : {}),
             ...(assignedTo ? { 'assignedTo.loginId': assignedTo } : {})
         })
     }

@@ -17,6 +17,7 @@ const ComplaintSchema = new Schema({
             type: Number
         }
     },
+    id: { type: String, required: true },
     department: {
         name: String,
         code: Number

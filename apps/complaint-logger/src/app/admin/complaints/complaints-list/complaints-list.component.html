@@ -52,10 +52,11 @@
     let-closed="closed">
     <div class="complaint__header">
         <div class="complaint__header-department">
-            {{complaint.building?.label}}
+            {{complaint.building}} - Room: {{complaint.room}}
         </div>
         <div class="complaint__header-location">
-            {{complaint.room}}
+            {{complaint.complaintType}}
+
         </div>
         <div class="complaint__header-created-at">
             {{complaint.createdOffset}}
@@ -65,7 +66,7 @@
         {{complaint.description}}
     </div>
     <div class="complaint__id">
-        Complaint ID: {{complaint._id}}
+        Complaint ID: {{complaint.id}}
     </div>
     <mat-divider></mat-divider>
     <div class="complaint__status">
