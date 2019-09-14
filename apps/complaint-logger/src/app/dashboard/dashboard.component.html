@@ -19,11 +19,13 @@
     </mat-sidenav>
     <mat-sidenav-content class="content">
         <mat-toolbar>
-            <button mat-button (click)="sidenav.toggle()">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <img src="assets/images/logo.jpg" alt="" srcset="">
-            <span>Complaint Logger</span>
+            <div class="toolbar flex flex-wrap-wrap flex-align-items-center">
+                <button mat-button (click)="sidenav.toggle()">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <img src="assets/images/logo.jpg" alt="" srcset="">
+                <span style="font-size: 0.9rem;">Welcome {{user.name}} to {{userType}} dashboard</span>
+            </div>
         </mat-toolbar>
         <div class="content__outlet">
             <router-outlet></router-outlet>
