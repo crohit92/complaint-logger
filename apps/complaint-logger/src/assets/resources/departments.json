@@ -1,14 +1,22 @@
 [
   {
-    "name": "Sewage",
-    "code": "Sewage"
-  },
-  {
     "name": "Electricity",
-    "code": "Electricity"
+    "code": 5,
+    "complaintTypes": ["AC/Cooler/Heater/Blower", "Electricals"]
   },
   {
-    "name": "Accounts",
-    "code": "Accounts"
+    "name": "Civil",
+    "code": 2,
+    "complaintTypes": [
+      "Carpenter",
+      "Masson",
+      "Painter/Whitewasher",
+      "Welder",
+      "Plumber/Fitter",
+      "Furniture Repair",
+      "Sewer man",
+      "Writer Painter",
+      "Cane Weaver"
+    ]
   }
 ]

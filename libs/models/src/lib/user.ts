@@ -9,5 +9,6 @@ export interface User {
     loginId: string;
     name: string;
     mobile: string;
+    photoUrl?: string;
     [key: string]: any;
 }

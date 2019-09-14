@@ -1,5 +1,5 @@
 export interface Department {
-    _id: string;
-    code: string;
+    code?: string;
     name: string;
+    course_designation?: string;
 }

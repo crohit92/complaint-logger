@@ -43,7 +43,7 @@ export class RaiseComplaintComponent implements OnInit {
     this.complaintForm = this.fb.group({
       department: [undefined, [Validators.required]],
       description: ['', [Validators.required, Validators.minLength(10)]],
-      building: [this.user.type !== UserTypes.Staff ? undefined : ({
+      building: [this.user.type !== UserTypes.Employee ? undefined : ({
         label: 'Department 1'
       }), [Validators.required]],
       room: ['']
@@ -69,7 +69,7 @@ export class RaiseComplaintComponent implements OnInit {
       case UserTypes.Student:
         this.labels = { buildingName: 'Department Name', roomName: 'Room No.' };
         break;
-      case UserTypes.Staff:
+      case UserTypes.Employee:
         this.labels = { buildingName: 'Department Name', roomName: 'Location' };
         break;
       case UserTypes.Resident:

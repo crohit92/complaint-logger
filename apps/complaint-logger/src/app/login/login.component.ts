@@ -20,26 +20,6 @@ export class LoginComponent implements OnInit {
   departments = this.dataService.departments;
   userTypes: { label: string; code: UserTypes; admin: boolean }[] = [
     {
-      label: 'Hostler',
-      code: UserTypes.Hostler,
-      admin: false
-    },
-    {
-      label: 'Staff',
-      code: UserTypes.Staff,
-      admin: false
-    },
-    {
-      label: 'Resident',
-      code: UserTypes.Resident,
-      admin: false
-    },
-    {
-      label: 'Student',
-      code: UserTypes.Student,
-      admin: false
-    },
-    {
       label: 'Admin',
       code: UserTypes.Admin,
       admin: true
@@ -48,7 +28,22 @@ export class LoginComponent implements OnInit {
       label: 'Technician',
       code: UserTypes.Technician,
       admin: false
-    }
+    },
+    {
+      label: 'Student',
+      code: UserTypes.Student,
+      admin: false
+    },
+    {
+      label: 'Department',
+      code: UserTypes.Department,
+      admin: false
+    },
+    {
+      label: 'Employee',
+      code: UserTypes.Employee,
+      admin: false
+    },
   ]
   constructor(private readonly fb: FormBuilder,
     private readonly storage: StorageService,
@@ -65,7 +60,7 @@ export class LoginComponent implements OnInit {
   initLoginForm() {
     this.loginForm = this.fb.group({
       admin: [false, [Validators.required]],
-      department: [undefined],
+      // department: [undefined],
       type: [undefined, [Validators.required]],
       loginId: ['', [Validators.required]],
       password: ['', [Validators.required]]
