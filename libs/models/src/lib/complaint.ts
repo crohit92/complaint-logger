@@ -11,9 +11,9 @@ export interface Complaint extends Model<any> {
     createdAt: number;
     mobile: string;
     department?: Department;
+    complaintType: string;
     description: string;
-    buildingId: string;
-    building?: Building; //dd
+    building: string;
     room?: string;
     comments: Comment[];
     status: ComplaintStatus;

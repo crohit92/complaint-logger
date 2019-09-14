@@ -13,6 +13,7 @@ export class RaiseComplaintService {
 
     raiseComplaint(complaint: Complaint) {
         complaint.createdBy = this.storage.get(StorageKeys.user) as User;
+        delete (complaint.department as any).complaintTypes;
         return this.api.sendRequest({
             method: 'post',
             body: complaint,

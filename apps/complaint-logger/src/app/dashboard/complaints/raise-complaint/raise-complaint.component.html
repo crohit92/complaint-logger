@@ -7,22 +7,15 @@
                     Where are you facing the issue ?
                 </mat-expansion-panel-header>
 
-                <mat-form-field *ngIf="user.type !== UserType.Staff">
-                    <mat-label>{{labels.buildingName}}</mat-label>
-                    <mat-select formControlName="building">
-                        <mat-option *ngFor="let building of (buildings)" [value]="building">
-                            {{building.label}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field *ngIf="user.type === UserType.Staff">
-                    <input type="text" matInput [value]="complaintForm.get('building').value.label" disabled readonly>
+                <mat-form-field>
+                    <input type="text" placeholder="Your department" matInput
+                        [value]="complaintForm.get('building').value" disabled readonly>
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput type="text" formControlName="room" [placeholder]="labels.roomName">
+                    <input matInput type="text" formControlName="room" placeholder="Room No.">
                 </mat-form-field>
                 <div class="actions">
-                    <button mat-button [disabled]="complaintForm.get('building').invalid"
+                    <button mat-button [disabled]="complaintForm.get('room').invalid"
                         (click)="complaintFormStep = 1">Next</button>
                 </div>
             </mat-expansion-panel>
@@ -32,18 +25,29 @@
                 </mat-expansion-panel-header>
 
                 <mat-form-field>
-                    <mat-label>Complaint Type</mat-label>
-                    <mat-select formControlName="department">
+                    <mat-label>Select department</mat-label>
+                    <mat-select formControlName="department"
+                        (selectionChange)="complaintForm.get('complaintType').reset()">
                         <mat-option *ngFor="let department of (departments | async)" [value]="department">
                             {{department.name}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Complaint type</mat-label>
+                    <mat-select formControlName="complaintType">
+                        <mat-option
+                            *ngFor="let complaintType of (complaintForm.get('department').value?.complaintTypes)"
+                            [value]="complaintType">
+                            {{complaintType}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
                 <div class="actions">
                     <button mat-button (click)="complaintFormStep = 0">Back</button>
-
-                    <button [disabled]="complaintForm.get('department').invalid" mat-button
-                        (click)="complaintFormStep = 2">Next</button>
+                    <button
+                        [disabled]="complaintForm.get('department').invalid || complaintForm.get('complaintType').invalid"
+                        mat-button (click)="complaintFormStep = 2">Next</button>
                 </div>
             </mat-expansion-panel>
             <mat-expansion-panel [expanded]="complaintFormStep===2" [disabled]="complaintFormStep!==2">

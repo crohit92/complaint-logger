@@ -12,11 +12,14 @@ const ComplaintSchema = new Schema({
         },
         mobile: {
             type: String
+        },
+        type: {
+            type: Number
         }
     },
     department: {
         name: String,
-        code: String
+        code: Number
     },
     description: {
         type: String,
@@ -24,7 +27,11 @@ const ComplaintSchema = new Schema({
         minlength: 10
     },
     building: {
-        label: String
+        type: String,
+        required: true
+    },
+    complaintType: {
+        type: String
     },
     room: String,
     resolution: {
@@ -36,7 +43,7 @@ const ComplaintSchema = new Schema({
         by: String,
         userType: {
             type: Number,
-            enum: [UserTypes.Hostler, UserTypes.Resident, UserTypes.Staff, UserTypes.Student, UserTypes.Admin, UserTypes.Technician],
+            enum: [UserTypes.Department, UserTypes.Employee, UserTypes.Student, UserTypes.Admin, UserTypes.Technician],
             required: true
         },
         timestamp: {
@@ -61,8 +68,7 @@ const ComplaintSchema = new Schema({
             name: String
         },
         image: {
-            src: String,
-            largeSrc: String
+            src: String
         }
     },
 

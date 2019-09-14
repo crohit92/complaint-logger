@@ -22,10 +22,6 @@ export class RaiseComplaintComponent implements OnInit {
   currentUser = this.storage.get(StorageKeys.user) as User;
   buildings: Building[] = [];
   complaintFormStep = 0;
-  labels: {
-    buildingName: string;
-    roomName: string;
-  }
   constructor(private readonly fb: FormBuilder,
     private readonly dataService: RaiseComplaintService,
     private readonly router: Router,
@@ -36,17 +32,15 @@ export class RaiseComplaintComponent implements OnInit {
 
   ngOnInit() {
     this.initComplaintForm();
-    this.mapLabelsToUserType();
   }
 
   initComplaintForm() {
     this.complaintForm = this.fb.group({
       department: [undefined, [Validators.required]],
+      complaintType: ['', [Validators.required]],
       description: ['', [Validators.required, Validators.minLength(10)]],
-      building: [this.user.type !== UserTypes.Employee ? undefined : ({
-        label: 'Department 1'
-      }), [Validators.required]],
-      room: ['']
+      building: [this.currentUser.department!.name, [Validators.required]],
+      room: ['', [Validators.required]]
     });
   }
 
@@ -57,24 +51,6 @@ export class RaiseComplaintComponent implements OnInit {
           relativeTo: this.route
         })
       });
-    }
-  }
-
-
-  mapLabelsToUserType() {
-    switch (this.currentUser.type) {
-      case UserTypes.Hostler:
-        this.labels = { buildingName: 'Hostel Name', roomName: 'Room No.' };
-        break;
-      case UserTypes.Student:
-        this.labels = { buildingName: 'Department Name', roomName: 'Room No.' };
-        break;
-      case UserTypes.Employee:
-        this.labels = { buildingName: 'Department Name', roomName: 'Location' };
-        break;
-      case UserTypes.Resident:
-        this.labels = { buildingName: 'House Type', roomName: 'Room/Flat No.' };
-        break;
     }
   }
 }
