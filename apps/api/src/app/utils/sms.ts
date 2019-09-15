@@ -1,7 +1,6 @@
 import { get } from 'http';
 import { environment } from '../../environments/environment';
 export function sms(to: string, msg: string) {
-    msg = msg.substr(0, 140);
     send(environment.production ? to : '9646073913', msg);
     console.warn(`Sending SMS to: ${to}\nMsg: ${msg}`);
 }
