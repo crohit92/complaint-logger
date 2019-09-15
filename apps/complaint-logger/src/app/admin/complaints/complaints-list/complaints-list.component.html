@@ -112,24 +112,27 @@
                     {{comment.by}}: {{comment.description}}
                 </div>
             </div>
-            <mat-slide-toggle *ngIf="!resolved && !closed" #toggle (change)="complaint.addRemarks = true"
-                [disabled]="complaint.status === ComplaintStatus.Resolved"
-                [checked]="complaint.status === ComplaintStatus.Resolved">Mark as done
-            </mat-slide-toggle>
+            <div *ngIf="!resolved && !closed">
+                <mat-slide-toggle #toggle="matSlideToggle" (change)="complaint.addRemarks = toggle.checked"
+                    [disabled]="complaint.status === ComplaintStatus.Resolved"
+                    [checked]="complaint.status === ComplaintStatus.Resolved">Mark as done
+                </mat-slide-toggle>
+
+                <div class="remarks flex" *ngIf="complaint.addRemarks">
+                    <mat-form-field>
+                        <textarea matInput #commentEl placeholder="Comments" required></textarea>
+                    </mat-form-field>
+                    <button mat-button color="primary" [disabled]="!commentEl.value.length"
+                        (click)="markComplaintAsResolved(complaint, commentEl, complaintIndex, toggle)">
+                        <mat-icon>check</mat-icon>
+                    </button>
+                    <button mat-button color="warn" (click)="complaint.addRemarks = false; toggle.checked = false;">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
             <div class="complaint__close" *ngIf="resolved && complaint.canClose">
                 <button color="warn" mat-button (click)="closeComplaint(complaint,complaintIndex)">Close</button>
-            </div>
-            <div class="remarks flex" *ngIf="complaint.addRemarks">
-                <mat-form-field>
-                    <textarea matInput #commentEl placeholder="Comments" required></textarea>
-                </mat-form-field>
-                <button mat-button color="primary" [disabled]="!commentEl.value.length"
-                    (click)="markComplaintAsResolved(complaint, commentEl, complaintIndex, toggle)">
-                    <mat-icon>check</mat-icon>
-                </button>
-                <button mat-button color="warn" (click)="complaint.addRemarks = false; toggle.checked = false;">
-                    <mat-icon>close</mat-icon>
-                </button>
             </div>
         </div>
     </div>
