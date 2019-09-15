@@ -21,9 +21,7 @@ async function bootstrap() {
     }
   );
   app.enableCors({
-    origin: '*',
-    methods: '*',
-    allowedHeaders: '*'
+    origin: '*'
   });
   app.use((req, res, next) => {
     if (req.url.indexOf('login') === -1) {
