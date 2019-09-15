@@ -12,6 +12,12 @@
 
             &__header {
                 display: flex;
+                flex-direction: column;
+
+                @include respond(tab-land) {
+                    flex-direction: row;
+                }
+
                 padding: 0.5rem;
                 justify-content: space-between;
                 align-items: center;
@@ -19,7 +25,7 @@
                 color: mat-color($accent, default-contrast);
 
                 &>* {
-                    padding: 0 0.25rem;
+                    padding: 0.25rem;
                 }
             }
 

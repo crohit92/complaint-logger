@@ -14,10 +14,7 @@ export class ComplaintsListService {
         const user = this.storage.get(StorageKeys.user) as User;
         return this.api.sendRequest({
             method: 'get',
-            endpoint: `complaints/count/${status === ComplaintStatus.Pending ? 'pending' : 'resolved'}`,
-            queryParams: {
-                raisedById: user.loginId
-            }
+            endpoint: `complaints/count/${status === ComplaintStatus.Pending ? 'pending' : 'resolved'}`
         })
     }
     complaints({ pageSize,
@@ -32,8 +29,7 @@ export class ComplaintsListService {
             endpoint: `complaints/${status === ComplaintStatus.Pending ? 'pending' : 'resolved'}`,
             queryParams: {
                 pageSize,
-                pageNumber,
-                raisedById: user.loginId
+                pageNumber
             }
         })
     }

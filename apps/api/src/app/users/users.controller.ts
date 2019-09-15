@@ -141,7 +141,9 @@ export class UsersController {
             name: user.Emp_Name,
             type: UserTypes.Employee,
             mobile: user.Emp_MobileNo,
-            photoUrl: user.Emp_PhotoURL,
+            image: {
+                src: user.Emp_PhotoURL === '-' ? 'https://uwosh.edu/facilities/wp-content/uploads/sites/105/2018/09/no-photo.png' : user.Emp_PhotoURL
+            },
             department: {
                 name: user.Emp_DeptName,
                 course_designation: user.Emp_Designation

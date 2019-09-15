@@ -1,6 +1,6 @@
 [
   {
-    "name": "Electricity",
+    "name": "Electrical",
     "code": 5,
     "complaintTypes": ["AC/Cooler/Heater/Blower", "Electricals"]
   },

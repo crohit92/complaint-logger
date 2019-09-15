@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Query, Put, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, Put, Param, Req } from '@nestjs/common';
 import { Complaint, ComplaintStatus, UserTypes, User } from '@complaint-logger/models'
 import { Complaints } from "./complaints.model";
 import { Comment } from "@complaint-logger/models";
@@ -7,32 +7,32 @@ import { sms } from '../utils/sms';
 @Controller('complaints')
 export class ComplaintsController {
     @Get('pending')
-    async pendingComplaints(@Query('pageNumber') pageNumber: string, @Query('pageSize') pageSize: string, @Query('raisedById') raisedById: string, @Query('departmentCode') departmentCode: string, @Query('assignedTo') assignedTo: string) {
-        return await this.getComplaints(ComplaintStatus.Pending, raisedById, departmentCode, assignedTo, pageNumber, pageSize);
+    async pendingComplaints(@Query('pageNumber') pageNumber: string, @Query('pageSize') pageSize: string, @Req() req: any) {
+        return await this.getComplaints(ComplaintStatus.Pending, req, pageNumber, pageSize);
     }
 
     @Get('count/pending')
-    async pendingComplaintCount(@Query('raisedById') raisedById: string, @Query('departmentCode') departmentCode: string, @Query('assignedTo') assignedTo: string, ) {
-        return await this.getComplaintsCount(ComplaintStatus.Pending, raisedById, departmentCode, assignedTo);
+    async pendingComplaintCount(@Req() req) {
+        return await this.getComplaintsCount(ComplaintStatus.Pending, req);
     }
 
     @Get('resolved')
-    async resolvedComplaints(@Query('pageNumber') pageNumber: string, @Query('pageSize') pageSize: string, @Query('raisedById') raisedById: string, @Query('departmentCode') departmentCode: string, @Query('assignedTo') assignedTo: string) {
-        return await this.getComplaints(ComplaintStatus.Resolved, raisedById, departmentCode, assignedTo, pageNumber, pageSize);
+    async resolvedComplaints(@Query('pageNumber') pageNumber: string, @Query('pageSize') pageSize: string, @Req() req: any) {
+        return await this.getComplaints(ComplaintStatus.Resolved, req, pageNumber, pageSize);
     }
 
     @Get('count/resolved')
-    async resolvedComplaintCount(@Query('raisedById') raisedById: string, @Query('departmentCode') departmentCode: string, @Query('assignedTo') assignedTo: string) {
-        return await this.getComplaintsCount(ComplaintStatus.Resolved, raisedById, departmentCode, assignedTo);
+    async resolvedComplaintCount(@Req() req) {
+        return await this.getComplaintsCount(ComplaintStatus.Resolved, req);
     }
     @Get('done')
-    async doneComplaints(@Query('pageNumber') pageNumber: string, @Query('pageSize') pageSize: string, @Query('raisedById') raisedById: string, @Query('departmentCode') departmentCode: string, @Query('assignedTo') assignedTo: string) {
-        return await this.getComplaints(ComplaintStatus.Done, raisedById, departmentCode, assignedTo, pageNumber, pageSize);
+    async doneComplaints(@Query('pageNumber') pageNumber: string, @Query('pageSize') pageSize: string, @Req() req: any) {
+        return await this.getComplaints(ComplaintStatus.Done, req, pageNumber, pageSize);
     }
 
     @Get('count/done')
-    async doneComplaintCount(@Query('raisedById') raisedById: string, @Query('departmentCode') departmentCode: string, @Query('assignedTo') assignedTo: string) {
-        return await this.getComplaintsCount(ComplaintStatus.Done, raisedById, departmentCode, assignedTo);
+    async doneComplaintCount(@Req() req) {
+        return await this.getComplaintsCount(ComplaintStatus.Done, req);
     }
 
     @Get('delete')
@@ -127,30 +127,41 @@ export class ComplaintsController {
 
     private async getComplaints(
         status: ComplaintStatus,
-        raisedById: string,
-        department: string,
-        assignedTo: string,
+        req,
         pageNumber: string,
         pageSize: string
     ) {
+        const me = req.me as User;
+        const query = this.buildQueryBasedOnRole(me);
         return await Complaints.find({
             'status': status,
-            ...(raisedById ? { 'createdBy.loginId': raisedById } : {}),
-            ...(department ? { 'department.name': department } : {}),
-            ...(assignedTo ? { 'assignedTo.loginId': assignedTo } : {})
+            ...query
         }).sort({ createdAt: -1 }).skip(((+pageNumber) - 1) * (+pageSize)).limit(+pageSize);
     }
     private async getComplaintsCount(
         status: ComplaintStatus,
-        raisedById: string,
-        department: string,
-        assignedTo: string
+        req: any
     ) {
+        const me = req.me as User;
+
+        const query = this.buildQueryBasedOnRole(me);
         return await Complaints.count({
             'status': status,
-            ...(raisedById ? { 'createdBy.loginId': raisedById } : {}),
-            ...(department ? { 'department.name': department } : {}),
-            ...(assignedTo ? { 'assignedTo.loginId': assignedTo } : {})
+            ...query
         })
+    }
+
+    private buildQueryBasedOnRole(me: User) {
+        let query: any = {};
+        if (me.type === UserTypes.Admin || me.type === UserTypes.Technician) {
+            query = { 'department.name': me.department.name };
+            if (me.type === UserTypes.Technician) {
+                query['assignedTo.loginId'] = me.loginId;
+            }
+        }
+        else {
+            query['createdBy.loginId'] = me.loginId;
+        }
+        return query;
     }
 }

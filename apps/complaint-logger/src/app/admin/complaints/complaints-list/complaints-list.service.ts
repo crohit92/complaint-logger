@@ -15,15 +15,7 @@ export class ComplaintsListService {
     complaintsCount(status: ComplaintStatus): Observable<number> {
         return this.api.sendRequest({
             method: 'get',
-            endpoint: `complaints/count/${status === ComplaintStatus.Pending ? 'pending' : (status === ComplaintStatus.Resolved ? 'resolved' : 'done')}`,
-            queryParams: {
-                ...(this.user.admin ? {
-                    department: this.user.department.name
-                } : {
-                        department: this.user.department.name,
-                        assignedTo: this.user.loginId
-                    })
-            }
+            endpoint: `complaints/count/${status === ComplaintStatus.Pending ? 'pending' : (status === ComplaintStatus.Resolved ? 'resolved' : 'done')}`
         })
     }
     complaints({ pageSize,
@@ -37,12 +29,7 @@ export class ComplaintsListService {
             endpoint: `complaints/${status === ComplaintStatus.Pending ? 'pending' : (status === ComplaintStatus.Resolved ? 'resolved' : 'done')}`,
             queryParams: {
                 pageSize,
-                pageNumber,
-                ...(this.user.admin ? {
-                    department: this.user.department.name
-                } : {
-                        assignedTo: this.user.loginId
-                    })
+                pageNumber
             }
         });
     }
