@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  gnduApiBase: 'http://gnduadmissions.org/firstmobileapp_webservice.asmx'
 };
