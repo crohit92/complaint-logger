@@ -72,9 +72,11 @@ const ComplaintSchema = new Schema({
             src: String
         }
     },
-
+    assignedAt: Date,
+    resolvedAt: Date,
+    reopendAt: Date,
 }, {
-        timestamps: true
-    });
+    timestamps: true
+});
 
 export const Complaints = model<Document, Complaint>('complaints', ComplaintSchema);

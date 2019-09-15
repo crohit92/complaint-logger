@@ -4,6 +4,8 @@ import { Complaints } from "./complaints.model";
 import { Comment } from "@complaint-logger/models";
 import { users } from './users';
 import { sms } from '../utils/sms';
+import * as moment from 'moment';
+import { UsersController } from '../users/users.controller';
 @Controller('complaints')
 export class ComplaintsController {
     @Get('pending')
@@ -48,48 +50,54 @@ export class ComplaintsController {
         /**
          * SMS to admin on creation of complaint
          */
-        users.filter(u => u.department.code === complaint.department.code && u.type === UserTypes.Admin).forEach(u => {
-            sms(u.mobile,
-                `Complaint ID: ${result._id} Raised By: ${complaint.createdBy.name}\nComplaint Details: ${complaint.description}`);
-        });
+        sms(complaint.createdBy.mobile,
+            `Dear ${complaint.createdBy.name}, your complaint has been  received and will be attended shortly, your Complaint id is :${complaint.id}, received on ${moment(complaint.createdAt).format('DD-MM-YYYY hh:mm A')}`);
+        new UsersController().getUsersOfType('A', complaint.department.name, /.*/, (err, admins) => {
+            (admins || []).forEach(a => sms(a.mobile,
+                `Dear Admin, Complaint id: ${complaint.id} has been received on ${moment(complaint.createdAt).format('DD-MM-YYYY hh:mm A')} for ${complaint.complaintType} ,  from ${complaint.createdBy.name}, Mobno:${complaint.createdBy.mobile} , Department: ${complaint.building} Location: ${complaint.room}, Desc: ${complaint.description}`))
+        })
+
         return result;
 
     }
     @Put(':id/assign')
     async assignComplaint(@Param('id') id: string, @Body() technician: User) {
         const existingComplaint = await Complaints.findById(id) as Complaint;
+        existingComplaint.assignedAt = new Date();
         existingComplaint.assignedTo = technician;
         await existingComplaint.save();
         /**
          * SMS To creator of complaint 
          */
         sms(existingComplaint.createdBy.mobile,
-            `Complaint ID: ${existingComplaint._id} Assigned To: ${technician.name}(${technician.mobile})`);
+            `Dear ${existingComplaint.createdBy.name}, Your Complaint Id: ${existingComplaint.id}, with Desc: ${existingComplaint.description}  has been marked to ${technician.name}, ${technician.mobile}, Will be Attended Shortly`);
         /**
          * SMS to technician
          */
         sms(technician.mobile,
-            `Complaint ID: ${existingComplaint._id} Raised by: ${existingComplaint.createdBy.name}(${existingComplaint.createdBy.mobile})\nhas been assigned to you\nDescription:${existingComplaint.description}`);
+            `Dear ${technician.name} , Complaint id:${existingComplaint.id} has been marked to you on ${moment(existingComplaint.updatedAt).format('DD-MM-YYYY hh:mm A')}, Raised By: ${existingComplaint.createdBy.name}, Mobno: ${existingComplaint.createdBy.mobile}, Department:${existingComplaint.building}, Location: ${existingComplaint.room} , Desc: ${existingComplaint.description}`);
         return existingComplaint;
     }
     @Put(':id/status')
     async updateComplaintStatus(@Param('id') id: string, @Query('status') status: ComplaintStatus) {
         const existingComplaint = await Complaints.findById(id) as Complaint;
         if (+status === ComplaintStatus.Resolved && (existingComplaint as any).status === ComplaintStatus.Pending) {
+            existingComplaint.resolvedAt = new Date();
             /**
              * SMS to the Creator ofthe complaint that complaint has been resolved
              */
             sms(existingComplaint.createdBy.mobile,
-                `Complaint ID: ${existingComplaint._id} Resolved By: ${existingComplaint.assignedTo.name}`);
+                `Dear ${existingComplaint.createdBy.name} , Your Complaint ID:${existingComplaint.id} has been Attended by: ${existingComplaint.assignedTo.name} Mobile: ${existingComplaint.assignedTo.mobile}. If Satisfied, please CLOSE the Complaint from you login ,Thanks`);
             /**
              * SMS to all the admins of the department that complaint has been resolved
              */
-            users.filter((u) => u.type === UserTypes.Admin && u.department.code === existingComplaint.department.code).forEach(u => {
-                sms(u.mobile,
-                    `Complaint ID: ${existingComplaint._id} Rasised By:${existingComplaint.createdBy.name}, Resolved By: ${existingComplaint.assignedTo.name}`);
-            })
+            new UsersController().getUsersOfType('A', existingComplaint.department.name, /.*/, (err, admins) => {
+                (admins || []).forEach(a => sms(a.mobile,
+                    `Dear Admin, Complaint ID: ${existingComplaint.id} has been Attended  by: ${existingComplaint.assignedTo.name} , Mobile: ${existingComplaint.assignedTo.mobile}`));
+            });
         }
         if (+status === ComplaintStatus.Pending && (existingComplaint as any).status === ComplaintStatus.Resolved) {
+            existingComplaint.reopendAt = new Date();
             /**
              * SMS to the Technician about complaint reopend
              */
@@ -98,9 +106,9 @@ export class ComplaintsController {
             /**
              * SMS to all the admins of the department that complaint has been resolved
              */
-            users.filter((u) => u.type === UserTypes.Admin && existingComplaint.department.code === u.department.code).forEach(u => {
-                sms(u.mobile,
-                    `Complaint ID: ${existingComplaint._id} ReOpened by ${existingComplaint.createdBy.name}(${existingComplaint.createdBy.mobile})\nDescription:${existingComplaint.description}`);
+            new UsersController().getUsersOfType('A', existingComplaint.department.name, /.*/, (err, admins) => {
+                (admins || []).forEach(a => sms(a.mobile,
+                    `Complaint ID: ${existingComplaint._id} ReOpened by ${existingComplaint.createdBy.name}(${existingComplaint.createdBy.mobile})\nDescription:${existingComplaint.description}`));
             })
         }
         (existingComplaint as any).status = +status;
@@ -112,8 +120,6 @@ export class ComplaintsController {
         Object.assign(existingComplaint, complaint);
         return await existingComplaint.save();
     }
-
-
 
 
     @Post(':id/comments')

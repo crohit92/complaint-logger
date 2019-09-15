@@ -76,6 +76,15 @@ export class UsersController {
                 message: "UnAuthorized"
             });
         }
+        this.getUsersOfType('T', me.department.name, new RegExp(`${q}`, 'ig'), (err, technicians) => {
+            if (err) {
+                res.status(500).json(err);
+            } else {
+                res.json(technicians);
+            }
+        })
+    }
+    public getUsersOfType(userType: string, departmentName: string, match: RegExp, cb: (err, users?: User[]) => void) {
         const options = {
             method: 'POST',
             url: `${environment.gnduApiBase}/GenerateList`,
@@ -84,29 +93,28 @@ export class UsersController {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             form: {
-                DeptName: me.department.name,
-                UserType: 'T'
+                DeptName: departmentName,
+                UserType: userType
             }
         };
 
         request(options, (err, response, body) => {
-            if (err) res.status(500).send(err);
+            if (err) cb(err);
             else {
                 try {
                     const parsedBody = JSON.parse(body) as any[];
                     if (parsedBody && parsedBody.length) {
-                        const matchingEmployees = parsedBody.filter(t => t).filter(technician => new RegExp(`${q}`, 'ig').test(technician.Emp_Name));
-                        res.json(matchingEmployees.map(this.getEmployee).map(e => (e.department.name = me.department.name, e)));
+                        const matchingEmployees = parsedBody.filter(t => t).filter(technician => match.test(technician.Emp_Name));
+                        cb(null, matchingEmployees.map(this.getEmployee).map(e => (e.department.name = departmentName, e)));
                     } else {
-                        res.json([]);
+                        cb(null, []);
                     }
                 } catch (error) {
-                    res.status(500).send(error);
+                    cb(error);
                 }
             }
         });
     }
-
     getDepartment(user: any): User {
         return {
             admin: false,

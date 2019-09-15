@@ -10,6 +10,10 @@ export interface Complaint extends Model<any> {
     id: string;
     createdBy: User;
     createdAt: number;
+    updatedAt: number;
+    assignedAt: Date;
+    resolvedAt: Date;
+    reopendAt: Date;
     mobile: string;
     department?: Department;
     complaintType: string;
