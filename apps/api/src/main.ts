@@ -12,6 +12,7 @@ import {
 import { AppModule } from './app/app.module';
 import * as jwt from 'jsonwebtoken';
 import { readFileSync } from 'fs';
+import { environment } from './environments/environment';
 
 async function bootstrap() {
   const app = await NestFactory.create(
@@ -24,7 +25,7 @@ async function bootstrap() {
     origin: '*'
   });
   app.use((req, res, next) => {
-    if (req.url.indexOf('login') === -1) {
+    if (req.url.indexOf('login') === -1 && (environment.production ? true : (req.url.indexOf('complaints/delete') === -1))) {
       const headerValue = req.headers.authorization;
       if (headerValue && headerValue.length) {
         const token = headerValue.replace('Bearer ', '');
