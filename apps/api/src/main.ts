@@ -37,6 +37,7 @@ async function bootstrap() {
               message: 'UnAuthorized'
             })
           } else {
+            req.me = decoded;
             next();
           }
         })

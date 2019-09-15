@@ -84,9 +84,10 @@
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="complaint.employeeSelected">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="complaint.getEmployeeName"
+                    (optionSelected)="complaint.assign($event)">
                     <mat-option *ngFor="let employee of complaint.employees | async" [value]="employee">
-                        {{employee.name}} {{employee.mobile}}
+                        <span style="font-size: 0.75rem">{{employee.name}} {{employee.mobile}}</span>
                     </mat-option>
                 </mat-autocomplete>
             </div>

@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Res, Response } from "@nestjs/common";
+import { Controller, Post, Body, Res, Response, Get, Param, Req, Query } from "@nestjs/common";
 import { Credentials, User, UserTypes } from '@complaint-logger/models';
 import * as request from 'request';
 import { environment } from '../../environments/environment';
@@ -68,6 +68,45 @@ export class UsersController {
         });
     }
 
+    @Get('technicians')
+    getTechnicians(@Req() req, @Query('q') q: string, @Res() res) {
+        const me = req.me as User;
+        if (me.type !== UserTypes.Admin) {
+            return res.status(401).json({
+                message: "UnAuthorized"
+            });
+        }
+        const options = {
+            method: 'POST',
+            url: `${environment.gnduApiBase}/GenerateList`,
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            form: {
+                DeptName: me.department.name,
+                UserType: 'T'
+            }
+        };
+
+        request(options, (err, response, body) => {
+            if (err) res.status(500).send(err);
+            else {
+                try {
+                    const parsedBody = JSON.parse(body) as any[];
+                    if (parsedBody && parsedBody.length) {
+                        const matchingEmployees = parsedBody.filter(t => t).filter(technician => new RegExp(`${q}`, 'ig').test(technician.Emp_Name));
+                        res.json(matchingEmployees.map(this.getEmployee).map(e => (e.department.name = me.department.name, e)));
+                    } else {
+                        res.json([]);
+                    }
+                } catch (error) {
+                    res.status(500).send(error);
+                }
+            }
+        });
+    }
+
     getDepartment(user: any): User {
         return {
             admin: false,
@@ -98,7 +137,7 @@ export class UsersController {
     getEmployee(user: User): User {
         return {
             admin: false,
-            loginId: user.loginId,
+            loginId: user.loginId || user.Emp_MobileNo,
             name: user.Emp_Name,
             type: UserTypes.Employee,
             mobile: user.Emp_MobileNo,

@@ -82,11 +82,10 @@ export class ComplaintsListService {
     employees(searchString: string): Observable<User[]> {
         return this.api.sendRequest({
             method: 'get',
-            apiBase: './assets/resources/users.json',
-            endpoint: ''
-        }).pipe(
-            map((users: User[]) => {
-                return users.filter(u => u.type === UserTypes.Technician && u.name.match(new RegExp(searchString, 'ig')));
-            }));
+            endpoint: 'users/technicians',
+            queryParams: {
+                q: searchString
+            }
+        });
     }
 }

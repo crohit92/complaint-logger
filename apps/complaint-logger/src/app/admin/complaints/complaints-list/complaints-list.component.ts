@@ -10,6 +10,7 @@ import { StorageService } from '../../../core/services/storage/storage.service';
 import { StorageKeys } from '../../../shared/constants/storage-keys';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { environment } from '../../../../environments/environment';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 @Component({
   selector: 'complaint-logger-complaints-list',
   templateUrl: './complaints-list.component.html',
@@ -59,7 +60,8 @@ export class ComplaintsListComponent implements OnInit {
           complaint.employees = (complaint.employeeSearchControl as FormControl).valueChanges.pipe(
             switchMap((value) => this.dataService.employees(value))
           );
-          complaint.employeeSelected = this.employeeSelected.bind(this, complaint);
+          complaint.getEmployeeName = this.getEmployeeName.bind(this, complaint);
+          complaint.assign = this.assignComplaint.bind(this, complaint);
         }
       });
       target.splice(0);
@@ -107,15 +109,19 @@ export class ComplaintsListComponent implements OnInit {
     this.loadComplaints(this.paginationOptions, ComplaintStatus.Done, this.closedComplaints);
   }
 
-  employeeSelected(complaint: Complaint, employee?: User): string | undefined {
+  getEmployeeName(complaint: Complaint, employee?: User): string | undefined {
     if (employee) {
-      this.dataService.assignComplaint(complaint._id, employee).subscribe(() => {
-        complaint.assignedTo = employee;
-        complaint.selectAssignee = false;
-      });
+
       return employee.name;
     }
     return undefined;
+  }
+
+  assignComplaint(complaint: Complaint, $event: MatAutocompleteSelectedEvent) {
+    this.dataService.assignComplaint(complaint._id, $event.option.value).subscribe(() => {
+      complaint.assignedTo = $event.option.value;
+      complaint.selectAssignee = false;
+    });
   }
 
   markComplaintAsResolved(complaint: Complaint, commentEl: HTMLInputElement, complaintIndex: number, matToggle: MatSlideToggle) {
