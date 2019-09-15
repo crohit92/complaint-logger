@@ -31,7 +31,7 @@ export class ComplaintsListComponent implements OnInit {
     this.dataService.complaints({ ...this.pageOptions, status }).subscribe(complaints => {
       complaints.forEach(complaint => {
         if (complaint.status === ComplaintStatus.Resolved) {
-          complaint.canReopen = moment().diff(moment(complaint.createdAt)) < environment.reopenWindow;
+          complaint.canReopen = moment().diff(moment(complaint.resolvedAt)) < environment.reopenWindow;
         }
         Object.assign(complaint, { createdAtFromNow: moment(complaint.createdAt).fromNow() });
       })

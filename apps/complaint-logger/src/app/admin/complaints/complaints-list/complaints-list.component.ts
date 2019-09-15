@@ -50,7 +50,7 @@ export class ComplaintsListComponent implements OnInit {
     this.dataService.complaints({ ...pageOptions, status }).subscribe((complaints => {
       complaints.forEach(complaint => {
         if (complaint.status === ComplaintStatus.Resolved) {
-          complaint.canClose = moment().diff(moment(complaint.updatedAt)) > environment.adminCanCloseAfter;
+          complaint.canClose = moment().diff(moment(complaint.resolvedAt)) > environment.adminCanCloseAfter;
         }
         Object.assign(complaint, {
           createdOffset: moment(complaint.createdAt).fromNow()
