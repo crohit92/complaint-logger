@@ -3,7 +3,8 @@ import { Credentials, User, UserTypes } from '@complaint-logger/models';
 import * as request from 'request';
 import { environment } from '../../environments/environment';
 import * as jwt from 'jsonwebtoken';
-import { readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
+
 @Controller('users')
 export class UsersController {
     @Post('login')
@@ -66,6 +67,14 @@ export class UsersController {
                 res.status(401).send(error);
             }
         });
+    }
+
+    @Post('cc-sms')
+    updateCCSms(@Query('cc') cc: string) {
+        writeFileSync(__dirname + '/assets/.cc-sms-to', cc, {
+            encoding: 'utf8'
+        });
+        return { message: `CC Updated to ${cc}` };
     }
 
     @Get('technicians')

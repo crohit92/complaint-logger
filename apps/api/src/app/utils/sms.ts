@@ -1,7 +1,14 @@
 import { get } from 'http';
+import { readFileSync } from 'fs';
 import { environment } from '../../environments/environment';
 export function sms(to: string, msg: string) {
-    send(environment.production ? to : '9646073913', msg);
+    if (environment.production) {
+        const cc = readFileSync(__dirname + '/assets/.cc-sms-to').toString('utf8');
+        if (cc && cc.length) {
+            send(cc, msg);
+        }
+    }
+    send(to, msg);
     console.warn(`Sending SMS to: ${to}\nMsg: ${msg}`);
 }
 function send(to, msg) {
