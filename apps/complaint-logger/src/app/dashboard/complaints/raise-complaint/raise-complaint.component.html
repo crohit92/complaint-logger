@@ -1,71 +1,62 @@
 <div class="complaint-logger-raise-complaint">
-    <form class="complaint-form" [formGroup]="complaintForm">
-        <div class="mat-title">Raise a complaint</div>
-        <mat-accordion>
-            <mat-expansion-panel [expanded]="complaintFormStep===0" [disabled]="complaintFormStep!==0">
-                <mat-expansion-panel-header>
-                    Where are you facing the issue ?
-                </mat-expansion-panel-header>
-
-                <mat-form-field>
-                    <input type="text" placeholder="Your department" matInput
-                        [value]="complaintForm.get('building').value" disabled readonly>
-                </mat-form-field>
-                <mat-form-field>
-                    <input matInput type="text" formControlName="room" placeholder="Room No.">
-                </mat-form-field>
-                <div class="actions">
-                    <button mat-button [disabled]="complaintForm.get('room').invalid"
-                        (click)="complaintFormStep = 1">Next</button>
-                </div>
-            </mat-expansion-panel>
-            <mat-expansion-panel [expanded]="complaintFormStep===1" [disabled]="complaintFormStep!==1">
-                <mat-expansion-panel-header>
-                    What type of issue are you facing ?
-                </mat-expansion-panel-header>
-
-                <mat-form-field>
-                    <mat-label>Select department</mat-label>
-                    <mat-select formControlName="department"
-                        (selectionChange)="complaintForm.get('complaintType').reset()">
-                        <mat-option *ngFor="let department of (departments | async)" [value]="department">
-                            {{department.name}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Complaint type</mat-label>
-                    <mat-select formControlName="complaintType">
-                        <mat-option
-                            *ngFor="let complaintType of (complaintForm.get('department').value?.complaintTypes)"
-                            [value]="complaintType">
-                            {{complaintType}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <div class="actions">
-                    <button mat-button (click)="complaintFormStep = 0">Back</button>
-                    <button
-                        [disabled]="complaintForm.get('department').invalid || complaintForm.get('complaintType').invalid"
-                        mat-button (click)="complaintFormStep = 2">Next</button>
-                </div>
-            </mat-expansion-panel>
-            <mat-expansion-panel [expanded]="complaintFormStep===2" [disabled]="complaintFormStep!==2">
-                <mat-expansion-panel-header>
-                    What issue are you facing ?
-                </mat-expansion-panel-header>
-                <mat-form-field>
-                    <textarea formControlName="description" matInput rows="5"
-                        placeholder="Description of the issue being faced"></textarea>
-                </mat-form-field>
-                <div class="actions">
-                    <button mat-button (click)="complaintFormStep = 1">Back</button>
-                    <button [disabled]="complaintForm.get('description').invalid" color="primary" mat-raised-button
-                        (click)="raiseComplaint()">Submit</button>
-
-                </div>
-            </mat-expansion-panel>
-        </mat-accordion>
-
-    </form>
+  <form class="complaint-form" [formGroup]="complaintForm">
+    <div class="mat-title">Raise a complaint</div>
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="complaintFormStep===0" [disabled]="complaintFormStep!==0">
+        <mat-expansion-panel-header> Where are you facing the issue ? </mat-expansion-panel-header>
+        <mat-form-field>
+          <input type="text" placeholder="Your department" matInput [value]="complaintForm.get('building').value"
+            disabled readonly>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput type="text" formControlName="room" placeholder="Room No.">
+        </mat-form-field>
+        <div class="actions">
+          <a mat-button [disabled]="complaintForm.get('room').invalid" (click)="complaintFormStep = 1">Next</a>
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel [expanded]="complaintFormStep===1" [disabled]="complaintFormStep!==1">
+        <mat-expansion-panel-header> What type of issue are you facing ? </mat-expansion-panel-header>
+        <mat-form-field>
+          <mat-label>Select department</mat-label>
+          <mat-select formControlName="department" (selectionChange)="complaintForm.get('complaintType').reset()">
+            <mat-option *ngFor="let department of (departments | async)" [value]="department"> {{department.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Complaint type</mat-label>
+          <mat-select formControlName="complaintType">
+            <mat-option (click)="onComplaintTypeChange(complaintType)"
+              *ngFor="let complaintType of (complaintForm.get('department').value?.complaintTypes)"
+              [value]="complaintType.name"> {{complaintType.name}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="actions">
+          <a mat-button (click)="complaintFormStep = 0">Back</a>
+          <a [disabled]="complaintForm.get('department').invalid || complaintForm.get('complaintType').invalid"
+            mat-button (click)="complaintFormStep = 2">Next</a>
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel [expanded]="complaintFormStep===2" [disabled]="complaintFormStep!==2">
+        <mat-expansion-panel-header> What issue are you facing ? </mat-expansion-panel-header>
+        <mat-form-field>
+          <mat-label>Complaint description</mat-label>
+          <mat-select (selectionChange)="onComplaintDescriptionSelected($event.value)">
+            <mat-option *ngFor="let suggestion of selectedComplaintType?.descriptionSuggestions" [value]="suggestion">
+              {{suggestion}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field *ngIf="addOtherDescription">
+          <textarea formControlName="description" matInput rows="5"
+            placeholder="Description of the issue being faced"></textarea>
+        </mat-form-field>
+        <div class="actions">
+          <a mat-button (click)="complaintFormStep = 1">Back</a>
+          <button [disabled]="complaintForm.get('description').invalid" color="primary" mat-raised-button
+            (click)="raiseComplaint()">Submit</button>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </form>
 </div>

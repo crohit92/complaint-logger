@@ -2,21 +2,86 @@
   {
     "name": "Electrical",
     "code": 5,
-    "complaintTypes": ["AC/Cooler/Heater/Blower", "Electricals"]
+    "complaintTypes": [
+      {
+        "name": "AC/Cooler/Heater/Geyser",
+        "descriptionSuggestions": [
+          "Fan not working",
+          "Water Cooler not working",
+          "AC not working",
+          "Air Cooler not working",
+          "Geyser not working",
+          "Heater not working"
+        ]
+      },
+      {
+        "name": "Electrical",
+        "descriptionSuggestions": [
+          "Tubelight not working",
+          "Switch not working",
+          "Plug not working",
+          "Sharing in switch/ switch brand",
+          "Sparking in plug",
+          "Wire burnt",
+          "Sparking in wiring",
+          "MCB not working",
+          "Sparking in MCB"
+        ]
+      }
+    ]
   },
   {
     "name": "Civil",
     "code": 2,
     "complaintTypes": [
-      "Carpenter",
-      "Masson",
-      "Painter/Whitewasher",
-      "Welder",
-      "Plumber/Fitter",
-      "Furniture Repair",
-      "Sewer man",
-      "Writer Painter",
-      "Cane Weaver"
+      {
+        "name": "Plumber",
+        "descriptionSuggestions": [
+          "Tap Leakage",
+          "Replacement of P.V.C. connection",
+          "Pipe Leakage",
+          "Waste pipe leakage"
+        ]
+      },
+      {
+        "name": "Carpenter",
+        "descriptionSuggestions": [
+          "Broken window replacement",
+          "Door Repair",
+          "Window Repair",
+          "Cup board repair in room and kitchen"
+        ]
+      },
+      {
+        "name": "Welder",
+        "descriptionSuggestions": [
+          "Making grills",
+          "Furniture repair",
+          "Rolling shutter repair , gressing of rolling shutter",
+          "Barbed wire pencing"
+        ]
+      },
+      {
+        "name": "Furniture",
+        "descriptionSuggestions": [
+          "Table repair",
+          "Change wheel of revolving chairs"
+        ]
+      },
+      {
+        "name": "Paint/Whitewasher",
+        "descriptionSuggestions": ["Complete"]
+      },
+      {
+        "name": "Sewerman",
+        "descriptionSuggestions": [
+          "Sewer block",
+          "Kitchen pipe blockage",
+          "Toilet pipe blockage"
+        ]
+      },
+      { "name": "Cane Weave", "descriptionSuggestions": ["Chairs caning"] },
+      { "name": "Masson", "descriptionSuggestions": ["Mason job"] }
     ]
   }
 ]
