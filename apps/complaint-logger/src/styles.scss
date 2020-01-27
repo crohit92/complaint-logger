@@ -11,6 +11,7 @@
 @import './scss/mixins';
 @import './scss/apply-theme';
 @import './scss/utils';
+@import './scss/c3.min';
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
@@ -21,9 +22,11 @@ $complaint-logger-accent: mat-palette($mat-light-blue);
 $complaint-logger-warn: mat-palette($mat-deep-orange);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$complaint-logger-theme: mat-light-theme($complaint-logger-primary,
+$complaint-logger-theme: mat-light-theme(
+  $complaint-logger-primary,
   $complaint-logger-accent,
-  $complaint-logger-warn);
+  $complaint-logger-warn
+);
 
 @include apply($complaint-logger-theme);
 // Include theme styles for core and each component used in your app.
@@ -53,7 +56,6 @@ body {
 img {
   max-width: 100%;
 }
-
 
 .iv-image-view {
   background: #dddddd;

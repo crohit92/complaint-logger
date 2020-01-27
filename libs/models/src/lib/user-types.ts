@@ -1,7 +1,8 @@
 export enum UserTypes {
-    Student,
-    Employee,
-    Admin,
-    Technician,
-    Department
+  Student,
+  Employee,
+  Admin,
+  Technician,
+  Department,
+  SuperAdmin
 }

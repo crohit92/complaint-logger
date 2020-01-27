@@ -1,139 +1,138 @@
 <div class="complaint-logger-admin">
-    <div class="complaint-logger-complaints-list">
-        <div class="mat-title">Your Complaints</div>
-        <mat-tab-group (selectedIndexChange)="tabChanged($event)">
-            <mat-tab label="Pending ({{pendingComplaintsCount}})">
-                <div class="pending-complaints">
-                    <div class="complaint" *ngFor="let complaint of pendingComplaints;let complaintIndex = index;">
-                        <ng-container [ngTemplateOutlet]="complaintTemplate"
-                            [ngTemplateOutletContext]="{$implicit:complaint,complaintIndex:complaintIndex}">
-                        </ng-container>
-                    </div>
-                </div>
-                <div class="pending-pagination">
-                    <mat-paginator (page)="pendingPageChanged($event)" [length]="pendingComplaintsCount"
-                        [pageSize]="paginationOptions.pageSize" [pageSizeOptions]="[5, 10, 25, 100]">
-                    </mat-paginator>
-                </div>
-
-            </mat-tab>
-            <mat-tab label="Resolved ({{resolvedComplaintsCount}})">
-                <div class="resolved-complaints">
-                    <div class="complaint" *ngFor="let complaint of resolvedComplaints;let complaintIndex=index;">
-                        <ng-container [ngTemplateOutlet]="complaintTemplate"
-                            [ngTemplateOutletContext]="{$implicit:complaint,complaintIndex:complaintIndex,resolved:true}">
-                        </ng-container>
-                    </div>
-                </div>
-                <div class="resolved-pagination">
-                    <mat-paginator (page)="resolvedPageChanged($event)" [length]="resolvedComplaintsCount"
-                        [pageSize]="paginationOptions.pageSize" [pageSizeOptions]="[5, 10, 25, 100]">
-                    </mat-paginator>
-                </div>
-            </mat-tab>
-            <mat-tab label="Closed ({{closedComplaintsCount}})">
-                <div class="closed-complaints">
-                    <div class="complaint" *ngFor="let complaint of closedComplaints;let complaintIndex=index;">
-                        <ng-container [ngTemplateOutlet]="complaintTemplate"
-                            [ngTemplateOutletContext]="{$implicit:complaint,complaintIndex:complaintIndex,closed:true}">
-                        </ng-container>
-                    </div>
-                </div>
-                <div class="closed-pagination">
-                    <mat-paginator (page)="closedPageChanged($event)" [length]="closedComplaintsCount"
-                        [pageSize]="paginationOptions.pageSize" [pageSizeOptions]="[5, 10, 25, 100]">
-                    </mat-paginator>
-                </div>
-            </mat-tab>
-        </mat-tab-group>
+  <div class="graph">
+    <h3 class="p-b-2">Change the date range to see insights</h3>
+    <div class="filter flex flex-justify-content-space-between">
+      <mat-form-field>
+        <input [ngModel]="graph.filters.from" (dateChange)="onFromDateChange($event.value)" disabled matInput
+          placeholder="From" [matDatepicker]="fromDatePicker">
+        <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker disabled="false" #fromDatePicker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <input [ngModel]="graph.filters.to" (dateChange)="onToDateChange($event.value)" disabled matInput
+          placeholder="To" [matDatepicker]="toDatePicker">
+        <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker disabled="false" #toDatePicker></mat-datepicker>
+      </mat-form-field>
     </div>
+    <div class="graph__complaints-count">
+    </div>
+  </div>
+  <div class="complaint-logger-complaints-list">
+    <div class="mat-title">Your Complaints</div>
+    <mat-tab-group (selectedIndexChange)="tabChanged($event)">
+      <mat-tab label="Pending ({{pendingComplaintsCount}})">
+        <div class="pending-complaints">
+          <div class="complaint" *ngFor="let complaint of pendingComplaints;let complaintIndex = index;">
+            <ng-container [ngTemplateOutlet]="complaintTemplate"
+              [ngTemplateOutletContext]="{$implicit:complaint,complaintIndex:complaintIndex}">
+            </ng-container>
+          </div>
+        </div>
+        <div class="pending-pagination">
+          <mat-paginator (page)="pendingPageChanged($event)" [length]="pendingComplaintsCount"
+            [pageSize]="paginationOptions.pageSize" [pageSizeOptions]="[5, 10, 25, 100]">
+          </mat-paginator>
+        </div>
+      </mat-tab>
+      <mat-tab label="Resolved ({{resolvedComplaintsCount}})">
+        <div class="resolved-complaints">
+          <div class="complaint" *ngFor="let complaint of resolvedComplaints;let complaintIndex=index;">
+            <ng-container [ngTemplateOutlet]="complaintTemplate"
+              [ngTemplateOutletContext]="{$implicit:complaint,complaintIndex:complaintIndex,resolved:true}">
+            </ng-container>
+          </div>
+        </div>
+        <div class="resolved-pagination">
+          <mat-paginator (page)="resolvedPageChanged($event)" [length]="resolvedComplaintsCount"
+            [pageSize]="paginationOptions.pageSize" [pageSizeOptions]="[5, 10, 25, 100]">
+          </mat-paginator>
+        </div>
+      </mat-tab>
+      <mat-tab label="Closed ({{closedComplaintsCount}})">
+        <div class="closed-complaints">
+          <div class="complaint" *ngFor="let complaint of closedComplaints;let complaintIndex=index;">
+            <ng-container [ngTemplateOutlet]="complaintTemplate"
+              [ngTemplateOutletContext]="{$implicit:complaint,complaintIndex:complaintIndex,closed:true}">
+            </ng-container>
+          </div>
+        </div>
+        <div class="closed-pagination">
+          <mat-paginator (page)="closedPageChanged($event)" [length]="closedComplaintsCount"
+            [pageSize]="paginationOptions.pageSize" [pageSizeOptions]="[5, 10, 25, 100]">
+          </mat-paginator>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
 </div>
 <ng-template #complaintTemplate let-complaint let-complaintIndex="complaintIndex" let-resolved="resolved"
-    let-closed="closed">
-    <div class="complaint__header">
-        <div class="complaint__header-department">
-            {{complaint.building}} - Room: {{complaint.room}}
-        </div>
-        <div class="complaint__header-location">
-            {{complaint.complaintType}}
-
-        </div>
-        <div class="complaint__header-created-at">
-            {{complaint.createdOffset}}
-        </div>
+  let-closed="closed">
+  <div class="complaint__header">
+    <div class="complaint__header-department"> {{complaint.building}} - Room: {{complaint.room}} </div>
+    <div class="complaint__header-location"> {{complaint.complaintType}} </div>
+    <div class="complaint__header-created-at"> {{complaint.createdOffset}} </div>
+  </div>
+  <div class="complaint__body"> {{complaint.description}} </div>
+  <div class="complaint__id"> Complaint ID: {{complaint.id}} </div>
+  <mat-divider></mat-divider>
+  <div class="complaint__status">
+    <div class="complaint__status-assigned-to">
+      <a *ngIf="!complaint.selectAssignee" (click)="complaint.selectAssignee = (!user.admin || resolved)?false:true">
+        <span>{{complaint.assignedTo?("Assigned to: "+complaint.assignedTo?.name):'Not assigned'}}</span>
+      </a>
+      <div class="employee-search" *ngIf="complaint.selectAssignee">
+        <mat-form-field>
+          <input type="text" matInput placeholder="Search employee" [formControl]="complaint.employeeSearchControl"
+            [matAutocomplete]="auto">
+          <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="complaint.selectAssignee = false">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="complaint.getEmployeeName"
+          (optionSelected)="complaint.assign($event)">
+          <mat-option *ngFor="let employee of complaint.employees | async" [value]="employee">
+            <span style="font-size: 0.75rem">{{employee.name}} {{employee.mobile}}</span>
+          </mat-option>
+        </mat-autocomplete>
+      </div>
+      <a class="call" *ngIf="complaint.assignedTo?.mobile" href=tel:{{complaint.assignedTo?.mobile}}>
+        <mat-icon>call</mat-icon>
+      </a>
     </div>
-    <div class="complaint__body">
-        {{complaint.description}}
+    <div class="complaint__status-raised-by">
+      <a>Raised by: <span>{{complaint.createdBy?complaint.createdBy?.name:'N.A.'}}</span>
+      </a>
+      <a class="call" *ngIf="complaint.createdBy?.mobile" href=tel:{{complaint.createdBy?.mobile}}>
+        <mat-icon>call</mat-icon>
+      </a>
     </div>
-    <div class="complaint__id">
-        Complaint ID: {{complaint.id}}
-    </div>
-    <mat-divider></mat-divider>
-    <div class="complaint__status">
-        <div class="complaint__status-assigned-to">
-            <a *ngIf="!complaint.selectAssignee"
-                (click)="complaint.selectAssignee = (!user.admin || resolved)?false:true">Assigned to:
-                <span>{{complaint.assignedTo?complaint.assignedTo?.name:'Not assigned'}}</span>
-            </a>
-            <div class="employee-search" *ngIf="complaint.selectAssignee">
-                <mat-form-field>
-                    <input type="text" matInput placeholder="Search employee"
-                        [formControl]="complaint.employeeSearchControl" [matAutocomplete]="auto">
-                    <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="complaint.selectAssignee = false">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="complaint.getEmployeeName"
-                    (optionSelected)="complaint.assign($event)">
-                    <mat-option *ngFor="let employee of complaint.employees | async" [value]="employee">
-                        <span style="font-size: 0.75rem">{{employee.name}} {{employee.mobile}}</span>
-                    </mat-option>
-                </mat-autocomplete>
-            </div>
-            <a class="call" *ngIf="complaint.assignedTo?.mobile" href=tel:{{complaint.assignedTo?.mobile}}>
-                <mat-icon>call</mat-icon>
-            </a>
+  </div>
+  <div class="technician-remarks">
+    <div class="status">
+      <div class="resolution-comments">
+        <div class="comment" *ngFor="let comment of complaint.comments"> {{comment.by}}: {{comment.description}} </div>
+      </div>
+      <div *ngIf="!resolved && !closed">
+        <mat-slide-toggle #toggle="matSlideToggle" (change)="complaint.addRemarks = toggle.checked"
+          [disabled]="complaint.status === ComplaintStatus.Resolved"
+          [checked]="complaint.status === ComplaintStatus.Resolved">Mark as done </mat-slide-toggle>
+        <div class="remarks flex" *ngIf="complaint.addRemarks">
+          <mat-form-field>
+            <textarea matInput #commentEl placeholder="Comments" required></textarea>
+          </mat-form-field>
+          <button mat-button color="primary" [disabled]="!commentEl.value.length"
+            (click)="markComplaintAsResolved(complaint, commentEl, complaintIndex, toggle)">
+            <mat-icon>check</mat-icon>
+          </button>
+          <button mat-button color="warn" (click)="complaint.addRemarks = false; toggle.checked = false;">
+            <mat-icon>close</mat-icon>
+          </button>
         </div>
-        <div class="complaint__status-raised-by">
-            <a>Raised by:
-                <span>{{complaint.createdBy?complaint.createdBy?.name:'N.A.'}}</span>
-            </a>
-
-            <a class="call" *ngIf="complaint.createdBy?.mobile" href=tel:{{complaint.createdBy?.mobile}}>
-                <mat-icon>call</mat-icon>
-            </a>
-        </div>
+      </div>
+      <div class="complaint__close" *ngIf="resolved && complaint.canClose">
+        <button color="warn" mat-button (click)="closeComplaint(complaint,complaintIndex)">Close</button>
+      </div>
     </div>
-    <div class="technician-remarks">
-        <div class="status">
-            <div class="resolution-comments">
-                <div class="comment" *ngFor="let comment of complaint.comments">
-                    {{comment.by}}: {{comment.description}}
-                </div>
-            </div>
-            <div *ngIf="!resolved && !closed">
-                <mat-slide-toggle #toggle="matSlideToggle" (change)="complaint.addRemarks = toggle.checked"
-                    [disabled]="complaint.status === ComplaintStatus.Resolved"
-                    [checked]="complaint.status === ComplaintStatus.Resolved">Mark as done
-                </mat-slide-toggle>
-
-                <div class="remarks flex" *ngIf="complaint.addRemarks">
-                    <mat-form-field>
-                        <textarea matInput #commentEl placeholder="Comments" required></textarea>
-                    </mat-form-field>
-                    <button mat-button color="primary" [disabled]="!commentEl.value.length"
-                        (click)="markComplaintAsResolved(complaint, commentEl, complaintIndex, toggle)">
-                        <mat-icon>check</mat-icon>
-                    </button>
-                    <button mat-button color="warn" (click)="complaint.addRemarks = false; toggle.checked = false;">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </div>
-            </div>
-            <div class="complaint__close" *ngIf="resolved && complaint.canClose">
-                <button color="warn" mat-button (click)="closeComplaint(complaint,complaintIndex)">Close</button>
-            </div>
-        </div>
-    </div>
+  </div>
 </ng-template>

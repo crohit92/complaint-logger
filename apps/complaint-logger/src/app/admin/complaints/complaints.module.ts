@@ -14,6 +14,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ComplaintsListFilter } from './complaints-list/complaints-list-filter.pipe';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 const routes: Routes = [
   {
@@ -31,11 +33,11 @@ const routes: Routes = [
       }
     ]
   }
-
-]
+];
 
 @NgModule({
-  declarations: [ComplaintsComponent,
+  declarations: [
+    ComplaintsComponent,
     ComplaintsListComponent,
     ComplaintsListFilter
   ],
@@ -51,7 +53,9 @@ const routes: Routes = [
     MatDividerModule,
     MatAutocompleteModule,
     MatIconModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ]
 })
-export class ComplaintsModule { }
+export class ComplaintsModule {}

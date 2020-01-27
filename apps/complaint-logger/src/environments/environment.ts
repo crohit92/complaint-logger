@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiBase: 'http://localhost:3333/api/v1',
+  apiBase: 'http://localhost/api/v1',
   reopenWindow: 86400000,
   adminCanCloseAfter: 86400000
 };

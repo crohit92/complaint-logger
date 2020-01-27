@@ -16,6 +16,11 @@ async function bootstrap() {
     origin: '*'
   });
   app.use(Authenticate);
+  app.use((req, res, next, err) => {
+    console.log('Exception handlled');
+    console.log(err);
+    res.json(err);
+  });
 
   const globalPrefix = 'api/v1';
   app.setGlobalPrefix(globalPrefix);
