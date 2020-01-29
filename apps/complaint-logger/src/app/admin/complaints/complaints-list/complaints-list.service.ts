@@ -36,15 +36,18 @@ export class ComplaintsListService {
       queryParams: query
     });
   }
-  complaints({
-    pageSize,
-    pageNumber,
-    status
-  }: {
-    pageSize: number;
-    pageNumber: number;
-    status: ComplaintStatus;
-  }): Observable<Complaint[]> {
+  complaints(
+    {
+      pageSize,
+      pageNumber,
+      status
+    }: {
+      pageSize: number;
+      pageNumber: number;
+      status: ComplaintStatus;
+    },
+    filter?: { from: string; to: string }
+  ): Observable<Complaint[]> {
     return this.api.sendRequest({
       method: 'get',
       endpoint: `complaints/${
@@ -56,7 +59,8 @@ export class ComplaintsListService {
       }`,
       queryParams: {
         pageSize,
-        pageNumber
+        pageNumber,
+        ...filter
       }
     });
   }

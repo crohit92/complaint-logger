@@ -49,16 +49,11 @@ export class ComplaintsListComponent implements OnInit, AfterViewInit {
   pendingComplaintsCount: number;
   resolvedComplaintsCount: number;
   closedComplaintsCount: number;
+  selectedTabIndex: number = 0;
   constructor(
     private readonly dataService: ComplaintsListService,
     private readonly storage: StorageService
-  ) {
-    this.loadComplaints(
-      this.paginationOptions,
-      ComplaintStatus.Pending,
-      this.pendingComplaints
-    );
-  }
+  ) {}
 
   getStartOfDay(date: any) {
     return moment(date).startOf('day');
@@ -69,45 +64,72 @@ export class ComplaintsListComponent implements OnInit, AfterViewInit {
 
   onFromDateChange(date) {
     this.graph.filters.from = this.getStartOfDay(date).toISOString();
-    this.loadComplaintsCount();
+    this.loadComplaintsOnDateChange();
   }
+  private loadComplaintsOnDateChange() {
+    const complaintTypeToLoad = this.getSelectedTabType();
+    this.loadComplaints(
+      this.paginationOptions,
+      complaintTypeToLoad,
+      complaintTypeToLoad === ComplaintStatus.Pending
+        ? this.pendingComplaints
+        : complaintTypeToLoad === ComplaintStatus.Resolved
+        ? this.resolvedComplaints
+        : this.closedComplaints
+    );
+  }
+
   onToDateChange(date) {
     this.graph.filters.to = this.getEndOfDay(date).toISOString();
-    this.loadComplaintsCount();
+    this.loadComplaintsOnDateChange();
   }
   ngAfterViewInit(): void {
-    this.loadComplaintCountGraph();
+    this.loadComplaints(
+      this.paginationOptions,
+      ComplaintStatus.Pending,
+      this.pendingComplaints
+    );
   }
-  loadComplaintsCount() {
-    this.dataService
-      .complaintsCount(ComplaintStatus.Pending)
-      .subscribe(count => {
-        this.pendingComplaintsCount = count;
-      });
-    this.dataService
-      .complaintsCount(ComplaintStatus.Resolved)
-      .subscribe(count => {
-        this.resolvedComplaintsCount = count;
-      });
-    this.dataService.complaintsCount(ComplaintStatus.Done).subscribe(count => {
-      this.closedComplaintsCount = count;
-    });
+  private getSelectedTabType(): ComplaintStatus {
+    if (this.selectedTabIndex === 0) {
+      return ComplaintStatus.Pending;
+    } else if (this.selectedTabIndex === 1) {
+      return ComplaintStatus.Resolved;
+    }
+    if (this.selectedTabIndex === 2) {
+      return ComplaintStatus.Done;
+    }
   }
+  private getClosedComplaints() {
+    return this.dataService.complaintsCount(
+      ComplaintStatus.Done,
+      this.graph.filters
+    );
+  }
+
+  private getResolvedComplaints() {
+    return this.dataService.complaintsCount(
+      ComplaintStatus.Resolved,
+      this.graph.filters
+    );
+  }
+
+  private getPendingComplaints() {
+    return this.dataService.complaintsCount(
+      ComplaintStatus.Pending,
+      this.graph.filters
+    );
+  }
+
   loadComplaintCountGraph() {
     forkJoin([
-      this.dataService.complaintsCount(
-        ComplaintStatus.Done,
-        this.graph.filters
-      ),
-      this.dataService.complaintsCount(
-        ComplaintStatus.Pending,
-        this.graph.filters
-      ),
-      this.dataService.complaintsCount(
-        ComplaintStatus.Resolved,
-        this.graph.filters
-      )
+      this.getClosedComplaints(),
+      this.getPendingComplaints(),
+      this.getResolvedComplaints()
     ]).subscribe(([doneCount, pendingCount, resolvedCount]) => {
+      this.pendingComplaintsCount = pendingCount;
+      this.closedComplaintsCount = doneCount;
+      this.resolvedComplaintsCount = resolvedCount;
       c3.generate({
         bindto: '.graph__complaints-count',
         data: {
@@ -135,7 +157,7 @@ export class ComplaintsListComponent implements OnInit, AfterViewInit {
     target: Complaint[]
   ) {
     this.dataService
-      .complaints({ ...pageOptions, status })
+      .complaints({ ...pageOptions, status }, this.graph.filters)
       .subscribe(complaints => {
         complaints.forEach(complaint => {
           if (complaint.status === ComplaintStatus.Resolved) {
@@ -161,7 +183,7 @@ export class ComplaintsListComponent implements OnInit, AfterViewInit {
         target.splice(0);
         Object.assign(target, complaints);
       });
-    this.loadComplaintsCount();
+    this.loadComplaintCountGraph();
   }
   closeComplaint(complaint: Complaint, complaintIndex: number) {
     this.dataService
@@ -172,6 +194,7 @@ export class ComplaintsListComponent implements OnInit, AfterViewInit {
       });
   }
   tabChanged(tabIndex: number) {
+    this.selectedTabIndex = tabIndex;
     if (tabIndex === 0) {
       this.loadComplaints(
         this.paginationOptions,

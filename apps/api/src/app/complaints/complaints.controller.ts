@@ -264,6 +264,15 @@ export class ComplaintsController {
   ) {
     const me = req.me as User;
     const query = this.buildQueryBasedOnRole(me);
+    if (req.query) {
+      const filter = req.query;
+      if (filter.from && filter.to) {
+        query.createdAt = {
+          $gte: new Date(filter.from),
+          $lte: new Date(filter.to)
+        };
+      }
+    }
     return await Complaints.find({
       status: status,
       ...query
@@ -277,13 +286,9 @@ export class ComplaintsController {
     const searchQuery = this.buildQueryBasedOnRole(me);
     if (req.query) {
       const query = req.query;
-      if (query.from) {
+      if (query.from && query.to) {
         searchQuery.createdAt = {
-          $gte: new Date(query.from)
-        };
-      }
-      if (query.to) {
-        searchQuery.createdAt = {
+          $gte: new Date(query.from),
           $lte: new Date(query.to)
         };
       }
