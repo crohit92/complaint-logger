@@ -6,7 +6,10 @@ export const Authenticate = (req, res, next) => {
   let isEndpointOpen = false;
   for (let index = 0; index < OpenEndpoints.length; index++) {
     const openEndpoint = OpenEndpoints[index];
-    if (req.url.indexOf(openEndpoint) >= 0) {
+    if (
+      req.url.indexOf('/api/v') === -1 ||
+      req.url.indexOf(openEndpoint) >= 0
+    ) {
       isEndpointOpen = true;
       break;
     }

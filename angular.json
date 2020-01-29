@@ -15,7 +15,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/apps/complaint-logger",
+            "outputPath": "dist/apps/public",
             "index": "apps/complaint-logger/src/index.html",
             "main": "apps/complaint-logger/src/main.ts",
             "polyfills": "apps/complaint-logger/src/polyfills.ts",
