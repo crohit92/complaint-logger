@@ -78,7 +78,8 @@
   <mat-divider></mat-divider>
   <div class="complaint__status">
     <div class="complaint__status-assigned-to">
-      <a *ngIf="!complaint.selectAssignee" (click)="complaint.selectAssignee = (!user.admin || resolved)?false:true">
+      <a *ngIf="!complaint.selectAssignee"
+        (click)="complaint.selectAssignee = (user.type < UserTypes.Admin || user.type === UserTypes.SuperAdmin  || resolved)?false:true">
         <span>{{complaint.assignedTo?("Assigned to: "+complaint.assignedTo?.name):'Not assigned'}}</span>
       </a>
       <div class="employee-search" *ngIf="complaint.selectAssignee">
@@ -113,7 +114,7 @@
       <div class="resolution-comments">
         <div class="comment" *ngFor="let comment of complaint.comments"> {{comment.by}}: {{comment.description}} </div>
       </div>
-      <div *ngIf="!resolved && !closed">
+      <div *ngIf="user.type !== UserTypes.SuperAdmin && (!resolved && !closed)">
         <mat-slide-toggle #toggle="matSlideToggle" (change)="complaint.addRemarks = toggle.checked"
           [disabled]="complaint.status === ComplaintStatus.Resolved"
           [checked]="complaint.status === ComplaintStatus.Resolved">Mark as done </mat-slide-toggle>
@@ -130,7 +131,7 @@
           </button>
         </div>
       </div>
-      <div class="complaint__close" *ngIf="resolved && complaint.canClose">
+      <div class="complaint__close" *ngIf="user.type !== UserTypes.SuperAdmin && resolved && complaint.canClose">
         <button color="warn" mat-button (click)="closeComplaint(complaint,complaintIndex)">Close</button>
       </div>
     </div>

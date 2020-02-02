@@ -301,6 +301,9 @@ export class ComplaintsController {
 
   private buildQueryBasedOnRole(me: User) {
     let query: any = {};
+    if (me.type === UserTypes.SuperAdmin) {
+      return query;
+    }
     if (me.type === UserTypes.Admin || me.type === UserTypes.Technician) {
       query = { 'department.name': me.department.name };
       if (me.type === UserTypes.Technician) {

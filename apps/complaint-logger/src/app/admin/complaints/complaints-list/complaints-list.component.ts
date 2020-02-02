@@ -4,7 +4,8 @@ import {
   Complaint,
   ComplaintStatus,
   Comment,
-  User
+  User,
+  UserTypes
 } from '@complaint-logger/models';
 import { switchMap, combineAll, takeUntil } from 'rxjs/operators';
 import { PageEvent } from '@angular/material/paginator';
@@ -26,6 +27,7 @@ declare var c3;
 })
 export class ComplaintsListComponent implements OnInit, AfterViewInit {
   ComplaintStatus = ComplaintStatus;
+  UserTypes = UserTypes;
   graph = {
     filters: {
       from: moment()

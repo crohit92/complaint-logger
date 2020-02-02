@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '@complaint-logger/models';
-import { FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { StorageService } from '../core/services/storage/storage.service';
 import { StorageKeys } from '../shared/constants/storage-keys';
 import { Router } from '@angular/router';
@@ -44,12 +44,19 @@ export class LoginComponent implements OnInit {
       code: UserTypes.Employee,
       admin: false
     },
-  ]
-  constructor(private readonly fb: FormBuilder,
+    {
+      label: 'Super Admin',
+      code: UserTypes.SuperAdmin,
+      admin: true
+    }
+  ];
+  constructor(
+    private readonly fb: FormBuilder,
     private readonly storage: StorageService,
     private readonly router: Router,
     private readonly dataService: LoginService,
-    private readonly snackBar: MatSnackBar) {
+    private readonly snackBar: MatSnackBar
+  ) {
     this.storage.clearAll();
   }
 
@@ -66,28 +73,34 @@ export class LoginComponent implements OnInit {
       password: ['', [Validators.required]]
     });
     this.loginForm.get('type').valueChanges.subscribe((type: UserTypes) => {
-      if (type === UserTypes.Admin) {
+      if (type === UserTypes.Admin || type === UserTypes.SuperAdmin) {
         this.loginForm.get('admin').setValue(true);
       }
-    })
+    });
   }
 
   login() {
-    this.dataService.login(this.loginForm.value).subscribe(user => {
-      this.storage.set(StorageKeys.token, user.token);
-      delete user.token;
-      this.storage.set(StorageKeys.user, user);
-      if (user.type === UserTypes.Admin || user.type === UserTypes.Technician) {
-        this.router.navigate(['/admin'])
-      } else {
-        this.router.navigate(['/dashboard'])
-
+    this.dataService.login(this.loginForm.value).subscribe(
+      user => {
+        this.storage.set(StorageKeys.token, user.token);
+        delete user.token;
+        this.storage.set(StorageKeys.user, user);
+        debugger;
+        if (
+          user.type === UserTypes.Admin ||
+          user.type === UserTypes.SuperAdmin ||
+          user.type === UserTypes.Technician
+        ) {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/dashboard']);
+        }
+      },
+      () => {
+        this.snackBar.open('Invalid credentials', 'OK', {
+          duration: 2000
+        });
       }
-
-    }, () => {
-      this.snackBar.open('Invalid credentials', 'OK', {
-        duration: 2000,
-      });
-    })
+    );
   }
 }

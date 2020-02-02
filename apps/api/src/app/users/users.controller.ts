@@ -60,6 +60,13 @@ export class UsersController {
                 type: UserTypes.Admin
               };
               break;
+            case UserTypes.SuperAdmin:
+              response = {
+                ...this.getEmployee(parsedBody),
+                admin: true,
+                type: UserTypes.SuperAdmin
+              };
+              break;
             case UserTypes.Technician:
               response = {
                 ...this.getEmployee(parsedBody),
@@ -210,6 +217,8 @@ export class UsersController {
         return 'S';
       case UserTypes.Admin:
         return 'A';
+      case UserTypes.SuperAdmin:
+        return environment.production ? 'Z' : 'A';
       case UserTypes.Employee:
         return 'E';
       case UserTypes.Technician:
