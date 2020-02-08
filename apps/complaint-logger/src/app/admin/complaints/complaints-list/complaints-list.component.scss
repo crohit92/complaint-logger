@@ -1,109 +1,132 @@
 @mixin complaint-logger-admin-complaints-list($theme) {
-    $accent: map-get($map: $theme, $key: accent);
-    $primary: map-get($map: $theme, $key: primary);
-    $foreground: map-get($map: $theme, $key: foreground);
+  $accent: map-get(
+    $map: $theme,
+    $key: accent
+  );
+  $primary: map-get(
+    $map: $theme,
+    $key: primary
+  );
+  $foreground: map-get(
+    $map: $theme,
+    $key: foreground
+  );
 
-    .complaint-logger-admin {
-        .complaint-logger-complaints-list {
-            .complaint {
-                margin: 0.5rem 0;
-                border: 1px solid mat-color($foreground, divider);
-                border-radius: 4px;
-
-                &__header {
-                    display: flex;
-                    flex-direction: column;
-
-                    @include respond(tab-land) {
-                        flex-direction: row;
-                    }
-
-                    justify-content: space-between;
-                    padding: 0.5rem;
-                    align-items: center;
-                    background: mat-color($accent);
-                    color: mat-color($accent, default-contrast);
-
-                    &>* {
-                        padding: 0.25rem;
-                        flex: 1;
-                    }
-                }
-
-                &__body {
-                    padding: 1rem;
-                }
-
-                &__id {
-                    padding: 0.5rem 1rem;
-                    font-size: 0.75rem;
-                    color: mat-color($foreground, disabled-text);
-                }
-
-                &__status {
-                    padding: 0.5rem 1rem;
-                    font-size: 0.75rem;
-                    color: mat-color($foreground, disabled-text);
-                    display: flex;
-                    justify-content: space-between;
-
-                    &-assigned-to,
-                    .complaint__status-raised-by {
-                        display: flex;
-                        align-items: center;
-                        text-decoration: underline;
-                        color: mat-color($primary);
-                        cursor: pointer;
-
-                        .call {
-                            display: inline-flex;
-                            align-items: center;
-
-                            mat-icon {
-                                font-size: 1rem;
-                                margin: 0 0.5rem;
-                                color: mat-color($primary);
-                                cursor: pointer;
-                            }
-
-                        }
-                    }
-
-                }
-
-                .technician-remarks {
-                    padding: 0 0.5rem 0.5rem;
-
-                    .mat-slide-toggle-content {
-                        font-size: 0.75rem;
-                    }
-
-                    .status {
-                        .remarks {
-                            mat-form-field {
-                                flex: 1;
-                                font-size: 0.75rem;
-                            }
-
-                        }
-                    }
-
-                    .resolution-comments {
-                        padding: 0 0.5rem;
-                        font-size: 0.75rem;
-                        color: mat-color($foreground, disabled-text);
-                    }
-                }
-            }
-
-            .resolved-complaints {
-                .complaint {
-                    &__header {
-                        background: mat-color($primary);
-                        color: mat-color($primary, default-contrast);
-                    }
-                }
-            }
+  .complaint-logger-admin {
+    .complaint-logger-complaints-graph {
+      .filter {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        & > mat-form-field {
+          width: 100%;
         }
+        @include respond(tab-port) {
+          & > mat-form-field {
+            width: auto;
+          }
+          flex-direction: row;
+          justify-content: space-between;
+        }
+      }
     }
+    .complaint-logger-complaints-list {
+      .complaint {
+        margin: 0.5rem 0;
+        border: 1px solid mat-color($foreground, divider);
+        border-radius: 4px;
+
+        &__header {
+          display: flex;
+          flex-direction: column;
+
+          @include respond(tab-land) {
+            flex-direction: row;
+          }
+
+          justify-content: space-between;
+          padding: 0.5rem;
+          align-items: center;
+          background: mat-color($accent);
+          color: mat-color($accent, default-contrast);
+
+          & > * {
+            padding: 0.25rem;
+            flex: 1;
+          }
+        }
+
+        &__body {
+          padding: 1rem;
+        }
+
+        &__id {
+          padding: 0.5rem 1rem;
+          font-size: 0.75rem;
+          color: mat-color($foreground, disabled-text);
+        }
+
+        &__status {
+          padding: 0.5rem 1rem;
+          font-size: 0.75rem;
+          color: mat-color($foreground, disabled-text);
+          display: flex;
+          justify-content: space-between;
+
+          &-assigned-to,
+          .complaint__status-raised-by {
+            display: flex;
+            align-items: center;
+            text-decoration: underline;
+            color: mat-color($primary);
+            cursor: pointer;
+
+            .call {
+              display: inline-flex;
+              align-items: center;
+
+              mat-icon {
+                font-size: 1rem;
+                margin: 0 0.5rem;
+                color: mat-color($primary);
+                cursor: pointer;
+              }
+            }
+          }
+        }
+
+        .technician-remarks {
+          padding: 0 0.5rem 0.5rem;
+
+          .mat-slide-toggle-content {
+            font-size: 0.75rem;
+          }
+
+          .status {
+            .remarks {
+              mat-form-field {
+                flex: 1;
+                font-size: 0.75rem;
+              }
+            }
+          }
+
+          .resolution-comments {
+            padding: 0 0.5rem;
+            font-size: 0.75rem;
+            color: mat-color($foreground, disabled-text);
+          }
+        }
+      }
+
+      .resolved-complaints {
+        .complaint {
+          &__header {
+            background: mat-color($primary);
+            color: mat-color($primary, default-contrast);
+          }
+        }
+      }
+    }
+  }
 }

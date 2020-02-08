@@ -218,7 +218,7 @@ export class UsersController {
       case UserTypes.Admin:
         return 'A';
       case UserTypes.SuperAdmin:
-        return environment.production ? 'Z' : 'A';
+        return 'Z';
       case UserTypes.Employee:
         return 'E';
       case UserTypes.Technician:

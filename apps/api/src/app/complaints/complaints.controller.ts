@@ -272,6 +272,9 @@ export class ComplaintsController {
           $lte: new Date(filter.to)
         };
       }
+      if (filter.department) {
+        query['department.code'] = +filter.department;
+      }
     }
     return await Complaints.find({
       status: status,
@@ -283,34 +286,36 @@ export class ComplaintsController {
   }
   private async getComplaintsCount(status: ComplaintStatus, req: any) {
     const me = req.me as User;
-    const searchQuery = this.buildQueryBasedOnRole(me);
+    const query = this.buildQueryBasedOnRole(me);
     if (req.query) {
-      const query = req.query;
-      if (query.from && query.to) {
-        searchQuery.createdAt = {
-          $gte: new Date(query.from),
-          $lte: new Date(query.to)
+      const filter = req.query;
+      if (filter.from && filter.to) {
+        query.createdAt = {
+          $gte: new Date(filter.from),
+          $lte: new Date(filter.to)
         };
+      }
+      if (filter.department) {
+        query['department.code'] = +filter.department;
       }
     }
     return await Complaints.count({
       status: status,
-      ...searchQuery
+      ...query
     });
   }
 
   private buildQueryBasedOnRole(me: User) {
     let query: any = {};
-    if (me.type === UserTypes.SuperAdmin) {
-      return query;
-    }
-    if (me.type === UserTypes.Admin || me.type === UserTypes.Technician) {
-      query = { 'department.name': me.department.name };
-      if (me.type === UserTypes.Technician) {
-        query['assignedTo.loginId'] = me.loginId;
+    if (me.type !== UserTypes.SuperAdmin) {
+      if (me.type === UserTypes.Admin || me.type === UserTypes.Technician) {
+        query = { 'department.name': me.department.name };
+        if (me.type === UserTypes.Technician) {
+          query['assignedTo.loginId'] = me.loginId;
+        }
+      } else {
+        query['createdBy.loginId'] = me.loginId;
       }
-    } else {
-      query['createdBy.loginId'] = me.loginId;
     }
     return query;
   }
