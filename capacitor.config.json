@@ -1,0 +1,8 @@
+{
+  "appId": "com.disha.complaint-logger",
+  "appName": "Complaint Logger",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "cordova": {}
+}

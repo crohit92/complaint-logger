@@ -40,3 +40,6 @@ Thumbs.db
 *.pem
 **/*.env
 !**/*.env.copy
+android
+www
+.gradle
