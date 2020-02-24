@@ -3,6 +3,6 @@
   "appName": "Complaint Logger",
   "bundledWebRuntime": false,
   "npmClient": "npm",
-  "webDir": "www",
+  "webDir": "dist/apps/public",
   "cordova": {}
 }
