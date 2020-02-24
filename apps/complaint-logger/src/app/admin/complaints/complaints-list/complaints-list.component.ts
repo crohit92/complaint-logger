@@ -5,7 +5,8 @@ import {
   ComplaintStatus,
   Comment,
   User,
-  UserTypes
+  UserTypes,
+  Department
 } from '@complaint-logger/models';
 import { switchMap, combineAll, takeUntil } from 'rxjs/operators';
 import { PageEvent } from '@angular/material/paginator';
@@ -28,7 +29,8 @@ declare var c3;
 export class ComplaintsListComponent implements OnInit, AfterViewInit {
   ComplaintStatus = ComplaintStatus;
   UserTypes = UserTypes;
-  graph = {
+  departments: Department[];
+  graph: { filters: { from: string; to: string; department?: string } } = {
     filters: {
       from: moment()
         .startOf('month')
@@ -66,9 +68,9 @@ export class ComplaintsListComponent implements OnInit, AfterViewInit {
 
   onFromDateChange(date) {
     this.graph.filters.from = this.getStartOfDay(date).toISOString();
-    this.loadComplaintsOnDateChange();
+    this.loadComplaintsOnSelectionChange();
   }
-  private loadComplaintsOnDateChange() {
+  public loadComplaintsOnSelectionChange() {
     const complaintTypeToLoad = this.getSelectedTabType();
     this.loadComplaints(
       this.paginationOptions,
@@ -83,14 +85,20 @@ export class ComplaintsListComponent implements OnInit, AfterViewInit {
 
   onToDateChange(date) {
     this.graph.filters.to = this.getEndOfDay(date).toISOString();
-    this.loadComplaintsOnDateChange();
+    this.loadComplaintsOnSelectionChange();
   }
   ngAfterViewInit(): void {
-    this.loadComplaints(
-      this.paginationOptions,
-      ComplaintStatus.Pending,
-      this.pendingComplaints
-    );
+    this.dataService.departments.subscribe(departments => {
+      if (this.user.type === UserTypes.SuperAdmin) {
+        this.departments = departments;
+        this.graph.filters.department = this.departments[0].code;
+      }
+      this.loadComplaints(
+        this.paginationOptions,
+        ComplaintStatus.Pending,
+        this.pendingComplaints
+      );
+    });
   }
   private getSelectedTabType(): ComplaintStatus {
     if (this.selectedTabIndex === 0) {

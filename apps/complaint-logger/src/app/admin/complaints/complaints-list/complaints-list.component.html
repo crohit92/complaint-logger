@@ -1,5 +1,5 @@
 <div class="complaint-logger-admin">
-  <div class="graph">
+  <div class="complaint-logger-complaints-graph">
     <h3 class="p-b-2">Change the date range to see insights</h3>
     <div class="filter flex flex-justify-content-space-between">
       <mat-form-field>
@@ -7,6 +7,13 @@
           placeholder="From" [matDatepicker]="fromDatePicker">
         <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
         <mat-datepicker disabled="false" #fromDatePicker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field *ngIf="user.type === UserTypes.SuperAdmin">
+        <mat-label>Select Department</mat-label>
+        <mat-select (selectionChange)="loadComplaintsOnSelectionChange()" [(ngModel)]="graph.filters.department">
+          <mat-option *ngFor="let department of departments" [value]="department.code"> {{department.name}}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
       <mat-form-field>
         <input [ngModel]="graph.filters.to" (dateChange)="onToDateChange($event.value)" disabled matInput

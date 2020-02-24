@@ -6,7 +6,8 @@ import {
   ComplaintStatus,
   Comment,
   User,
-  UserTypes
+  UserTypes,
+  Department
 } from '@complaint-logger/models';
 import { StorageService } from '../../../core/services/storage/storage.service';
 import { StorageKeys } from '../../../shared/constants/storage-keys';
@@ -22,7 +23,7 @@ export class ComplaintsListService {
 
   complaintsCount(
     status: ComplaintStatus,
-    query?: { from: string; to: string }
+    query?: { from: string; to: string; department?: string }
   ): Observable<number> {
     return this.api.sendRequest({
       method: 'get',
@@ -46,7 +47,7 @@ export class ComplaintsListService {
       pageNumber: number;
       status: ComplaintStatus;
     },
-    filter?: { from: string; to: string }
+    filter?: { from: string; to: string; department?: string }
   ): Observable<Complaint[]> {
     return this.api.sendRequest({
       method: 'get',
@@ -104,6 +105,14 @@ export class ComplaintsListService {
       queryParams: {
         q: searchString
       }
+    });
+  }
+
+  get departments(): Observable<Department[]> {
+    return this.api.sendRequest({
+      method: 'get',
+      apiBase: 'assets/resources',
+      endpoint: 'departments.json'
     });
   }
 }
