@@ -1,29 +1,29 @@
 <mat-sidenav-container>
-    <mat-sidenav #sidenav mode="over" class="sidenav">
-        <figure class="logo">
-            <img src="assets/images/logo.jpg" alt="" srcset="">
-            <caption>Guru Nanak Dev University</caption>
-        </figure>
-        <mat-divider></mat-divider>
-        <ul>
-            <!-- <li (click)="sidenav.close()" [routerLink]="['./complaints/list']" routerLinkActive="active">
+  <mat-sidenav #sidenav mode="over" class="sidenav">
+    <figure class="logo">
+      <img src="assets/images/logo.jpg" alt="" srcset="">
+      <caption>Guru Nanak Dev University</caption>
+    </figure>
+    <mat-divider></mat-divider>
+    <ul>
+      <!-- <li (click)="sidenav.close()" [routerLink]="['./complaints/list']" routerLinkActive="active">
                 <span>Show complaint status</span>
             </li> -->
-            <li (click)="logout();sidenav.close()">
-                <span>Logout</span>
-            </li>
-        </ul>
-    </mat-sidenav>
-    <mat-sidenav-content class="content">
-        <mat-toolbar>
-            <button mat-button (click)="sidenav.toggle()">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <img src="assets/images/logo.jpg" alt="" srcset="">
-            <span style="font-size: 0.9rem;">Welcome {{user.name}} to {{userType}} dashboard</span>
-        </mat-toolbar>
-        <div class="content__outlet">
-            <router-outlet></router-outlet>
-        </div>
-    </mat-sidenav-content>
+      <li (click)="logout();sidenav.close()">
+        <span>Logout</span>
+      </li>
+    </ul>
+  </mat-sidenav>
+  <mat-sidenav-content class="content">
+    <mat-toolbar>
+      <button mat-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <img src="assets/images/logo.jpg" alt="" srcset="">
+      <span style="font-size: 0.9rem;">Welcome {{user.name}} <br>> {{userType}} Dashboard</span>
+    </mat-toolbar>
+    <div class="content__outlet">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
 </mat-sidenav-container>

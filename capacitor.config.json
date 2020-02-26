@@ -1,5 +1,5 @@
 {
-  "appId": "com.disha.complaint-logger",
+  "appId": "com.disha.complaintlogger",
   "appName": "Complaint Logger",
   "bundledWebRuntime": false,
   "npmClient": "npm",
